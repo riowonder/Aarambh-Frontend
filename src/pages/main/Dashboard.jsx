@@ -201,11 +201,11 @@ export default function Dashboard() {
         </div>
 
         {/* Top Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="flex flex-wrap gap-6 mb-8">
           {/* Subscription Expired */}
-          <div className="bg-[#e9e6f7] rounded-xl p-3 sm:p-4 shadow-sm h-[180px] sm:h-[220px] flex flex-col justify-between">
+          <div className="bg-[#e8d6e2] flex-1 min-w-[300px] p-6 rounded-[10px] flex flex-col justify-between">
             <div className="rounded-lg">
-              <h2 className="font-bold text-lg sm:text-xl mb-2 text-start font-montserrat text-gray-800">SUBSCRIPTION EXPIRED</h2>
+              <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">SUBSCRIPTION EXPIRED</h2>
               {isExpiredLoading ? (
                 <div className="flex items-center justify-center h-24">
                   <Spinner size="md" />
@@ -230,7 +230,7 @@ export default function Dashboard() {
             </div>
             {expiredSubscriptions.length > 4 && (
               <div 
-                className="text-right text-xs text-gray-600 cursor-pointer hover:underline mt-auto" 
+                className="text-right font-bold cursor-pointer hover:underline mt-auto" 
                 style={{marginTop: 'auto'}}
                 onClick={() => setShowExpiredModal(true)}
               >
@@ -239,9 +239,9 @@ export default function Dashboard() {
             )}
           </div>
           {/* Expiring Soon */}
-          <div className="bg-[#f7f3e6] rounded-xl p-3 sm:p-4 shadow-sm h-[180px] sm:h-[220px] flex flex-col justify-between">
+          <div className="bg-[#f2e6c9] flex-1 min-w-[300px] p-6 rounded-[10px] flex flex-col justify-between">
             <div className="rounded-lg">
-              <h2 className="font-bold text-lg sm:text-xl mb-2 text-start font-montserrat text-gray-800">EXPIRING SOON</h2>
+              <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">EXPIRING SOON</h2>
               {isExpiringLoading ? (
                 <div className="flex items-center justify-center h-24">
                   <Spinner size="md" />
@@ -271,7 +271,7 @@ export default function Dashboard() {
             </div>
             {expiringSoon.length > 4 && (
               <div 
-                className="text-right text-xs text-gray-600 cursor-pointer hover:underline mt-auto" 
+                className="text-right font-bold cursor-pointer hover:underline mt-auto" 
                 style={{marginTop: 'auto'}}
                 onClick={() => setShowExpiringSoonModal(true)}
               >
@@ -281,9 +281,9 @@ export default function Dashboard() {
           </div>
 
           {/* Members Birthday List */}
-          <div className="bg-[#e7f3f7] rounded-xl p-3 sm:p-4 shadow-sm h-[200px] sm:h-[220px] flex flex-col justify-between">
+          <div className="bg-[#c1ebf1] flex-1 min-w-[300px] p-6 rounded-[10px] flex flex-col justify-between">
             <div className="rounded-lg">
-              <h2 className="font-bold text-lg sm:text-xl mb-2 text-start font-montserrat text-gray-800">MEMBERS BIRTHDAY 🎂</h2>
+              <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">MEMBERS BIRTHDAY 🎂</h2>
               {isBirthdayLoading ? (
                 <div className="flex items-center justify-center h-24">
                   <Spinner size="md" />
@@ -320,7 +320,7 @@ export default function Dashboard() {
             </div>
             {birthdayList.length > 4 && (
               <div
-                className="text-right text-xs text-gray-600 cursor-pointer hover:underline mt-auto"
+                className="text-right font-bold cursor-pointer hover:underline mt-auto"
                 style={{ marginTop: 'auto' }}
                 onClick={() => navigate('/admin/birthdays')}
               >
