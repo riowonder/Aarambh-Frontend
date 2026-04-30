@@ -4,7 +4,7 @@ import { useUser } from '../../context/UserContext';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { TrendingUp, DollarSign, Users, Calendar } from 'lucide-react';
+import { TrendingUp, DollarSign, UserCheck, Award } from 'lucide-react';
 
 const Finance = () => {
   const [financeData, setFinanceData] = useState(null);
@@ -27,7 +27,7 @@ const Finance = () => {
       fetchSummary();
     }
   }, [user, selectedPeriod]);
- 
+
   const fetchFinanceData = async () => {
     try {
       setLoading(true);
@@ -82,13 +82,13 @@ const Finance = () => {
 
   if (!hasFinanceAccess) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h2>
-          <p className="text-gray-600 mb-4">You don't have permission to access finance features.</p>
+      <div className="w-full overflow-x-hidden relative z-10 p-4 sm:p-8">
+        <div className="w-full max-w-5xl mx-auto h-[60vh] flex flex-col justify-center items-center text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h2>
+          <p className="text-gray-500 mb-6">You don't have permission to access finance features.</p>
           <button
             onClick={() => navigate('/admin/dashboard')}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+            className="px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition-colors shadow-sm cursor-pointer"
           >
             Back to Dashboard
           </button>
@@ -99,47 +99,47 @@ const Finance = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <p className="mt-2 text-gray-600">Loading finance data...</p>
+      <div className="w-full overflow-x-hidden relative z-10 p-4 sm:p-8">
+        <div className="w-full max-w-5xl mx-auto h-[60vh] flex flex-col justify-center items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-500 font-medium tracking-wide">Loading finance data...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full overflow-x-hidden relative z-10">
-      <div className="w-full">
+    <div className="w-full overflow-x-hidden relative z-10 p-4 sm:p-8">
+      <div className="w-full max-w-5xl mx-auto">
         {/* Header */}
-        <div className="mb-4 sm:mb-8 relative">
+        <div className="mb-6 sm:mb-8 relative">
           {/* Header Row with Back, Heading, Filter */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 sm:gap-4 relative z-10">
 
             {/* Back Button */}
             <button
               onClick={() => navigate('/admin/dashboard')}
-              className="flex items-center gap-1 text-gray-700 hover:text-black font-medium text-sm px-3 py-1 rounded-md border border-gray-300 bg-white hover:bg-gray-100 transition cursor-pointer z-30 relative"
+              className="flex items-center gap-2 text-gray-500 hover:text-gray-900 font-medium transition-colors cursor-pointer z-30 relative"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back
+              <span>Back</span>
             </button>
 
             {/* Centered Heading */}
-            <div className="text-center w-full sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 z-10 pointer-events-none">
-              <h1 className="text-xl sm:text-3xl font-bold text-gray-900 font-montserrat">Analytics</h1>
-              <p className="text-gray-600 text-xs sm:text-sm hidden sm:block">Track your gym's revenue and subscription analytics</p>
+            <div className="w-full sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 z-10 pointer-events-none text-left sm:text-center">
+              <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 tracking-tight">Analytics</h1>
+              <p className="text-gray-500 text-sm mt-1 hidden sm:block">Track your gym's revenue and subscription analytics</p>
             </div>
 
             {/* Time Filter */}
-            <div className="flex flex-col gap-1 items-end w-full sm:w-auto z-30 relative">
-              <label className="text-xs font-medium text-gray-700">Time Period:</label>
+            <div className="flex flex-col gap-1.5 items-start sm:items-end w-full sm:w-auto z-30 relative">
+              <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">Time Period</label>
               <select
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
-                className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-32 sm:w-auto min-w-0 cursor-pointer"
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-auto min-w-[160px] cursor-pointer transition-colors hover:bg-gray-100"
               >
                 {periods.map((period) => (
                   <option key={period.value} value={period.value} className="text-sm">
@@ -151,58 +151,33 @@ const Finance = () => {
           </div>
         </div>
 
-
         {/* Summary Cards */}
         {financeData && (
-          <div className="grid grid-cols-2 gap-3 sm:gap-6 mb-4 sm:mb-8">
-            {/* <div className="bg-white p-3 sm:p-6 rounded-lg shadow-md border border-gray-200">
-              <div className="flex items-center justify-between">
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs sm:text-sm font-medium text-gray-600">Total Revenue</p>
-                  <p className="text-lg sm:text-2xl font-bold text-green-600 truncate">
-                    {formatCurrency(financeData.totalRevenue)}
-                  </p>
-                </div>
-                <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 text-green-500 flex-shrink-0 ml-2" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <div className="bg-white p-5 sm:p-6 rounded-2xl border border-gray-300 flex items-center justify-between transition-shadow hover:shadow-sm">
+              <div className="flex-1 min-w-0">
+                <p className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Total Subscriptions</p>
+                <p className="text-2xl sm:text-3xl font-semibold text-gray-900 mt-1 truncate">
+                  {financeData.summary.totalRecords}
+                </p>
               </div>
-            </div> */}
-
-            <div className="bg-white p-3 sm:p-6 rounded-lg shadow-md border border-gray-200">
-              <div className="flex items-center justify-between">
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs sm:text-sm font-medium text-gray-600">Total Subscriptions</p>
-                  <p className="text-lg sm:text-2xl font-bold text-blue-600 truncate">
-                    {financeData.summary.totalRecords}
-                  </p>
-                </div>
-                <Users className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 flex-shrink-0 ml-2" />
+              <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center flex-shrink-0 ml-4">
+                <UserCheck className="w-6 h-6 text-blue-600" />
               </div>
             </div>
 
-            {/* <div className="bg-white p-3 sm:p-6 rounded-lg shadow-md border border-gray-200">
-              <div className="flex items-center justify-between">
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs sm:text-sm font-medium text-gray-600">Average Revenue</p>
-                  <p className="text-lg sm:text-2xl font-bold text-purple-600 truncate">
-                    {formatCurrency(financeData.summary.averageRevenue)}
-                  </p>
-                </div>
-                <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-purple-500 flex-shrink-0 ml-2" />
+            <div className="bg-white p-5 sm:p-6 rounded-2xl border border-gray-300 flex items-center justify-between transition-shadow hover:shadow-sm">
+              <div className="flex-1 min-w-0">
+                <p className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Top Plan</p>
+                <p className="text-lg sm:text-xl font-semibold text-gray-900 mt-1 truncate">
+                  {financeData.highestRevenuePlan?.plan || 'N/A'}
+                </p>
+                <p className="text-sm text-gray-500 truncate mt-1">
+                  {formatCurrency(financeData.highestRevenuePlan?.revenue || 0)}
+                </p>
               </div>
-            </div> */}
-
-            <div className="bg-white p-3 sm:p-6 rounded-lg shadow-md border border-gray-200">
-              <div className="flex items-center justify-between">
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs sm:text-sm font-medium text-gray-600">Top Plan</p>
-                  <p className="text-sm sm:text-lg font-bold text-orange-600 truncate">
-                    {financeData.highestRevenuePlan?.plan || 'N/A'}
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-500 truncate">
-                    {formatCurrency(financeData.highestRevenuePlan?.revenue || 0)}
-                  </p>
-                </div>
-                <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500 flex-shrink-0 ml-2" />
+              <div className="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center flex-shrink-0 ml-4">
+                <Award className="w-6 h-6 text-orange-600" />
               </div>
             </div>
           </div>
@@ -210,35 +185,44 @@ const Finance = () => {
 
         {/* Chart Section */}
         {financeData && financeData.chartData.length > 0 && (
-          <div className="bg-white p-3 sm:p-6 rounded-lg shadow-md border border-gray-200 mb-4 sm:mb-8">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
+          <div className="bg-white p-5 sm:p-6 rounded-2xl border border-gray-300 mb-6 sm:mb-8 overflow-hidden">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-6">
               Revenue by Plan - {getPeriodLabel(selectedPeriod)}
             </h2>
-            <div className="h-48 sm:h-80 w-full">
+            <div className="h-64 sm:h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={financeData.chartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
+                <BarChart data={financeData.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
                   <XAxis
                     dataKey="plan"
-                    tick={{ fontSize: 10, sm: 12 }}
+                    tick={{ fill: '#6B7280', fontSize: 12 }}
+                    tickLine={false}
+                    axisLine={{ stroke: '#E5E7EB' }}
+                    dy={10}
                     angle={-45}
                     textAnchor="end"
                     height={60}
                   />
                   <YAxis
                     tickFormatter={(value) => formatCurrency(value)}
-                    tick={{ fontSize: 10, sm: 12 }}
+                    tick={{ fill: '#6B7280', fontSize: 12 }}
+                    tickLine={false}
+                    axisLine={false}
+                    dx={-10}
                   />
                   <Tooltip
+                    cursor={{ fill: '#F3F4F6' }}
+                    contentStyle={{ borderRadius: '0.5rem', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' }}
                     formatter={(value) => [formatCurrency(value), 'Revenue']}
-                    labelFormatter={(label) => `Plan: ${label}`}
+                    labelStyle={{ color: '#374151', fontWeight: 600, marginBottom: '0.25rem' }}
                   />
-                  <Legend />
+                  <Legend iconType="circle" wrapperStyle={{ paddingTop: '10px' }} />
                   <Bar
                     dataKey="revenue"
                     fill="#3B82F6"
-                    radius={[4, 4, 0, 0]}
+                    radius={[6, 6, 0, 0]}
                     name="Revenue"
+                    barSize={40}
                   />
                 </BarChart>
               </ResponsiveContainer>
@@ -248,56 +232,60 @@ const Finance = () => {
 
         {/* Table Section */}
         {financeData && financeData.tableData.length > 0 && (
-          <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
-            <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+          <div className="bg-white rounded-2xl border border-gray-300 overflow-hidden">
+            <div className="px-5 sm:px-6 py-4 sm:py-5 border-b border-gray-300">
               <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
-                Transaction Details - {getPeriodLabel(selectedPeriod)}
+                Transaction Details
               </h2>
             </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+            <div className="overflow-x-auto w-full">
+              <table className="w-full whitespace-nowrap">
+                <thead className="border-b border-gray-300 bg-gray-50/50">
                   <tr>
-                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Member
                     </th>
-                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Roll No
                     </th>
-                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Plan
                     </th>
-                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Amount
                     </th>
-                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Date
                     </th>
-                    <th className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Description
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 bg-white">
                   {financeData.tableData.map((record) => (
-                    <tr key={record.id} className="hover:bg-gray-50">
-                      <td className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900 text-start">
-                        {record.memberName}
+                    <tr key={record.id} className="hover:bg-gray-50 transition-colors duration-150">
+                      <td className="px-6 py-5 whitespace-nowrap">
+                        <div className="text-sm font-semibold text-gray-900">{record.memberName}</div>
                       </td>
-                      <td className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 text-start">
-                        {record.memberRollNo}
+                      <td className="px-6 py-5 whitespace-nowrap">
+                        <div className="text-sm text-gray-500">{record.memberRollNo}</div>
                       </td>
-                      <td className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 text-start">
-                        {record.plan}
+                      <td className="px-6 py-5 whitespace-nowrap">
+                        <span className="px-3 py-1 inline-flex text-xs leading-5 font-medium rounded-full bg-blue-50 text-blue-700 border border-blue-100">
+                          {record.plan}
+                        </span>
                       </td>
-                      <td className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-semibold text-green-600 text-start">
-                        {formatCurrency(record.amount)}
+                      <td className="px-6 py-5 whitespace-nowrap">
+                        <div className="text-sm font-semibold text-green-600">{formatCurrency(record.amount)}</div>
                       </td>
-                      <td className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 text-start">
-                        {formatDate(record.date)}
+                      <td className="px-6 py-5 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{formatDate(record.date)}</div>
                       </td>
-                      <td className="px-3 sm:px-6 py-2 sm:py-4 text-xs sm:text-sm text-gray-500 max-w-xs truncate text-start">
-                        {record.description}
+                      <td className="px-6 py-5">
+                        <div className="text-sm text-gray-500 max-w-[200px] truncate" title={record.description}>
+                          {record.description || '-'}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -309,10 +297,12 @@ const Finance = () => {
 
         {/* No Data State */}
         {financeData && financeData.tableData.length === 0 && (
-          <div className="text-center py-8 sm:py-12">
-            <DollarSign className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">No transactions found</h3>
-            <p className="text-sm sm:text-base text-gray-500">
+          <div className="bg-white rounded-2xl border border-gray-300 p-8 sm:p-12 text-center mt-6">
+            <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300">
+              <DollarSign className="w-10 h-10" />
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">No transactions found</h3>
+            <p className="text-sm sm:text-base text-gray-500 max-w-sm mx-auto">
               No revenue data available for {getPeriodLabel(selectedPeriod)}.
             </p>
           </div>
@@ -322,4 +312,4 @@ const Finance = () => {
   );
 };
 
-export default Finance; 
+export default Finance;
