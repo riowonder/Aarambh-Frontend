@@ -33,26 +33,26 @@ const ExpiringSoonModal = ({ isOpen, onClose, expiringSoon }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4">
+      <div className="bg-white rounded-[10px] w-[90%] max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+        <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Expiring Soon (Next 10 Days)</h2>
-            <p className="text-sm text-gray-600 mt-1">
+            <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Expiring Soon (Next 10 Days)</h2>
+            <p className="text-sm text-gray-600 mt-1 text-left">
               {expiringSoon?.length || 0} member{expiringSoon?.length !== 1 ? 's' : ''} with expiring subscriptions
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+            className="text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+        <div className="p-6 overflow-y-auto">
           {!expiringSoon || expiringSoon.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-lg text-gray-600 mb-2">No expiring soon subscriptions</p>
@@ -101,7 +101,7 @@ const ExpiringSoonModal = ({ isOpen, onClose, expiringSoon }) => {
                           </td>
                           <td className="px-4 py-3">
                             <button
-                              className="bg-cyan-100 text-black px-4 py-1 rounded-md font-semibold hover:bg-cyan-200 transition cursor-pointer text-sm"
+                              className="bg-[#c1ebf1] text-black py-2 px-6 rounded-[5px] font-bold hover:bg-[#a9d9e0] transition cursor-pointer text-sm"
                               onClick={() => handleViewMember(member)}
                             >
                               View
@@ -148,7 +148,7 @@ const ExpiringSoonModal = ({ isOpen, onClose, expiringSoon }) => {
                     </div>
                     <div className="mt-3 text-right">
                       <button
-                        className="bg-cyan-100 text-black px-4 py-1 rounded-md font-semibold hover:bg-cyan-200 transition cursor-pointer text-sm"
+                        className="bg-[#c1ebf1] text-black py-2 px-6 rounded-[5px] font-bold hover:bg-[#a9d9e0] transition cursor-pointer text-sm"
                         onClick={() => handleViewMember(member)}
                       >
                         View
@@ -162,10 +162,10 @@ const ExpiringSoonModal = ({ isOpen, onClose, expiringSoon }) => {
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end p-6 border-t border-gray-200">
+        <div className="p-6 border-t border-[#ddd] flex justify-end gap-4 shrink-0">
           <button
             onClick={onClose}
-            className="bg-gray-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-gray-700 transition cursor-pointer"
+            className="py-2 px-6 bg-[#eee] text-black rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-200"
           >
             Close
           </button>

@@ -135,21 +135,23 @@ export default function EditMemberModal({ isOpen, onClose, member, onSave }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl p-0 w-full max-w-md relative flex flex-col max-h-[90vh]">
-        <button
-          className="absolute top-4 right-4 text-2xl font-bold text-gray-400 hover:text-black transition cursor-pointer"
-          onClick={onClose}
-          disabled={loading}
-        >
-          &times;
-        </button>
-        <h2 className="text-2xl sm:text-3xl font-extrabold mb-2 mt-8 text-center tracking-tight text-gray-900">Edit Member</h2>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4">
+      <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
+          <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Edit Member</h2>
+          <button
+            className="text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer transition disabled:opacity-50"
+            onClick={onClose}
+            disabled={loading}
+          >
+            &times;
+          </button>
+        </div>
         <form
-          className="flex-1 flex flex-col gap-4 px-4 sm:px-8 py-4 overflow-y-auto custom-scrollbar"
-          style={{ minHeight: 0, maxHeight: 'calc(70vh - 64px)' }}
+          className="flex flex-col h-full overflow-hidden"
           onSubmit={e => e.preventDefault()}
         >
+          <div className="p-6 overflow-y-auto">
           {/* Member Image Section */}
           <div className="flex flex-col items-center gap-4 mb-4">
             <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-gray-200 shadow-md bg-gray-100">
@@ -378,34 +380,33 @@ export default function EditMemberModal({ isOpen, onClose, member, onSave }) {
               />
             </div>
           </div>
+          </div>
+          <div className="p-6 border-t border-[#ddd] flex justify-end gap-4 shrink-0">
+            <button
+              type="button"
+              className="py-2 px-6 bg-black text-white rounded-[5px] font-bold transition hover:bg-gray-800 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              onClick={handleSave}
+              disabled={loading || !!imageError}
+            >
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  Saving...
+                </>
+              ) : (
+                'Save Changes'
+              )}
+            </button>
+            <button
+              type="button"
+              className="py-2 px-6 bg-[#eee] text-black rounded-[5px] font-bold hover:bg-gray-200 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleCancel}
+              disabled={loading}
+            >
+              Cancel
+            </button>
+          </div>
         </form>
-        <div className="flex flex-col sm:flex-row gap-4 p-4 sm:p-8 justify-end">
-
-          <button
-            type="button"
-            className="bg-black text-white px-6 py-2 rounded flex justify-center items-center font-semibold hover:bg-gray-900 transition cursor-pointer text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed  gap-2"
-            onClick={handleSave}
-            disabled={loading || !!imageError}
-          >
-            {loading ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                Saving...
-              </>
-            ) : (
-              'Save Changes'
-            )}
-          </button>
-
-          <button
-            type="button"
-            className="bg-gray-100 text-black px-6 py-2 rounded font-semibold hover:bg-gray-200 transition cursor-pointer text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
-            onClick={handleCancel} // Changed to handleCancel
-            disabled={loading}
-          >
-            Cancel
-          </button>
-        </div>
         <style>
           {`
             .custom-scrollbar::-webkit-scrollbar {

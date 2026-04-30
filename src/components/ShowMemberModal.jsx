@@ -51,23 +51,22 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg relative flex flex-col max-h-[90vh]">
-          {/* Scrollable content */}
-          <div className="overflow-y-auto custom-scrollbar px-6 py-6 sm:px-8 sm:py-8 flex-1">
-            {/* Close Button */}
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4">
+        <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden">
+          {/* Header */}
+          <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
+            <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Member Details</h2>
             <button
-              className="absolute top-3 right-3 text-xl font-bold text-gray-400 hover:text-black transition cursor-pointer"
+              className="text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer transition"
               onClick={onClose}
               aria-label="Close"
             >
               &times;
             </button>
+          </div>
 
-            {/* Title */}
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-4 text-gray-900">
-              Member Details
-            </h2>
+          {/* Scrollable content */}
+          <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
 
             {/* Profile Image */}
             <div className="flex justify-center mb-6">
@@ -187,28 +186,28 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
           </div>
 
           {/* Action Buttons - Sticky Bottom */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 px-6 py-4 border-t bg-white">
+          <div className="p-6 border-t border-[#ddd] flex flex-wrap justify-end gap-4 shrink-0 bg-white">
             <button
               type="button"
-              className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded font-semibold hover:bg-blue-700 transition text-sm sm:text-base"
+              className="py-2 px-6 bg-black text-white rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-800"
               onClick={() => setShowSubscription(true)}
             >
-              Show Subscription
+              Subscriptions
             </button>
             <button
               type="button"
-              className="bg-black text-white px-4 sm:px-6 py-2 rounded font-semibold hover:bg-gray-900 transition text-sm sm:text-base"
+              className="py-2 px-6 bg-[#eee] text-black rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-200"
               onClick={handleEdit}
             >
               Edit
             </button>
-            {/* <button
+            <button
               type="button"
-              className="bg-gray-100 text-black px-4 sm:px-6 py-2 rounded font-semibold hover:bg-gray-200 transition text-sm sm:text-base"
+              className="py-2 px-6 border border-gray-300 text-gray-700 rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-50"
               onClick={onClose}
             >
-              Cancel
-            </button> */}
+              Close
+            </button>
           </div>
         </div>
       </div>

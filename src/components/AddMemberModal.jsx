@@ -163,220 +163,225 @@ export default function AddMemberModal({ isOpen, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50 p-4">
-      <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md relative max-h-[90vh] overflow-y-auto">
-        <button
-          className="absolute top-4 right-4 text-2xl font-bold text-gray-400 hover:text-black cursor-pointer"
-          onClick={onClose}
-        >
-          &times;
-        </button>
-        <h2 className="text-xl sm:text-2xl font-bold mb-4">Add New Member</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div>
-            <label className="font-semibold text-start block text-sm sm:text-base">Serial No.:</label>
-            <input
-              type="text"
-              name="roll_no"
-              value={form.roll_no}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-              placeholder="Enter Serial No."
-              required
-            />
-          </div>
-          <div>
-            <label className="font-semibold text-start block text-sm sm:text-base">Name:</label>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-              placeholder="Enter Member Name"
-              required
-            />
-          </div>
-          <div>
-            <label className="font-semibold text-start block text-sm sm:text-base">Phone Number:</label>
-            <input
-              type="text"
-              name="phone_number"
-              value={form.phone_number}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-              placeholder="Enter Phone Number"
-              pattern="\d{10}"
-              maxLength={10}
-              title="Please enter a valid 10-digit phone number"
-              required
-            />
-          </div>
-          <div>
-            <label className="font-semibold text-start block text-sm sm:text-base">Date of Birth:</label>
-            <input
-              type="date"
-              name="dob"
-              value={form.dob}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-              placeholder="Enter Date of Birth"
-            />
-          </div>
-
-          {/* New Personal Details Section */}
-          <div className="border-t pt-4">
-            <h3 className="font-semibold text-start block text-sm sm:text-base mb-3 text-gray-700">Personal Details</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="font-semibold text-start block text-sm sm:text-base">Age:</label>
-                <input
-                  type="number"
-                  name="age"
-                  value={form.age}
-                  onChange={handleChange}
-                  className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-                  placeholder="Age"
-                  min="1"
-                  max="120"
-                />
-              </div>
-              <div>
-                <label className="font-semibold text-start block text-sm sm:text-base">Gender:</label>
-                <select
-                  name="gender"
-                  value={form.gender}
-                  onChange={handleChange}
-                  className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-                >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-              <div>
-                <label className="font-semibold text-start block text-sm sm:text-base">Height (cm):</label>
-                <input
-                  type="number"
-                  name="height"
-                  value={form.height}
-                  onChange={handleChange}
-                  className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-                  placeholder="Height in cm"
-                  min="50"
-                  max="300"
-                />
-              </div>
-              <div>
-                <label className="font-semibold text-start block text-sm sm:text-base">Weight (kg):</label>
-                <input
-                  type="number"
-                  name="weight"
-                  value={form.weight}
-                  onChange={handleChange}
-                  className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-                  placeholder="Weight in kg"
-                  min="10"
-                  max="500"
-                  step="0.1"
-                />
-              </div>
-            </div>
-            <div className="mt-4">
-              <label className="font-semibold text-start block text-sm sm:text-base">Address:</label>
-              <textarea
-                name="address"
-                value={form.address}
-                onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-                placeholder="Enter address"
-                rows="3"
-              />
-            </div>
-            {/* Image Upload Input */}
-            <div className="mt-4">
-              <label className="font-semibold text-start block text-sm sm:text-base">Member Image:</label>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4">
+      <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
+          <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Add New Member</h2>
+          <button
+            className="text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer"
+            onClick={onClose}
+          >
+            &times;
+          </button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="flex flex-col h-full overflow-hidden">
+          <div className="p-6 overflow-y-auto hide-scrollbar">
+            <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">Serial No.:</label>
               <input
-                type="file"
-                name="member_image"
-                accept="image/*" // Only allow image files
-                onChange={handleImageChange}
-                className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-              />
-              {imageError && (
-                <div className="text-red-600 text-sm mt-1">{imageError}</div>
-              )}
-            </div>
-          </div>
-
-          {/* Subscription Details Section */}
-          <div className="border-t pt-4">
-            <h3 className="font-semibold text-start block text-sm sm:text-base mb-3 text-gray-700">Subscription Details</h3>
-            <div>
-              <label className="font-semibold text-start block text-sm sm:text-base">Subscription Plan | Extra Days</label>
-              <div className="flex flex-col sm:flex-row gap-2 mt-1">
-                <select
-                  name="subscription_plan"
-                  value={form.subscription_plan || 'Custom'}
-                  onChange={handleChange}
-                  className="border rounded px-3 py-2 text-sm sm:text-base"
-                >
-                  {plans.map((plan) => (
-                    <option key={plan} value={plan}>{plan}</option>
-                  ))}
-                </select>
-                <input
-                  type="number"
-                  name="extra_days"
-                  value={form.extra_days}
-                  onChange={handleChange}
-                  className="border rounded px-3 py-2 text-sm sm:text-base"
-                  placeholder="Extra Days"
-                  min="0"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="font-semibold text-start block text-sm sm:text-base">Amount</label>
-              <input
-                type="number"
-                name="amount"
-                value={form.amount}
+                type="text"
+                name="roll_no"
+                value={form.roll_no}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-                placeholder="Enter Amount"
-                min="0"
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                placeholder="Enter Serial No."
                 required
               />
             </div>
-            <div>
-              <label className="font-semibold text-start block text-sm sm:text-base">Start Date (required)</label>
+            <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">Name:</label>
+              <input
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                placeholder="Enter Member Name"
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">Phone Number:</label>
+              <input
+                type="text"
+                name="phone_number"
+                value={form.phone_number}
+                onChange={handleChange}
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                placeholder="Enter Phone Number"
+                pattern="\d{10}"
+                maxLength={10}
+                title="Please enter a valid 10-digit phone number"
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">Date of Birth:</label>
               <input
                 type="date"
-                name="start_date"
-                value={form.start_date}
+                name="dob"
+                value={form.dob}
                 onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mt-1 text-sm sm:text-base"
-                placeholder="dd-mm-yyyy"
-                required
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                placeholder="Enter Date of Birth"
               />
             </div>
+
+            {/* New Personal Details Section */}
+            <div className="border-t border-[#ddd] pt-4 mt-2">
+              <h3 className="block mb-4 font-bold text-gray-900 text-[1.2rem] text-left">Personal Details</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="mb-6">
+                  <label className="block mb-2 font-bold text-gray-800 text-left">Age:</label>
+                  <input
+                    type="number"
+                    name="age"
+                    value={form.age}
+                    onChange={handleChange}
+                    className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                    placeholder="Age"
+                    min="1"
+                    max="120"
+                  />
+                </div>
+                <div className="mb-6">
+                  <label className="block mb-2 font-bold text-gray-800 text-left">Gender:</label>
+                  <select
+                    name="gender"
+                    value={form.gender}
+                    onChange={handleChange}
+                    className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div className="mb-6">
+                  <label className="block mb-2 font-bold text-gray-800 text-left">Height (cm):</label>
+                  <input
+                    type="number"
+                    name="height"
+                    value={form.height}
+                    onChange={handleChange}
+                    className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                    placeholder="Height in cm"
+                    min="50"
+                    max="300"
+                  />
+                </div>
+                <div className="mb-6">
+                  <label className="block mb-2 font-bold text-gray-800 text-left">Weight (kg):</label>
+                  <input
+                    type="number"
+                    name="weight"
+                    value={form.weight}
+                    onChange={handleChange}
+                    className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                    placeholder="Weight in kg"
+                    min="10"
+                    max="500"
+                    step="0.1"
+                  />
+                </div>
+              </div>
+              <div className="mb-6">
+                <label className="block mb-2 font-bold text-gray-800 text-left">Address:</label>
+                <textarea
+                  name="address"
+                  value={form.address}
+                  onChange={handleChange}
+                  className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                  placeholder="Enter address"
+                  rows="3"
+                />
+              </div>
+              {/* Image Upload Input */}
+              <div className="mb-6">
+                <label className="block mb-2 font-bold text-gray-800 text-left">Member Image:</label>
+                <input
+                  type="file"
+                  name="member_image"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500 bg-white"
+                />
+                {imageError && (
+                  <div className="text-red-600 text-sm mt-1">{imageError}</div>
+                )}
+              </div>
+            </div>
+
+            {/* Subscription Details Section */}
+            <div className="border-t border-[#ddd] pt-4 mt-2">
+              <h3 className="block mb-4 font-bold text-gray-900 text-[1.2rem] text-left">Subscription Details</h3>
+              <div className="mb-6">
+                <label className="block mb-2 font-bold text-gray-800 text-left">Subscription Plan | Extra Days</label>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <select
+                    name="subscription_plan"
+                    value={form.subscription_plan || 'Custom'}
+                    onChange={handleChange}
+                    className="flex-1 p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                  >
+                    {plans.map((plan) => (
+                      <option key={plan} value={plan}>{plan}</option>
+                    ))}
+                  </select>
+                  <input
+                    type="number"
+                    name="extra_days"
+                    value={form.extra_days}
+                    onChange={handleChange}
+                    className="w-full sm:w-1/3 p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                    placeholder="Extra Days"
+                    min="0"
+                  />
+                </div>
+              </div>
+              <div className="mb-6">
+                <label className="block mb-2 font-bold text-gray-800 text-left">Amount</label>
+                <input
+                  type="number"
+                  name="amount"
+                  value={form.amount}
+                  onChange={handleChange}
+                  className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                  placeholder="Enter Amount"
+                  min="0"
+                  required
+                />
+              </div>
+              <div className="mb-6">
+                <label className="block mb-2 font-bold text-gray-800 text-left">Start Date (required)</label>
+                <input
+                  type="date"
+                  name="start_date"
+                  value={form.start_date}
+                  onChange={handleChange}
+                  className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                  placeholder="dd-mm-yyyy"
+                  required
+                />
+              </div>
+            </div>
+
+            {error && <div className="text-red-600 text-sm mb-4">{error}</div>}
           </div>
 
-          {error && <div className="text-red-600 text-sm">{error}</div>}
-          <div className="flex flex-col sm:flex-row gap-4 mt-2 justify-end">
+          <div className="p-6 border-t border-[#ddd] flex justify-end gap-4 shrink-0">
             <button
               type="submit"
-              className={`bg-black text-white px-6 py-2 rounded font-semibold text-sm sm:text-base transition ${loading || !!imageError ? 'opacity-50 cursor-not-allowed bg-gray-400 hover:bg-gray-400' : 'hover:bg-gray-900 cursor-pointer'}`}
+              className={`py-2 px-6 bg-black text-white rounded-[5px] font-bold transition ${loading || !!imageError ? 'opacity-50 cursor-not-allowed bg-gray-400' : 'hover:bg-gray-800 cursor-pointer'}`}
               disabled={loading || !!imageError}
             >
               {loading ? 'Submitting...' : 'Submit'}
-              {console.log('Button disabled:', loading || !!imageError, 'imageError:', imageError)}
             </button>
             <button
               type="button"
-              className="bg-gray-200 text-black px-6 py-2 rounded font-semibold hover:bg-gray-300 cursor-pointer text-sm sm:text-base"
+              className="py-2 px-6 bg-[#eee] text-black rounded-[5px] font-bold hover:bg-gray-200 transition cursor-pointer"
               onClick={onClose}
             >
               Cancel

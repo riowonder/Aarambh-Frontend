@@ -65,146 +65,139 @@ const InviteManagerModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50 p-4">
-      <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md relative max-h-[90vh] overflow-y-auto">
-        {/* Close Button */}
-        <button
-          onClick={handleClose}
-          disabled={loading}
-          className="absolute top-4 right-4 text-2xl font-bold text-gray-400 hover:text-black transition disabled:opacity-50 cursor-pointer"
-          aria-label="Close"
-        >
-          &times;
-        </button>
-
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-blue-100 rounded-lg">
-            <UserPlus className="w-6 h-6 text-blue-600" />
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4" onClick={handleClose}>
+      <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden" onClick={e => e.stopPropagation()}>
+        <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <UserPlus className="w-6 h-6 text-blue-600" />
+            </div>
+            <div>
+              <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Invite Manager</h2>
+              <p className="text-sm text-gray-600 text-left">Add a new manager to your gym</p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 font-montserrat">Invite Manager</h2>
-            <p className="text-sm text-gray-600">Add a new manager to your gym</p>
-          </div>
+          <button
+            onClick={handleClose}
+            disabled={loading}
+            className="text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer disabled:opacity-50"
+            aria-label="Close"
+          >
+            &times;
+          </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="font-semibold block text-gray-700 mb-2">
-              Manager Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50"
-              placeholder="Enter manager's full name"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          <div>
-            <label className="font-semibold block text-gray-700 mb-2">
-              Email Address
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50"
-              placeholder="manager@example.com"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          <div>
-            <label className="font-semibold block text-gray-700 mb-2">
-              Password
-            </label>
-            <div className="relative">
+        <form onSubmit={handleSubmit} className="flex flex-col h-full overflow-hidden">
+          <div className="p-6 overflow-y-auto">
+            <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">
+                Manager Name
+              </label>
               <input
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={form.password}
+                type="text"
+                name="name"
+                value={form.name}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50"
-                placeholder="Enter password"
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500 disabled:bg-gray-50"
+                placeholder="Enter manager's full name"
                 required
                 disabled={loading}
-                minLength={6}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
-                disabled={loading}
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
             </div>
-            <div className="flex justify-between items-center mt-2">
-              <p className="text-xs text-gray-500">
-                Password will be visible to admin
-              </p>
-              <button
-                type="button"
-                onClick={generatePassword}
+
+            <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500 disabled:bg-gray-50"
+                placeholder="manager@example.com"
+                required
                 disabled={loading}
-                className="text-xs text-blue-600 hover:text-blue-800 font-medium disabled:opacity-50 cursor-pointer"
-              >
-                Generate Password
-              </button>
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  className="w-full p-[0.8rem] pr-10 border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500 disabled:bg-gray-50"
+                  placeholder="Enter password"
+                  required
+                  disabled={loading}
+                  minLength={6}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  disabled={loading}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              <div className="flex justify-between items-center mt-2">
+                <p className="text-xs text-gray-500">
+                  Password will be visible to admin
+                </p>
+                <button
+                  type="button"
+                  onClick={generatePassword}
+                  disabled={loading}
+                  className="text-xs text-blue-600 hover:text-blue-800 font-medium disabled:opacity-50 cursor-pointer"
+                >
+                  Generate Password
+                </button>
+              </div>
+            </div>
+
+            {error && (
+              <div className="text-red-600 text-sm mb-4">
+                {error}
+              </div>
+            )}
+
+            {/* Info Box */}
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+              <h3 className="font-semibold text-blue-900 mb-2">Manager Access</h3>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Can manage members and subscriptions</li>
+                <li>• Cannot access finance data</li>
+                <li>• Cannot change gym settings</li>
+                <li>• Cannot invite other managers</li>
+              </ul>
             </div>
           </div>
 
-          {error && (
-            <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md">
-              {error}
-            </div>
-          )}
-
-          {/* Action Buttons */}
-          <div className="flex gap-3 pt-4">
+          <div className="p-6 border-t border-[#ddd] flex justify-end gap-4 shrink-0">
+            <button
+              type="submit"
+              disabled={loading || !form.name || !form.email || !form.password}
+              className="py-2 px-6 bg-black text-white rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Inviting...' : 'Invite Manager'}
+            </button>
             <button
               type="button"
               onClick={handleClose}
               disabled={loading}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 cursor-pointer"
+              className="py-2 px-6 bg-[#eee] text-black rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-200 disabled:opacity-50"
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              disabled={loading || !form.name || !form.email || !form.password}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-            >
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Inviting...
-                </div>
-              ) : (
-                'Invite Manager'
-              )}
-            </button>
           </div>
         </form>
-
-        {/* Info Box */}
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-          <h3 className="font-semibold text-blue-900 mb-2">Manager Access</h3>
-          <ul className="text-sm text-blue-800 space-y-1">
-            <li>• Can manage members and subscriptions</li>
-            <li>• Cannot access finance data</li>
-            <li>• Cannot change gym settings</li>
-            <li>• Cannot invite other managers</li>
-          </ul>
-        </div>
       </div>
     </div>
   );

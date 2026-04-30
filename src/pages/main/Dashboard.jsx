@@ -154,11 +154,17 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen">
-      {/* Sidebar */}
+      {/* ===============================================
+          MODALS - Hidden UI components for interactions
+          =============================================== */}
+      
+      {/* Sidebar Navigation Modal */}
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} onMembersClick={() => setShowAllMembersModal(true)} />
-      {/* Add Member Modal */}
+      
+      {/* Add New Member Modal Form */}
       <AddMemberModal isOpen={showAddMember} onClose={() => setShowAddMember(false)} onSuccess={handleAddMemberSuccess} />
-      {/* Search Members Modal */}
+      
+      {/* Search and Filter Members Modal */}
       <SearchMembersModal
         isOpen={showSearchModal}
         onClose={() => setShowSearchModal(false)}
@@ -168,30 +174,38 @@ export default function Dashboard() {
           setShowMemberModal(true);
         }}
       />
-      {/* Show Member Modal */}
+      
+      {/* Show Detailed Member Information Modal */}
       <ShowMemberModal isOpen={showMemberModal} onClose={() => setShowMemberModal(false)} member={member} onSave={handleSaveMember} />
-      {/* Expired Subscriptions Modal */}
+      
+      {/* List of All Expired Subscriptions Modal */}
       <ExpiredSubscriptionsModal 
         isOpen={showExpiredModal} 
         onClose={() => setShowExpiredModal(false)} 
         expiredSubscriptions={expiredSubscriptions} 
       />
-      {/* Expiring Soon Modal */}
+      
+      {/* List of All Expiring Soon Subscriptions Modal */}
       <ExpiringSoonModal 
         isOpen={showExpiringSoonModal} 
         onClose={() => setShowExpiringSoonModal(false)} 
         expiringSoon={expiringSoon} 
       />
       
+      {/* ===============================================
+          MAIN CONTENT AREA
+          =============================================== */}
       <div className="">
-        {/* Header */}
+        
+        {/* HEADER SECTION - Gym name and hamburger menu */}
         <div className="flex items-center justify-between mb-8 sm:mb-12">
+          {/* Gym name title and badge */}
           <div className="flex flex-col sm:flex-row sm:items-end gap-1 sm:gap-2">
             <h1 className="text-3xl sm:text-5xl text-gray-700 font-extrabold tracking-tight font-montserrat">{user?.gym_name || "GYM"}</h1>
             <span className="bg-black text-white px-2 sm:px-3 py-1 rounded font-semibold text-xs sm:text-md sm:mb-1 font-poppins">SUBSCRIPTION MANAGER</span>
           </div>
           
-          {/* Hamburger Menu */}
+          {/* Hamburger Menu Button - Opens sidebar on mobile */}
           <button 
             onClick={toggleSidebar}
             className="bg-white font-bold text-2xl text-black p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
@@ -200,9 +214,13 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Top Cards */}
+        {/* ===============================================
+            TOP STATS CARDS SECTION
+            Shows: Expired subscriptions, Expiring soon, Birthdays
+            =============================================== */}
         <div className="flex flex-wrap gap-6 mb-8">
-          {/* Subscription Expired */}
+          
+          {/* CARD 1: EXPIRED SUBSCRIPTIONS - Members with expired memberships */}
           <div className="bg-[#e8d6e2] flex-1 min-w-[300px] p-6 rounded-[10px] flex flex-col justify-between">
             <div className="rounded-lg">
               <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">SUBSCRIPTION EXPIRED</h2>
@@ -238,7 +256,8 @@ export default function Dashboard() {
               </div>
             )}
           </div>
-          {/* Expiring Soon */}
+
+          {/* CARD 2: EXPIRING SOON - Members with memberships expiring in next 10 days */}
           <div className="bg-[#f2e6c9] flex-1 min-w-[300px] p-6 rounded-[10px] flex flex-col justify-between">
             <div className="rounded-lg">
               <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">EXPIRING SOON</h2>
@@ -280,7 +299,7 @@ export default function Dashboard() {
             )}
           </div>
 
-          {/* Members Birthday List */}
+          {/* CARD 3: MEMBERS BIRTHDAY - Upcoming member birthdays */}
           <div className="bg-[#c1ebf1] flex-1 min-w-[300px] p-6 rounded-[10px] flex flex-col justify-between">
             <div className="rounded-lg">
               <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">MEMBERS BIRTHDAY 🎂</h2>
@@ -330,9 +349,13 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Members Table */}
-        <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
-          {/* Mobile Header */}
+        {/* ===============================================
+            MEMBERS TABLE SECTION
+            Displays list of all members with their details
+            =============================================== */}
+        <div className="bg-white rounded-xl p-4 sm:p-6">
+          
+          {/* MOBILE VIEW - Header and search/add buttons for small screens */}
           <div className="sm:hidden mb-4">
             <h2 className="text-xl font-extrabold tracking-tight bg-[#d6f6ff] px-3 py-1 rounded mb-3 font-montserrat">MEMBERS</h2>
             <div className="flex flex-col gap-2">
@@ -343,9 +366,9 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Desktop Header */}
+          {/* DESKTOP VIEW - Header with title and action buttons for larger screens */}
           <div className="hidden sm:flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-extrabold tracking-tight bg-[#d6f6ff] px-3 py-1 rounded">MEMBERS</h2>
+            <h2 className="text-2xl font-extrabold tracking-tight bg-[#d6f6ff] px-6 py-3 rounded-xl font-montserrat">MEMBERS</h2>
             <div className="flex gap-2">
               <button className="bg-white border-2 border-black px-3 py-1 rounded text-sm font-semibold cursor-pointer" onClick={() => setShowAddMember(true)}>+ Add New Member</button>
               <button className="bg-black text-white px-3 py-1 rounded text-sm font-semibold flex items-center gap-1 cursor-pointer" onClick={() => setShowSearchModal(true)}>
@@ -354,7 +377,9 @@ export default function Dashboard() {
             </div>
           </div>
 
+          {/* TABLE CONTENT - Shows member data in table or card format based on screen size */}
           <div className="w-full overflow-x-auto">
+            {/* LOADING STATE - Spinner while fetching member data */}
             {isMembersLoading ? (
               <div className="py-8">
                 <div className="flex items-center justify-center mb-4">
@@ -362,14 +387,17 @@ export default function Dashboard() {
                 </div>
                 <p className="text-center text-gray-500">Loading members...</p>
               </div>
-            ) : members.length === 0 ? (
+            ) : 
+            
+                members.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
+                {/* EMPTY STATE - Message shown when no members exist */}
                 <p className="text-lg font-medium">No members found</p>
                 <p className="text-sm">Add your first member to get started</p>
               </div>
             ) : (
               <>
-                {/* Desktop Table */}
+                {/* DESKTOP TABLE VIEW - Full table with all member details */}
                 <div className="hidden sm:block">
                   <table className="w-full">
                     <thead>
@@ -381,13 +409,14 @@ export default function Dashboard() {
                         <th className="px-4 py-3 text-left"></th>
                       </tr>
                     </thead>
-                    {/* Underline after the table head */}
+                    {/* Separator line under table headers */}
                     <tbody>
                       <tr>
                         <td colSpan={4}>
                           <div className="border-b border-gray-300 w-full"></div>
                         </td>
                       </tr>
+                      {/* Individual member rows - Shows first 6 members */}
                       {members.slice(0, 6).map((member, idx) => {
                         return (
                           <tr key={idx} className="border-b border-gray-200">
@@ -415,10 +444,11 @@ export default function Dashboard() {
                   </table>
                 </div>
 
-                {/* Mobile Cards */}
+                {/* MOBILE CARD VIEW - Individual cards for each member on small screens */}
                 <div className="sm:hidden space-y-4"> 
                   {members.slice(0, 6).map((member, idx) => (
                     <div key={idx} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                      {/* Member card header with name and view button */}
                       <div className="flex justify-between items-start mb-3">
                         <h3 className="font-semibold text-gray-900 text-lg">{member.name}</h3>
                         <button
@@ -431,6 +461,7 @@ export default function Dashboard() {
                           View
                         </button>
                       </div>
+                      {/* Member card details - Shows subscription, days left, phone, age, gender */}
                       <div className="space-y-1 text-sm text-gray-600">
                         <div className="flex justify-between">
                           <span>Plan:</span>
@@ -458,7 +489,8 @@ export default function Dashboard() {
                 </div>
               </>
             )}
-            {/* Show All Members Link */}
+            
+            {/* SHOW ALL MEMBERS BUTTON - Link to full members list when more than 6 members exist */}
             {members.length > 6 && (
               <div className="text-right mt-4">
                 <button 
@@ -472,6 +504,8 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* NEW FIELD MODAL - Form for adding new subscription plans/packages */}
       <NewFieldModal isOpen={isNewFieldModalOpen} onClose={() => setIsNewFieldModalOpen(false)} />
     </div>
   );

@@ -58,44 +58,35 @@ const ChangeGymNameModal = ({ isOpen, onClose, currentGymName }) => {
   if (!isOpen) return null;
 
   return (
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/50 bg-opacity-50 z-50"
-        onClick={handleClose}
-      />
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4" onClick={handleClose}>
+      <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden" onClick={e => e.stopPropagation()}>
+        <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
+          <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Change Gym Name</h2>
+          <button
+            onClick={handleClose}
+            disabled={loading}
+            className="text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer disabled:opacity-50"
+          >
+            &times;
+          </button>
+        </div>
 
-      {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">Change Gym Name</h2>
-            <button
-              onClick={handleClose}
-              disabled={loading}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-50 cursor-pointer"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="p-6">
-            <div className="mb-4">
-              <label htmlFor="gymName" className="block text-sm font-medium text-gray-700 mb-2">
+        <form onSubmit={handleSubmit} className="flex flex-col h-full overflow-hidden">
+          <div className="p-6 overflow-y-auto">
+            <div className="mb-6">
+              <label htmlFor="gymName" className="block mb-2 font-bold text-gray-800 text-left">
                 Current Gym Name
               </label>
               <input
                 type="text"
                 value={currentGymName || 'No gym name set'}
                 disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] bg-gray-50 text-gray-500 focus:outline-none"
               />
             </div>
 
             <div className="mb-6">
-              <label htmlFor="newGymName" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="newGymName" className="block mb-2 font-bold text-gray-800 text-left">
                 New Gym Name
               </label>
               <input
@@ -105,40 +96,32 @@ const ChangeGymNameModal = ({ isOpen, onClose, currentGymName }) => {
                 onChange={(e) => setGymName(e.target.value)}
                 placeholder="Enter new gym name"
                 disabled={loading}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500 disabled:bg-gray-50 disabled:text-gray-500"
                 maxLength={50}
               />
             </div>
+          </div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={handleClose}
-                disabled={loading}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={loading || !gymName.trim() || gymName.trim() === currentGymName}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Updating...
-                  </div>
-                ) : (
-                  'Update Gym Name'
-                )}
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className="p-6 border-t border-[#ddd] flex justify-end gap-4 shrink-0">
+            <button
+              type="submit"
+              disabled={loading || !gymName.trim() || gymName.trim() === currentGymName}
+              className="py-2 px-6 bg-black text-white rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Updating...' : 'Update Gym Name'}
+            </button>
+            <button
+              type="button"
+              onClick={handleClose}
+              disabled={loading}
+              className="py-2 px-6 bg-[#eee] text-black rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-200 disabled:opacity-50"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 

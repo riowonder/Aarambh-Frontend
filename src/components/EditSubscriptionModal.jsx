@@ -73,116 +73,106 @@ const EditSubscriptionModal = ({ isOpen, onClose, subscription, onSuccess }) => 
   if (!isOpen || !subscription) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50">
-      <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md relative">
-        {/* Close Button */}
-        <button
-          onClick={handleClose}
-          disabled={loading}
-          className="absolute top-4 right-4 text-2xl font-bold text-gray-400 hover:text-black transition disabled:opacity-50 cursor-pointer"
-          aria-label="Close"
-        >
-          &times;
-        </button>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4" onClick={handleClose}>
+      <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden" onClick={e => e.stopPropagation()}>
+        <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
+          <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Edit Subscription</h2>
+          <button
+            onClick={handleClose}
+            disabled={loading}
+            className="text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer disabled:opacity-50"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
 
-        {/* Title */}
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-900">
-          Edit Subscription
-        </h2>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="font-semibold block text-gray-700 mb-2">Plan</label>
-            <select
-              name="plan"
-              value={form.plan}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50"
-              required
-              disabled={loading}
-            >
-              <option value="" disabled>
-                Select a plan
-              </option>
-              {PLAN_OPTIONS.map((plan) => (
-                <option key={plan} value={plan}>
-                  {plan}
+        <form onSubmit={handleSubmit} className="flex flex-col h-full overflow-hidden">
+          <div className="p-6 overflow-y-auto">
+            <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">Plan</label>
+              <select
+                name="plan"
+                value={form.plan}
+                onChange={handleChange}
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500 disabled:bg-gray-50"
+                required
+                disabled={loading}
+              >
+                <option value="" disabled>
+                  Select a plan
                 </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="font-semibold block text-gray-700 mb-2">Amount</label>
-            <input
-              type="number"
-              name="amount"
-              value={form.amount}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50"
-              required
-              disabled={loading}
-              min="0"
-              step="0.01"
-            />
-          </div>
-
-          <div>
-            <label className="font-semibold block text-gray-700 mb-2">Extra Days</label>
-            <input
-              type="number"
-              name="extra_days"
-              value={form.extra_days}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50"
-              disabled={loading}
-              min="0"
-            />
-          </div>
-
-          <div>
-            <label className="font-semibold block text-gray-700 mb-2">Start Date</label>
-            <input
-              type="date"
-              name="start_date"
-              value={form.start_date}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          {error && (
-            <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md">
-              {error}
+                {PLAN_OPTIONS.map((plan) => (
+                  <option key={plan} value={plan}>
+                    {plan}
+                  </option>
+                ))}
+              </select>
             </div>
-          )}
 
-          {/* Action Buttons */}
-          <div className="flex gap-3 pt-4">
+            <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">Amount</label>
+              <input
+                type="number"
+                name="amount"
+                value={form.amount}
+                onChange={handleChange}
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500 disabled:bg-gray-50"
+                required
+                disabled={loading}
+                min="0"
+                step="0.01"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">Extra Days</label>
+              <input
+                type="number"
+                name="extra_days"
+                value={form.extra_days}
+                onChange={handleChange}
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500 disabled:bg-gray-50"
+                disabled={loading}
+                min="0"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">Start Date</label>
+              <input
+                type="date"
+                name="start_date"
+                value={form.start_date}
+                onChange={handleChange}
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500 disabled:bg-gray-50"
+                required
+                disabled={loading}
+              />
+            </div>
+
+            {error && (
+              <div className="text-red-600 text-sm mb-4">
+                {error}
+              </div>
+            )}
+          </div>
+
+          <div className="p-6 border-t border-[#ddd] flex justify-end gap-4 shrink-0">
+            <button
+              type="submit"
+              disabled={loading || !form.plan || !form.amount || !form.start_date}
+              className="py-2 px-6 bg-black text-white rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Updating...' : 'Update Subscription'}
+            </button>
             <button
               type="button"
               onClick={handleClose}
               disabled={loading}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 cursor-pointer"
+              className="py-2 px-6 bg-[#eee] text-black rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-200 disabled:opacity-50"
             >
               Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={loading || !form.plan || !form.amount || !form.start_date}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-            >
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Updating...
-                </div>
-              ) : (
-                'Update Subscription'
-              )}
             </button>
           </div>
         </form>

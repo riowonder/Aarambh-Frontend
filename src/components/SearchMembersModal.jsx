@@ -44,27 +44,30 @@ export default function SearchMembersModal({ isOpen, onClose, onSelectMember }) 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50">
-      <div className="bg-white rounded-2xl shadow-2xl p-0 w-full max-w-lg relative flex flex-col max-h-[90vh]">
-        <button
-          className="absolute top-4 right-4 text-2xl font-bold text-gray-400 hover:text-black transition cursor-pointer"
-          onClick={onClose}
-          aria-label="Close"
-        >
-          &times;
-        </button>
-        <h2 className="text-3xl font-extrabold mb-2 mt-8 text-center tracking-tight text-gray-900">Search Members</h2>
-        <div className="px-8 py-4">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4">
+      <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
+          <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Search Members</h2>
+          <button
+            className="text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer transition"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
+        
+        <div className="p-6 border-b border-[#ddd] bg-gray-50 shrink-0">
           <input
             type="text"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black transition"
+            className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
             placeholder="Search by name, roll no, or any field..."
             value={query}
             onChange={e => setQuery(e.target.value)}
             autoFocus
           />
         </div>
-        <div className="flex-1 overflow-y-auto px-8 pb-4 custom-scrollbar" style={{ minHeight: 0, maxHeight: '50vh' }}>
+        <div className="p-6 overflow-y-auto custom-scrollbar flex-1" style={{ minHeight: '30vh' }}>
           {query.trim() === '' ? (
             <div className="text-center text-gray-400 py-8 text-lg select-none">
               🔍 <span className="font-semibold">Enter something to search for members!</span>
@@ -94,6 +97,14 @@ export default function SearchMembersModal({ isOpen, onClose, onSelectMember }) 
               ))}
             </ul>
           )}
+        </div>
+        <div className="p-6 border-t border-[#ddd] flex justify-end gap-4 shrink-0">
+          <button
+            onClick={onClose}
+            className="py-2 px-6 bg-[#eee] text-black rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-200"
+          >
+            Close
+          </button>
         </div>
         <style>
           {`

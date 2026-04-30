@@ -60,52 +60,55 @@ function AddSubscriptionForm({ memberId, onSuccess, onCancel }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
-      <div>
-        <label className="font-semibold block">Plan</label>
-        <select
-          name="plan"
-          value={form.plan}
-          onChange={handleChange}
-          className="w-full border rounded px-3 py-2 mt-1"
-          required
-        >
-          <option value="" disabled>
-            Select a plan
-          </option>
-          {PLAN_OPTIONS.map((plan) => (
-            <option key={plan} value={plan}>
-              {plan}
+    <form onSubmit={handleSubmit} className="flex flex-col h-full overflow-hidden">
+      <div className="p-6 overflow-y-auto">
+        <div className="mb-6">
+          <label className="block mb-2 font-bold text-gray-800 text-left">Plan</label>
+          <select
+            name="plan"
+            value={form.plan}
+            onChange={handleChange}
+            className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+            required
+          >
+            <option value="" disabled>
+              Select a plan
             </option>
-          ))}
-        </select>
+            {PLAN_OPTIONS.map((plan) => (
+              <option key={plan} value={plan}>
+                {plan}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-6">
+          <label className="block mb-2 font-bold text-gray-800 text-left">Amount</label>
+          <input type="number" name="amount" value={form.amount} onChange={handleChange} className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500" required />
+        </div>
+        <div className="mb-6">
+          <label className="block mb-2 font-bold text-gray-800 text-left">Extra Days</label>
+          <input type="number" name="extra_days" value={form.extra_days} onChange={handleChange} className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500" />
+        </div>
+        <div className="mb-6">
+          <label className="block mb-2 font-bold text-gray-800 text-left">Start Date</label>
+          <input type="date" name="start_date" value={form.start_date} onChange={handleChange} className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500" required />
+        </div>
+        <div className="mb-6">
+          <label className="block mb-2 font-bold text-gray-800 text-left">Subscription Status</label>
+          <select name="status" value={form.status} onChange={handleChange} className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500">
+            <option value="" disabled>Select a status (optional)</option>
+            <option value="Active">Active</option>
+            <option value="Upcoming">Upcoming</option>
+          </select>
+        </div>
+        {error && <div className="text-red-600 text-sm mb-4">{error}</div>}
       </div>
-      <div>
-        <label className="font-semibold block">Amount</label>
-        <input type="number" name="amount" value={form.amount} onChange={handleChange} className="w-full border rounded px-3 py-2 mt-1" required />
-      </div>
-      <div>
-        <label className="font-semibold block">Extra Days</label>
-        <input type="number" name="extra_days" value={form.extra_days} onChange={handleChange} className="w-full border rounded px-3 py-2 mt-1" />
-      </div>
-      <div>
-        <label className="font-semibold block">Start Date</label>
-        <input type="date" name="start_date" value={form.start_date} onChange={handleChange} className="w-full border rounded px-3 py-2 mt-1" required />
-      </div>
-      <div>
-        <label className="font-semibold block">Subscription Status </label>
-        <select name="status" value={form.status} onChange={handleChange} className="w-full border rounded px-3 py-2 mt-1">
-          <option value="" disabled>Select a status (optional)</option>
-          <option value="Active">Active</option>
-          <option value="Upcoming">Upcoming</option>
-        </select>
-      </div>
-      {error && <div className="text-red-600 text-sm">{error}</div>}
-      <div className="flex gap-4 mt-2 justify-end">
-        <button type="submit" className="bg-black text-white px-6 py-2 rounded font-semibold hover:bg-gray-900 cursor-pointer" disabled={loading}>
+      
+      <div className="p-6 border-t border-[#ddd] flex justify-end gap-4 shrink-0">
+        <button type="submit" className="py-2 px-6 bg-black text-white rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-800" disabled={loading}>
           {loading ? 'Submitting...' : 'Submit'}
         </button>
-        <button type="button" className="bg-gray-200 text-black px-6 py-2 rounded font-semibold hover:bg-gray-300 cursor-pointer" onClick={onCancel}>
+        <button type="button" className="py-2 px-6 bg-[#eee] text-black rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-200" onClick={onCancel}>
           Cancel
         </button>
       </div>
@@ -227,27 +230,38 @@ export default function SubscriptionModal({ isOpen, onClose, memberId, onSuccess
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50 p-4">
-        <div className="bg-white rounded-2xl shadow-2xl p-0 w-full max-w-4xl relative flex flex-col max-h-[90vh]">
-          <button className="absolute top-4 right-4 text-2xl font-bold text-gray-400 hover:text-black transition cursor-pointer" onClick={onClose}>&times;</button>
-          <h2 className="text-2xl sm:text-3xl font-extrabold mb-2 mt-8 text-center tracking-tight text-gray-900 px-4">Subscriptions</h2>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-8 mt-2 gap-4">
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4">
+        <div className="bg-white rounded-[10px] w-[90%] max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+          
+          <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
+            <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Subscriptions</h2>
+            <button
+              className="text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer transition"
+              onClick={onClose}
+              aria-label="Close"
+            >
+              &times;
+            </button>
+          </div>
+          
+          <div className="p-6 border-b border-[#ddd] bg-gray-50 flex justify-between items-center shrink-0 flex-wrap gap-4">
             <div className="flex gap-2 flex-wrap">
               {FILTERS.map(f => (
                 <button
                   key={f.value}
-                  className={`px-3 py-1 rounded text-sm ${filter === f.value ? 'bg-black text-white' : 'bg-gray-100 text-black'} font-semibold cursor-pointer`}
+                  className={`px-4 py-2 rounded-[5px] text-sm ${filter === f.value ? 'bg-black text-white' : 'bg-[#eee] text-black'} font-bold cursor-pointer transition hover:opacity-80`}
                   onClick={() => setFilter(f.value)}
                 >
                   {f.label}
                 </button>
               ))}
             </div>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 cursor-pointer text-sm sm:text-base" onClick={() => setShowAdd(true)}>
+            <button className="py-2 px-6 bg-black text-white rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-800" onClick={() => setShowAdd(true)}>
               Add Subscription
             </button>
           </div>
-          <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-4 custom-scrollbar" style={{ minHeight: 0, maxHeight: '60vh' }}>
+          
+          <div className="flex-1 overflow-y-auto p-6 custom-scrollbar" style={{ minHeight: '30vh' }}>
             {loading ? (
               <div className="text-center py-8 text-gray-500">Loading...</div>
             ) : subscriptions.length === 0 ? (
@@ -318,11 +332,28 @@ export default function SubscriptionModal({ isOpen, onClose, memberId, onSuccess
               </div>
             )}
           </div>
+          
+          <div className="p-6 border-t border-[#ddd] flex justify-end gap-4 shrink-0">
+            <button
+              onClick={onClose}
+              className="py-2 px-6 bg-[#eee] text-black rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-200"
+            >
+              Close
+            </button>
+          </div>
+          
           {showAdd && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-50 p-4">
-              <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-8 w-full max-w-lg relative">
-                <button className="absolute top-4 right-4 text-2xl font-bold text-gray-400 hover:text-black transition cursor-pointer" onClick={() => setShowAdd(false)}>&times;</button>
-                <h3 className="text-xl sm:text-2xl font-bold mb-4">Add Subscription</h3>
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1003] p-4">
+              <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden">
+                <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
+                  <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Add Subscription</h2>
+                  <button
+                    className="text-gray-500 hover:text-gray-700 text-2xl font-bold cursor-pointer transition"
+                    onClick={() => setShowAdd(false)}
+                  >
+                    &times;
+                  </button>
+                </div>
                 <AddSubscriptionForm 
                   memberId={memberId} 
                   onSuccess={() => {
