@@ -1,16 +1,15 @@
 import { motion } from "motion/react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import QuickNav from "./QuickNav";
-import logo from "../assets/logo.webp";
+import logo from "../../assets/logo/logo.webp";
+import { useNavigate } from "react-router-dom";
 
-interface HeroProps {
-  onOpenRegister: () => void;
-}
+export default function Hero({ onOpenRegister }) {
+  const navigate = useNavigate();
 
-export default function Hero({ onOpenRegister }: HeroProps) {
   return (
     <section id="home" className="relative min-h-fit flex flex-col items-center justify-center overflow-hidden px-2 pt-15 md:pt-16 pb-12 md:pb-20">
-          {/* Background Glow */}
+      {/* Background Glow */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-zinc-100/5 blur-[150px] rounded-full" />
       </div>
@@ -23,9 +22,9 @@ export default function Hero({ onOpenRegister }: HeroProps) {
           transition={{ duration: 0.8 }}
           className="mb-4"
         >
-          <img 
-            src={logo} 
-            alt="Aarambh Fitness" 
+          <img
+            src={logo}
+            alt="Aarambh Fitness"
             className="w-full max-w-[470px] sm:max-w-[450px] md:max-w-[600px] lg:max-w-[750px] h-auto mx-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
             referrerPolicy="no-referrer"
             loading="eager"
@@ -36,7 +35,7 @@ export default function Hero({ onOpenRegister }: HeroProps) {
 
         <QuickNav />
 
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
@@ -49,15 +48,15 @@ export default function Hero({ onOpenRegister }: HeroProps) {
         </motion.p>
 
         {/* CTA */}
-        <motion.div 
+        <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.8 }}
           className="flex flex-col sm:flex-row gap-4"
         >
-          <button 
-            onClick={onOpenRegister}
-            className="bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 hover:from-zinc-600 hover:to-zinc-800 text-white border border-white/10 px-10 py-4 rounded-full font-black text-lg uppercase tracking-wider transition-all flex items-center justify-center gap-3 group shadow-2xl shadow-white/5"
+          <button
+            onClick={() => navigate("/signup")}
+            className="bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 hover:from-zinc-600 hover:to-zinc-800 text-white border border-white/10 px-10 py-4 rounded-full font-black text-lg uppercase tracking-wider transition-all flex items-center justify-center gap-3 group shadow-2xl shadow-white/5 cursor-pointer"
           >
             Register Now!
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -65,7 +64,7 @@ export default function Hero({ onOpenRegister }: HeroProps) {
         </motion.div>
       </div>
 
-      <motion.div 
+      <motion.div
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
         className="absolute bottom-10 text-zinc-700"

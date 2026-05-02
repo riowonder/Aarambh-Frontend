@@ -117,7 +117,7 @@ export default function Signup() {
                     </button>
                 </form>
                 <p className="text-sm text-center text-gray-500">
-                    Already have an account? <NavLink to="/" className="underline hover:text-black">Sign In</NavLink>
+                    Already have an account? <NavLink to="/login" className="underline hover:text-black">Sign In</NavLink>
                 </p>
             </div>
         </div>

@@ -214,7 +214,7 @@ export default function EditMemberModal({ isOpen, onClose, member, onSave }) {
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div className="flex flex-col gap-1">
                 <label className="font-semibold capitalize text-gray-700 text-sm sm:text-base text-start">
-                  Roll No:
+                  Serial No:
                 </label>
                 <input
                   type="text"
@@ -222,7 +222,7 @@ export default function EditMemberModal({ isOpen, onClose, member, onSave }) {
                   value={form.roll_no || ""}
                   onChange={handleInputChange} // Changed to handleInputChange
                   className="border rounded px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-black transition"
-                  placeholder="Enter roll no"
+                  placeholder="Enter serial no"
                   disabled={loading}
                 />
               </div>

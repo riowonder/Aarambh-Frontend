@@ -90,65 +90,45 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
               <h3 className="font-semibold text-sm sm:text-base mb-3 text-gray-700 border-b border-gray-200 pb-2">
                 <span className="bg-gray-100 px-3 py-1 rounded-lg">📋 Basic Information</span>
               </h3>
-              <div className="flex flex-col gap-3 sm:gap-4">
-                {Object.keys(details)
-                  .filter(
-                    (key) =>
-                      typeof details[key] !== 'object' &&
-                      key !== "_id" &&
-                      key !== "__v" &&
-                      key !== "image" &&
-                      key !== "createdAt" &&
-                      key !== "updatedAt" &&
-                      key !== "gym_id" &&
-                      key !== "subscriptions" &&
-                      key !== "latest_subscription" &&
-                      !['height', 'weight', 'gender', 'address'].includes(key)
-                  )
-                  .sort((a, b) => {
-                    const order = ["name", "roll_no", "phone_number", "dob"];
-                    const aIdx = order.indexOf(a);
-                    const bIdx = order.indexOf(b);
-                    if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
-                    if (aIdx !== -1) return -1;
-                    if (bIdx !== -1) return 1;
-                    return a.localeCompare(b);
-                  })
-                  .map((key) => {
-                    let value = details[key];
-                    if (key.toLowerCase().includes("date") && value)
-                      value = value.slice(0, 10);
+                <div className="flex flex-col gap-3 sm:gap-4">
+                  {(() => {
+                    const format = (val, key) => {
+                      if (val === null || val === undefined || val === "") return "N/A";
+                      const isDateKey = /date|dob|joined|created|updated|expiry|expiry_date/i.test(key);
+                      const isoDateRegex = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d+)?Z?)?$/;
+                      if (isDateKey || (typeof val === "string" && isoDateRegex.test(val))) {
+                        const d = new Date(val);
+                        if (!isNaN(d)) return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+                      }
+                      return String(val);
+                    };
+
                     return (
-                      <div key={key} className="flex items-baseline gap-2 text-sm sm:text-base">
-                      <span className="font-semibold capitalize text-gray-700 min-w-fit">
-                        {key.replace(/_/g, " ")}:
-                      </span>
-                      <span className="text-gray-900 break-words">
-                        {(() => {
-                        if (value === null || value === undefined || value === "") return "N/A";
-
-                        // heuristics: key contains 'date' or value looks like an ISO date
-                        const isDateKey = /date|dob|joined|created|updated|expiry|expiry_date/i.test(key);
-                        const isoDateRegex = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d+)?Z?)?$/;
-
-                        if (isDateKey || (typeof value === "string" && isoDateRegex.test(value))) {
-                          const d = new Date(value);
-                          if (!isNaN(d)) {
-                          return d.toLocaleDateString(undefined, {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          });
-                          }
-                        }
-
-                        return String(value);
-                        })()}
-                      </span>
-                      </div>
+                      <>
+                        <div className="flex items-baseline gap-2 text-sm sm:text-base">
+                          <span className="font-semibold capitalize text-gray-700 min-w-fit">Serial no:</span>
+                          <span className="text-gray-900 break-words">{format(details.serial_no, 'serial_no')}</span>
+                        </div>
+                        <div className="flex items-baseline gap-2 text-sm sm:text-base">
+                          <span className="font-semibold capitalize text-gray-700 min-w-fit">Name:</span>
+                          <span className="text-gray-900 break-words">{format(details.name, 'name')}</span>
+                        </div>
+                        <div className="flex items-baseline gap-2 text-sm sm:text-base">
+                          <span className="font-semibold capitalize text-gray-700 min-w-fit">Email:</span>
+                          <span className="text-gray-900 break-words">{format(details.email, 'email')}</span>
+                        </div>
+                        <div className="flex items-baseline gap-2 text-sm sm:text-base">
+                          <span className="font-semibold capitalize text-gray-700 min-w-fit">Phone number:</span>
+                          <span className="text-gray-900 break-words">{format(details.phone_number, 'phone_number')}</span>
+                        </div>
+                        <div className="flex items-baseline gap-2 text-sm sm:text-base">
+                          <span className="font-semibold capitalize text-gray-700 min-w-fit">DOB:</span>
+                          <span className="text-gray-900 break-words">{format(details.dob, 'dob')}</span>
+                        </div>
+                      </>
                     );
-                  })}
-              </div>
+                  })()}
+                </div>
             </div>
 
             {/* Personal Details */}
@@ -161,7 +141,7 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
                   <span className="font-semibold text-gray-700 text-sm sm:text-base min-w-fit">Gender:</span>
                   <span className="text-gray-900 text-sm sm:text-base">{details.gender || "N/A"}</span>
                 </div>
-                <div className="flex items-baseline gap-2">
+                {/* <div className="flex items-baseline gap-2">
                   <span className="font-semibold text-gray-700 text-sm sm:text-base min-w-fit">Height:</span>
                   <span className="text-gray-900 text-sm sm:text-base">
                     {details.height ? `${details.height} cm` : "N/A"}
@@ -172,7 +152,7 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
                   <span className="text-gray-900 text-sm sm:text-base">
                     {details.weight ? `${details.weight} kg` : "N/A"}
                   </span>
-                </div>
+                </div> */}
               </div>
               <div className="mt-4">
                 <div className="flex items-baseline gap-2">

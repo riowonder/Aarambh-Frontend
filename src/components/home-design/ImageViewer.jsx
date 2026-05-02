@@ -1,18 +1,10 @@
 import { motion, AnimatePresence } from "motion/react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-interface ImageViewerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  images: string[];
-  currentIndex: number;
-  onNavigate: (index: number) => void;
-}
-
-export default function ImageViewer({ isOpen, onClose, images, currentIndex, onNavigate }: ImageViewerProps) {
+export default function ImageViewer({ isOpen, onClose, images, currentIndex, onNavigate }) {
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e) => {
       if (e.key === "ArrowLeft") handlePrev();
       if (e.key === "ArrowRight") handleNext();
       if (e.key === "Escape") onClose();

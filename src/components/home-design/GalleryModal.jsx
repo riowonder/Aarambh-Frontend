@@ -1,19 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
 
-interface GalleryImage {
-  src: string;
-  ratio: string;
-}
-
-interface GalleryModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  images: GalleryImage[];
-  onOpenViewer: (index: number) => void;
-}
-
-export default function GalleryModal({ isOpen, onClose, images, onOpenViewer }: GalleryModalProps) {
+export default function GalleryModal({ isOpen, onClose, images, onOpenViewer }) {
   return (
     <AnimatePresence>
       {isOpen && (

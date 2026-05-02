@@ -15,6 +15,7 @@ export default function AddMemberModal({ isOpen, onClose, onSuccess }) {
     roll_no: '',
     name: '',
     phone_number: '',
+    email: '',
     subscription_plan: 'Custom',
     extra_days: '',
     amount: '',
@@ -84,6 +85,7 @@ export default function AddMemberModal({ isOpen, onClose, onSuccess }) {
       const memberFormData = new FormData();
       memberFormData.append('roll_no', form.roll_no);
       memberFormData.append('name', form.name);
+      memberFormData.append('email', form.email);
       memberFormData.append('phone_number', form.phone_number);
       memberFormData.append('height', form.height);
       memberFormData.append('weight', form.weight);
@@ -140,6 +142,7 @@ export default function AddMemberModal({ isOpen, onClose, onSuccess }) {
         setForm({
           roll_no: '',
           name: '',
+          email: '',
           phone_number: '',
           subscription_plan: 'Custom',
           extra_days: '',
@@ -202,6 +205,18 @@ export default function AddMemberModal({ isOpen, onClose, onSuccess }) {
               />
             </div>
             <div className="mb-6">
+              <label className="block mb-2 font-bold text-gray-800 text-left">Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
+                placeholder="Enter Member Email"
+                required
+              />
+            </div>
+            <div className="mb-6">
               <label className="block mb-2 font-bold text-gray-800 text-left">Phone Number:</label>
               <input
                 type="text"
@@ -259,7 +274,7 @@ export default function AddMemberModal({ isOpen, onClose, onSuccess }) {
                     <option value="Other">Other</option>
                   </select>
                 </div>
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <label className="block mb-2 font-bold text-gray-800 text-left">Height (cm):</label>
                   <input
                     type="number"
@@ -285,7 +300,7 @@ export default function AddMemberModal({ isOpen, onClose, onSuccess }) {
                     max="500"
                     step="0.1"
                   />
-                </div>
+                </div> */}
               </div>
               <div className="mb-6">
                 <label className="block mb-2 font-bold text-gray-800 text-left">Address:</label>
@@ -351,11 +366,10 @@ export default function AddMemberModal({ isOpen, onClose, onSuccess }) {
                   className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
                   placeholder="Enter Amount"
                   min="0"
-                  required
                 />
               </div>
               <div className="mb-6">
-                <label className="block mb-2 font-bold text-gray-800 text-left">Start Date (required)</label>
+                <label className="block mb-2 font-bold text-gray-800 text-left">Start Date</label>
                 <input
                   type="date"
                   name="start_date"
@@ -363,7 +377,6 @@ export default function AddMemberModal({ isOpen, onClose, onSuccess }) {
                   onChange={handleChange}
                   className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
                   placeholder="dd-mm-yyyy"
-                  required
                 />
               </div>
             </div>

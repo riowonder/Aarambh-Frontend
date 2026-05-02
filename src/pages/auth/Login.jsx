@@ -3,10 +3,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useUser } from "../../context/UserContext";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { login } = useUser();
 
@@ -31,11 +33,11 @@ export default function Login() {
         },
         { withCredentials: true }
       );
-      
+
       // Store user data in context and localStorage
       login(response.data.user);
       toast.success("Logged in successfully!");
-      
+
       // Navigate based on user role
       if (response.data.user.role === 'manager') {
         navigate("/manager/dashboard");
@@ -59,14 +61,14 @@ export default function Login() {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-gray-700 text-start">Email or Username</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" 
-              placeholder="you@example.com or username" 
-              required 
+              className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="you@example.com or username"
+              required
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -74,19 +76,30 @@ export default function Login() {
               <label className="text-sm font-medium text-gray-700 text-start">Password</label>
               <NavLink to="/forgot-password" className="text-sm text-gray-600 hover:text-black">Forgot password?</NavLink>
             </div>
-            <input 
-              type="password" 
-              name="password"
-              autoComplete="off"
-              value={formData.password}
-              onChange={handleInputChange}
-              className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" 
-              placeholder="••••••••" 
-              required 
-            />
+            <div className="relative w-full">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                autoComplete="off"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="••••••••"
+                required
+                className="w-full input input-bordered px-3 py-2 pr-10 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+
+              <button
+                type="button"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                onClick={() => setShowPassword((s) => !s)}
+                className="absolute inset-y-0 right-2 flex items-center justify-center text-gray-500 hover:text-gray-900 focus:outline-none"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="w-full bg-black text-white py-2 rounded-md font-semibold hover:bg-gray-900 transition flex items-center justify-center cursor-pointer"
             disabled={loading}
           >

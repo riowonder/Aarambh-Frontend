@@ -12,7 +12,7 @@ const navItems = [
 export default function QuickNav() {
   const [activeTab, setActiveTab] = useState(navItems[1].id);
 
-  const scrollToSection = (id: string) => {
+  const scrollToSection = (id) => {
     setActiveTab(id);
     const element = document.getElementById(id);
     if (element) {

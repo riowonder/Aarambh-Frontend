@@ -30,6 +30,7 @@ import UserDashboard from './pages/main/UserDashboard';
 import UserSubscriptions from './pages/main/UserSubscriptions';
 import ApprovalRequests from './pages/main/ApprovalRequests';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Home from "./pages/main/Home";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,7 +49,8 @@ export const App = () => {
         <BrowserRouter>
         <Toaster />
           <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/user-login" element={<UserLogin />} />
             <Route path="/user-register" element={<UserRegister />} />

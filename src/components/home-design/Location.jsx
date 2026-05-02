@@ -2,11 +2,11 @@ import { motion, AnimatePresence } from "motion/react";
 import { MapPin, Phone, Clock, ArrowRight, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 
-import chiragImg from "../assets/chirag.webp";
-import milanImg from "../assets/milan.webp";
-import prisanshuImg from "../assets/prisanshu.webp";
-import amirImg from "../assets/amir.webp";
-import princyImg from "../assets/princy.webp";
+import chiragImg from "../../assets/trainers/chirag.webp";
+import milanImg from "../../assets/trainers/milan.webp";
+import prisanshuImg from "../../assets/trainers/prisanshu.webp";
+import amirImg from "../../assets/trainers/amir.webp";
+import princyImg from "../../assets/trainers/princy.webp";
 
 const trainers = [
   {
@@ -66,7 +66,7 @@ export default function Location() {
     window.open("https://www.google.com/maps/dir/?api=1&destination=AARAMBH+FITNESS+UNISEX+GYM+Mango+Jamshedpur", "_blank");
   };
 
-  const getTrainerImage = (image: string, name: string) => {
+  const getTrainerImage = (image, name) => {
     if (!image || image.trim() === "") {
       return `https://picsum.photos/seed/${name}/600/800`;
     }
@@ -126,7 +126,7 @@ export default function Location() {
                 </div>
                 <div>
                   <h4 className="text-lg font-black uppercase italic mb-1">Contact</h4>
-                  <p className="text-zinc-500 text-sm">+91 7488805196</p>
+                  <p className="text-zinc-500 text-sm md:text-base">+91 7488805196</p>
                 </div>
               </div>
             </div>

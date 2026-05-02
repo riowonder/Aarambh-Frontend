@@ -1,0 +1,18 @@
+/* Scoped landing page styles */
+.landingRoot {
+  /* example safe defaults; keep most layout in Tailwind utilities */
+  --hero-padding: 2rem;
+}
+
+.heroSection {
+  padding-top: var(--hero-padding);
+}
+
+.centeredLogo {
+  text-align: center;
+}
+
+/* Add other component-specific selectors as needed, keep them scoped */
+.ctaButton {
+  border-radius: 9999px;
+}

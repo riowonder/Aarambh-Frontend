@@ -1,16 +1,13 @@
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-interface NavbarProps {
-  onOpenLogin: () => void;
-  onOpenRegister: () => void;
-}
-
-export default function Navbar({ onOpenLogin, onOpenRegister }: NavbarProps) {
+export default function Navbar({ onOpenLogin, onOpenRegister }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,7 +77,7 @@ export default function Navbar({ onOpenLogin, onOpenRegister }: NavbarProps) {
                   <button 
                     onClick={() => {
                       setIsDropdownOpen(false);
-                      onOpenRegister();
+                      navigate("/signup");
                     }}
                     className="w-full text-left px-6 py-3 text-sm font-black uppercase italic tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 transition-all"
                   >
@@ -91,7 +88,7 @@ export default function Navbar({ onOpenLogin, onOpenRegister }: NavbarProps) {
                   <button 
                     onClick={() => {
                       setIsDropdownOpen(false);
-                      onOpenLogin();
+                      navigate("/login");
                     }}
                     className="w-full text-left px-6 py-3 text-sm font-black uppercase italic tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 transition-all"
                   >
@@ -106,4 +103,3 @@ export default function Navbar({ onOpenLogin, onOpenRegister }: NavbarProps) {
     </nav>
   );
 }
-

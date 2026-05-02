@@ -153,7 +153,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen p-5">
       {/* ===============================================
           MODALS - Hidden UI components for interactions
           =============================================== */}

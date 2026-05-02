@@ -1,11 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { X, User, Mail, Phone, MapPin, Check, ArrowRight, ArrowLeft } from "lucide-react";
-import { useState, ChangeEvent } from "react";
-
-interface RegisterModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { useState } from "react";
 
 const plans = [
   { name: "1 Month", price: "₹1,499" },
@@ -14,7 +9,7 @@ const plans = [
   { name: "1 Year", price: "₹8,499" },
 ];
 
-export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
+export default function RegisterModal({ isOpen, onClose }) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     username: "",
@@ -28,12 +23,12 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const selectPlan = (planName: string) => {
+  const selectPlan = (planName) => {
     setFormData((prev) => ({ ...prev, plan: planName }));
     nextStep();
   };

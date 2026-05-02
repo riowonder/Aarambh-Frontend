@@ -1,5 +1,4 @@
 import { motion } from "motion/react";
-import { Check } from "lucide-react";
 
 const plans = [
   {
@@ -49,11 +48,7 @@ const plans = [
   }
 ];
 
-interface PricingProps {
-  onOpenRegister: () => void;
-}
-
-export default function Pricing({ onOpenRegister }: PricingProps) {
+export default function Pricing({ onOpenRegister }) {
   return (
     <section id="pricing" className="py-8 md:py-10 lg:py-12 bg-zinc-950 px-4 relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-zinc-100/5 blur-[150px] rounded-full z-0" />

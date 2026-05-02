@@ -5,17 +5,17 @@ import ImageViewer from "./ImageViewer";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Import local gallery images
-import img1 from "../assets/Gallery-imgs/Aarambh Gallery (1).webp";
-import img2 from "../assets/Gallery-imgs/Aarambh Gallery (2).webp";
-import img3 from "../assets/Gallery-imgs/Aarambh Gallery (3).webp";
-import img4 from "../assets/Gallery-imgs/Aarambh Gallery (4).webp";
-import img5 from "../assets/Gallery-imgs/Aarambh Gallery (5).webp";
-import img6 from "../assets/Gallery-imgs/Aarambh Gallery (6).webp";
-import img7 from "../assets/Gallery-imgs/Aarambh Gallery (7).webp";
-import img8 from "../assets/Gallery-imgs/Aarambh Gallery (8).webp";
-import img9 from "../assets/Gallery-imgs/Aarambh Gallery (9).webp";
-import img10 from "../assets/Gallery-imgs/Aarambh Gallery (10).webp";
-import img11 from "../assets/Gallery-imgs/Aarambh Gallery (11).webp";
+import img1 from "../../assets/Gallery-imgs/Aarambh Gallery (1).webp";
+import img2 from "../../assets/Gallery-imgs/Aarambh Gallery (2).webp";
+import img3 from "../../assets/Gallery-imgs/Aarambh Gallery (3).webp";
+import img4 from "../../assets/Gallery-imgs/Aarambh Gallery (4).webp";
+import img5 from "../../assets/Gallery-imgs/Aarambh Gallery (5).webp";
+import img6 from "../../assets/Gallery-imgs/Aarambh Gallery (6).webp";
+import img7 from "../../assets/Gallery-imgs/Aarambh Gallery (7).webp";
+import img8 from "../../assets/Gallery-imgs/Aarambh Gallery (8).webp";
+import img9 from "../../assets/Gallery-imgs/Aarambh Gallery (9).webp";
+import img10 from "../../assets/Gallery-imgs/Aarambh Gallery (10).webp";
+import img11 from "../../assets/Gallery-imgs/Aarambh Gallery (11).webp";
 
 export default function Gallery() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,7 +57,7 @@ export default function Gallery() {
     return () => clearInterval(timer);
   }, [currentSlide]);
 
-  const openViewer = (index: number) => {
+  const openViewer = (index) => {
     setViewerState({ isOpen: true, index });
   };
 

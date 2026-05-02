@@ -8,7 +8,6 @@ export default function UserRegister() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        password: "",
         phone: "",
         address: "",
         dob: "",
@@ -98,20 +97,6 @@ export default function UserRegister() {
                                 onChange={handleInputChange}
                                 className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" 
                                 placeholder="you@example.com" 
-                                required 
-                            />
-                        </div>
-                        {/* Password (Mandatory) */}
-                        <div className="flex flex-col gap-1">
-                            <label className="text-sm font-medium text-gray-700 text-start">Password *</label>
-                            <input 
-                                type="password" 
-                                name="password"
-                                autoComplete="off"
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" 
-                                placeholder="••••••••" 
                                 required 
                             />
                         </div>
@@ -246,7 +231,7 @@ export default function UserRegister() {
                         Already have an account? <NavLink to="/user-login" className="underline hover:text-black">Login in user</NavLink>
                     </p>
                     <p className="text-sm text-center text-gray-500">
-                        <NavLink to="/" className="underline text-cyan-700 hover:text-cyan-900 font-medium">Login as admin</NavLink>
+                        <NavLink to="/login" className="underline text-cyan-700 hover:text-cyan-900 font-medium">Login as admin</NavLink>
                     </p>
                 </div>
             </div>

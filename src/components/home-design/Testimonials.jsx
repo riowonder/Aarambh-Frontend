@@ -8,14 +8,7 @@ import { useState } from "react";
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-interface Testimonial {
-  name: string;
-  image: string;
-  text: string;
-  rating: number;
-}
-
-const testimonials: Testimonial[] = [
+const testimonials = [
   {
     name: "Gauri Pandey",
     image: "https://lh3.googleusercontent.com/a-/ALV-UjUSHBN9TRmN_XAc0zswdZtWRQZmZE2UopvFG56JjHflxd4LvJbg=w120-h120-p-rp-mo-br100",
@@ -48,7 +41,7 @@ const testimonials: Testimonial[] = [
   }
 ];
 
-function ReviewCard({ review }: { review: Testimonial }) {
+function ReviewCard({ review }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (

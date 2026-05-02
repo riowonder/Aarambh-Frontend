@@ -1,19 +1,13 @@
 import { motion, AnimatePresence } from "motion/react";
 import { X, LogIn, User, Calendar, Phone, ArrowRight } from "lucide-react";
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 
-interface LoginModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onOpenRegister: () => void;
-}
-
-export default function LoginModal({ isOpen, onClose, onOpenRegister }: LoginModalProps) {
+export default function LoginModal({ isOpen, onClose, onOpenRegister }) {
   const [username, setUsername] = useState("");
   const [dob, setDob] = useState("");
   const [phone, setPhone] = useState("");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // Placeholder for login logic with new fields
     console.log("Login attempted with:", { username, dob, phone });
@@ -137,4 +131,3 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }: LoginMod
     </AnimatePresence>
   );
 }
-
