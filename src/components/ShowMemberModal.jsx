@@ -32,9 +32,58 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
 
   if (loading)
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-lg text-center">
-          <h2 className="text-2xl font-bold">Loading...</h2>
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4">
+        <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden animate-pulse">
+          {/* Header Skeleton */}
+          <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
+            <div className="h-8 bg-gray-200 rounded w-48"></div>
+            <div className="h-8 w-8 bg-gray-200 rounded"></div>
+          </div>
+
+          {/* Content Skeleton */}
+          <div className="p-6 overflow-y-auto flex-1">
+            {/* Profile Image Skeleton */}
+            <div className="flex justify-center mb-6">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gray-200 border-4 border-white shadow-md"></div>
+            </div>
+
+            {/* Basic Info Skeleton */}
+            <div className="mb-6 border-b pb-4">
+              <div className="h-8 w-40 bg-gray-200 rounded-lg mb-5"></div>
+              <div className="flex flex-col gap-3 sm:gap-4">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="flex items-baseline gap-4">
+                    <div className="h-5 bg-gray-200 rounded w-24"></div>
+                    <div className="h-5 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Personal Details Skeleton */}
+            <div className="mb-4 pb-4">
+               <div className="h-8 w-40 bg-gray-200 rounded-lg mb-5"></div>
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                 {[...Array(3)].map((_, i) => (
+                   <div key={i} className="flex items-baseline gap-4">
+                     <div className="h-5 bg-gray-200 rounded w-16"></div>
+                     <div className="h-5 bg-gray-200 rounded w-16"></div>
+                   </div>
+                 ))}
+               </div>
+               <div className="mt-4 flex items-baseline gap-4">
+                 <div className="h-5 bg-gray-200 rounded w-20"></div>
+                 <div className="h-5 bg-gray-200 rounded w-2/3"></div>
+               </div>
+            </div>
+          </div>
+
+          {/* Action Buttons Skeleton */}
+          <div className="p-6 border-t border-[#ddd] flex flex-wrap justify-end gap-4 shrink-0 bg-white">
+            <div className="h-10 bg-gray-200 rounded-[5px] w-32"></div>
+            <div className="h-10 bg-gray-200 rounded-[5px] w-24"></div>
+            <div className="h-10 bg-gray-200 rounded-[5px] w-24"></div>
+          </div>
         </div>
       </div>
     );
