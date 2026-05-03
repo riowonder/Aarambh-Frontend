@@ -60,7 +60,7 @@ export default function ApprovalRequests() {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-      <div className="flex-1 p-4 sm:p-8 overflow-x-hidden">
+      <div className="flex-1 px-6 py-4 sm:p-8 overflow-x-hidden">
         <div className="max-w-5xl mx-auto">
 
           {/* Header section */}

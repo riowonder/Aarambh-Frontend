@@ -126,7 +126,7 @@ export default function AllMembers() {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-      <div className="flex-1 p-2 sm:p-6 overflow-x-hidden">
+      <div className="flex-1 px-6 py-3 sm:p-6 overflow-x-hidden">
         <div className="max-w-full">
           {/* ========== MODALS ========== */}
           {/* Add Member Modal */}
