@@ -9,7 +9,7 @@ const EXCLUDED_FIELDS = [
   'subscriptions', 'latest_subscription', // Exclude subscription fields
   'subscription_plan', 'subscription_status', 'upcoming_subscription_plan', 'upcoming_subscription_status',
   'subscription', 'subscriptionId', 'subscription_id', 'id',
-  'image' // Exclude 'image' itself from direct payload, as it's handled by file upload
+  'image', 'is_approved', 'is_banned', 'height', 'weight' // Exclude 'image' itself from direct payload, as it's handled by file upload
 ];
 
 export default function EditMemberModal({ isOpen, onClose, member, onSave }) {
@@ -335,7 +335,7 @@ export default function EditMemberModal({ isOpen, onClose, member, onSave }) {
 
             {/* Height and Weight side by side */}
             <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
+              {/* <div>
                 <label className="font-semibold text-start block text-sm sm:text-base">Height (cm):</label>
                 <input
                   type="number"
@@ -363,7 +363,7 @@ export default function EditMemberModal({ isOpen, onClose, member, onSave }) {
                   step="0.1"
                   disabled={loading}
                 />
-              </div>
+              </div> */}
             </div>
 
             {/* Address - full width */}

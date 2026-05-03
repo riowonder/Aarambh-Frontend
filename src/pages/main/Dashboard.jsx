@@ -102,6 +102,7 @@ export default function Dashboard() {
     queryKey: ['dashboard', 'members'],
     queryFn: async () => {
       const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/member/get-members`, { withCredentials: true });
+      console.log(response.data.members);
       return response.data.members || [];
     }
   });
@@ -400,41 +401,49 @@ export default function Dashboard() {
                     <table className="w-full">
                       <thead>
                         <tr>
+                          <th className="px-4 py-3 text-left font-bold text-gray-800 font-poppins">IMAGE</th>
                           <th className="px-4 py-3 text-left font-bold text-gray-800 font-poppins">NAME</th>
                           <th className="px-4 py-3 text-left font-bold text-gray-800 font-poppins">SUBSCRIPTION PLAN</th>
                           <th className="px-4 py-3 text-left font-bold text-gray-800 font-poppins">Days Left</th>
                           <th className="px-4 py-3 text-left font-bold text-gray-800 font-poppins">Phone Number</th>
-                          <th className="px-4 py-3 text-left"></th>
                         </tr>
                       </thead>
                       {/* Separator line under table headers */}
                       <tbody>
                         <tr>
-                          <td colSpan={4}>
+                          <td colSpan={5}>
                             <div className="border-b border-gray-300 w-full"></div>
                           </td>
                         </tr>
                         {/* Individual member rows - Shows first 6 members */}
                         {members.slice(0, 6).map((member, idx) => {
                           return (
-                            <tr key={idx} className="border-b border-gray-200">
+                            <tr
+                              key={idx}
+                              className="border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+                              onClick={() => {
+                                setMember(member);
+                                setShowMemberModal(true);
+                              }}
+                            >
+                              <td className="px-4 py-3 text-left text-gray-900">
+                                {member.image ? (
+                                  <img src={member.image} alt={member.name} className="w-10 h-10 rounded-full object-cover" />
+                                ) : (
+                                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 11a4 4 0 100-8 4 4 0 000 8z" />
+                                    </svg>
+                                  </div>
+                                )}
+                              </td>
                               <td className="px-4 py-3 text-left text-gray-900">{member.name}</td>
                               <td className="px-4 py-3 text-left text-gray-900">{member.subscriptions[0]?.plan || 'N/A'}</td>
                               <td className="px-4 py-3 text-left text-gray-900">
                                 {member.days_left}
                               </td>
                               <td className="px-4 py-3 text-left text-gray-900">{member.phone_number || 'N/A'}</td>
-                              <td className="px-4 py-3 text-left">
-                                <button
-                                  className="bg-cyan-100 text-black px-5 py-2 rounded-md font-semibold hover:bg-cyan-200 transition cursor-pointer"
-                                  onClick={() => {
-                                    setMember(member);
-                                    setShowMemberModal(true);
-                                  }}
-                                >
-                                  View
-                                </button>
-                              </td>
                             </tr>
                           );
                         })}
@@ -445,19 +454,27 @@ export default function Dashboard() {
                   {/* MOBILE CARD VIEW - Individual cards for each member on small screens */}
                   <div className="sm:hidden space-y-4">
                     {members.slice(0, 6).map((member, idx) => (
-                      <div key={idx} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                        {/* Member card header with name and view button */}
-                        <div className="flex justify-between items-start mb-3">
+                      <div
+                        key={idx}
+                        className="bg-gray-50 rounded-lg p-4 border border-gray-200 cursor-pointer hover:bg-gray-50"
+                        onClick={() => {
+                          setMember(member);
+                          setShowMemberModal(true);
+                        }}
+                      >
+                        {/* Member card header with avatar and name */}
+                        <div className="flex items-center gap-3 mb-3">
+                          {member.image ? (
+                            <img src={member.image} alt={member.name} className="w-12 h-12 rounded-full object-cover" />
+                          ) : (
+                            <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 11a4 4 0 100-8 4 4 0 000 8z" />
+                              </svg>
+                            </div>
+                          )}
                           <h3 className="font-semibold text-gray-900 text-lg">{member.name}</h3>
-                          <button
-                            className="bg-cyan-100 text-black px-3 py-1 rounded text-sm font-semibold hover:bg-cyan-200 transition cursor-pointer"
-                            onClick={() => {
-                              setMember(member);
-                              setShowMemberModal(true);
-                            }}
-                          >
-                            View
-                          </button>
                         </div>
                         {/* Member card details - Shows subscription, days left, phone, age, gender */}
                         <div className="space-y-1 text-sm text-gray-600">
