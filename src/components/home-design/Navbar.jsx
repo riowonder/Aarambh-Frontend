@@ -77,7 +77,7 @@ export default function Navbar({ onOpenLogin, onOpenRegister }) {
                   <button 
                     onClick={() => {
                       setIsDropdownOpen(false);
-                      navigate("/signup");
+                      navigate("/user-register");
                     }}
                     className="w-full text-left px-6 py-3 text-sm font-black uppercase italic tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 transition-all"
                   >
@@ -88,7 +88,7 @@ export default function Navbar({ onOpenLogin, onOpenRegister }) {
                   <button 
                     onClick={() => {
                       setIsDropdownOpen(false);
-                      navigate("/login");
+                      navigate("/user-login");
                     }}
                     className="w-full text-left px-6 py-3 text-sm font-black uppercase italic tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 transition-all"
                   >

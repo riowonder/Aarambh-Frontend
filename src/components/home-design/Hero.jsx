@@ -55,7 +55,7 @@ export default function Hero({ onOpenRegister }) {
           className="flex flex-col sm:flex-row gap-4"
         >
           <button
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/user-register")}
             className="bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 hover:from-zinc-600 hover:to-zinc-800 text-white border border-white/10 px-10 py-4 rounded-full font-black text-lg uppercase tracking-wider transition-all flex items-center justify-center gap-3 group shadow-2xl shadow-white/5 cursor-pointer"
           >
             Register Now!

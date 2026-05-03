@@ -37,7 +37,7 @@ export default function OTP() {
 
             if (response.data.success) { 
                 toast.success("Email verified successfully!");
-                navigate("/login");
+                navigate("/dashlogin");
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to verify OTP");

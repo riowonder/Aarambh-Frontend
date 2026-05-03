@@ -50,8 +50,8 @@ export const App = () => {
         <Toaster />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/dashlogin" element={<Login />} />
+            <Route path="/dashsignup" element={<Signup />} />
             <Route path="/user-login" element={<UserLogin />} />
             <Route path="/user-register" element={<UserRegister />} />
             <Route path="/user-forgot-password" element={<UserForgotPassword />} />

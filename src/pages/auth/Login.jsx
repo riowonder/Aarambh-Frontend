@@ -111,7 +111,7 @@ export default function Login() {
           </button>
         </form>
         <p className="text-sm text-center text-gray-500">
-          Don't have an account? <NavLink to="/signup" className="underline hover:text-black">Sign Up</NavLink>
+          Don't have an account? <NavLink to="/dashsignup" className="underline hover:text-black">Sign Up</NavLink>
         </p>
         <p className="text-sm text-center mt-2">
           <NavLink to="/user-login" className="underline text-cyan-700 hover:text-cyan-900 font-medium">

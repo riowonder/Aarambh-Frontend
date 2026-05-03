@@ -88,11 +88,11 @@ export default function UserLogin() {
         <p className="text-sm text-center text-gray-500">
           Don't have an account? <NavLink to="/user-register" className="underline hover:text-black">Sign Up</NavLink>
         </p>
-        <p className="text-sm text-center mt-2">
-          <NavLink to="/login" className="underline text-cyan-700 hover:text-cyan-900 font-medium">
+        {/* <p className="text-sm text-center mt-2">
+          <NavLink to="/dashlogin" className="underline text-cyan-700 hover:text-cyan-900 font-medium">
             Login as admin
           </NavLink>
-        </p>
+        </p> */}
       </div>
     </div>
   );
