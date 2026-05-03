@@ -131,8 +131,6 @@ export default function Dashboard() {
     }
   });
 
-  const isInitialLoading = isMembersLoading || isExpiredLoading || isExpiringLoading || isBirthdayLoading;
-
   const handleAddMemberSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ['dashboard'] });
   };
@@ -140,18 +138,6 @@ export default function Dashboard() {
   const handleSaveMember = () => {
     queryClient.invalidateQueries({ queryKey: ['dashboard'] });
   };
-
-  // Show initial loading screen
-  if (isInitialLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <Spinner size="xl" />
-          <p className="mt-4 text-gray-600 font-medium">Loading your dashboard...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen p-5">
@@ -226,8 +212,13 @@ export default function Dashboard() {
             <div className="rounded-lg flex flex-col flex-1">
               <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">SUBSCRIPTION EXPIRED</h2>
               {isExpiredLoading ? (
-                <div className="flex items-center justify-center h-24">
-                  <Spinner size="md" />
+                <div className="animate-pulse flex flex-col gap-3 mt-2">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="flex justify-between items-center">
+                      <div className="h-4 bg-black/10 rounded w-1/2"></div>
+                      <div className="h-4 bg-black/10 rounded w-1/4"></div>
+                    </div>
+                  ))}
                 </div>
               ) : expiredSubscriptions.length === 0 ? (
                 <div className="flex flex-1 items-center justify-center text-center text-gray-500">
@@ -247,14 +238,13 @@ export default function Dashboard() {
                 </ul>
               )}
             </div>
-            {expiredSubscriptions.length > 4 && (
-              <div
-                className="text-right font-bold cursor-pointer hover:underline mt-auto"
-                style={{ marginTop: 'auto' }}
+            {expiredSubscriptions.length > 1 && (
+              <button
+                className="text-xs font-semibold text-gray-600 cursor-pointer hover:text-gray-800 hover:underline mt-auto ml-auto block"
                 onClick={() => setShowExpiredModal(true)}
               >
-                Show all
-              </div>
+                Show all →
+              </button>
             )}
           </div>
 
@@ -263,8 +253,13 @@ export default function Dashboard() {
             <div className="rounded-lg flex flex-col flex-1">
               <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">EXPIRING SOON</h2>
               {isExpiringLoading ? (
-                <div className="flex items-center justify-center h-24">
-                  <Spinner size="md" />
+                <div className="animate-pulse flex flex-col gap-3 mt-2">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="flex justify-between items-center">
+                      <div className="h-4 bg-black/10 rounded w-1/2"></div>
+                      <div className="h-4 bg-black/10 rounded w-1/4"></div>
+                    </div>
+                  ))}
                 </div>
               ) : expiringSoon.length === 0 ? (
                 <div className="flex flex-1 items-center justify-center text-center text-gray-500">
@@ -276,10 +271,10 @@ export default function Dashboard() {
                     <li key={idx} className="flex justify-between text-sm sm:text-base font-medium text-gray-800 mb-1">
                       <span className="truncate mr-2">{item.name}</span>
                       <span className={`text-xs sm:text-sm ${item.days_left === 0
-                          ? "text-red-600 font-bold"
-                          : item.days_left <= 4
-                            ? "text-red-500 font-bold"
-                            : "text-yellow-700 font-bold"
+                        ? "text-red-600 font-bold"
+                        : item.days_left <= 4
+                          ? "text-red-500 font-bold"
+                          : "text-yellow-700 font-bold"
                         }`}>
                         {item.days_left} {item.days_left === 1 ? "Day" : "Days"} left
                       </span>
@@ -288,14 +283,13 @@ export default function Dashboard() {
                 </ul>
               )}
             </div>
-            {expiringSoon.length > 4 && (
-              <div
-                className="text-right font-bold cursor-pointer hover:underline mt-auto"
-                style={{ marginTop: 'auto' }}
+            {expiringSoon.length > 1 && (
+              <button
+                className="text-xs font-semibold text-gray-600 cursor-pointer hover:text-gray-800 hover:underline mt-auto ml-auto block"
                 onClick={() => setShowExpiringSoonModal(true)}
               >
-                Show all
-              </div>
+                Show all →
+              </button>
             )}
           </div>
 
@@ -304,8 +298,13 @@ export default function Dashboard() {
             <div className="rounded-lg flex flex-col flex-1">
               <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">MEMBERS BIRTHDAY 🎂</h2>
               {isBirthdayLoading ? (
-                <div className="flex items-center justify-center h-24">
-                  <Spinner size="md" />
+                <div className="animate-pulse flex flex-col gap-3 mt-2">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="flex justify-between items-center">
+                      <div className="h-4 bg-black/10 rounded w-1/2"></div>
+                      <div className="h-4 bg-black/10 rounded w-1/4"></div>
+                    </div>
+                  ))}
                 </div>
               ) : birthdayList.length === 0 ? (
                 <div className="flex flex-1 items-center justify-center text-center text-gray-500">
@@ -320,13 +319,13 @@ export default function Dashboard() {
                     const isTomorrow = status === "Tomorrow";
 
                     return (
-                      <li key={idx} className="flex justify-between text-sm sm:text-base font-medium text-gray-800 mb-1">
+                      <li key={idx} className="flex justify-between text-sm  sm:text-base font-medium text-gray-800">
                         <span className="truncate mr-2">{item.name}</span>
                         <span className={`text-xs sm:text-sm font-semibold px-2 py-1 rounded ${isToday
-                            ? "bg-emerald-500 text-white"
-                            : isTomorrow
-                              ? "bg-sky-500 text-white"
-                              : "text-yellow-700 font-bold"
+                          ? "bg-emerald-500 text-white"
+                          : isTomorrow
+                            ? "bg-sky-500 text-white"
+                            : "text-yellow-700 font-bold"
                           }`}>
                           {status}
                         </span>
@@ -336,14 +335,13 @@ export default function Dashboard() {
                 </ul>
               )}
             </div>
-            {birthdayList.length > 4 && (
-              <div
-                className="text-right font-bold cursor-pointer hover:underline mt-auto"
-                style={{ marginTop: 'auto' }}
+            {birthdayList.length > 1 && (
+              <button
+                className="text-xs font-semibold text-gray-600 cursor-pointer hover:text-gray-800 hover:underline mt-auto ml-auto block"
                 onClick={() => navigate('/admin/birthdays')}
               >
-                Show all
-              </div>
+                Show all →
+              </button>
             )}
           </div>
         </div>
@@ -378,13 +376,27 @@ export default function Dashboard() {
 
           {/* TABLE CONTENT - Shows member data in table or card format based on screen size */}
           <div className="w-full overflow-x-auto">
-            {/* LOADING STATE - Spinner while fetching member data */}
+            {/* LOADING STATE - Skeleton table while fetching member data */}
             {isMembersLoading ? (
-              <div className="py-8">
-                <div className="flex items-center justify-center mb-4">
-                  <Spinner size="lg" />
+              <div className="py-2">
+                <div className="hidden sm:block">
+                  <TableSkeleton rows={6} />
                 </div>
-                <p className="text-center text-gray-500">Loading members...</p>
+                <div className="sm:hidden space-y-4">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="bg-gray-50 rounded-lg p-4 border border-gray-200 animate-pulse">
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+                        <div className="h-6 bg-gray-200 rounded w-16"></div>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="flex justify-between"><div className="h-4 bg-gray-200 rounded w-1/4"></div><div className="h-4 bg-gray-200 rounded w-1/4"></div></div>
+                        <div className="flex justify-between"><div className="h-4 bg-gray-200 rounded w-1/4"></div><div className="h-4 bg-gray-200 rounded w-1/6"></div></div>
+                        <div className="flex justify-between"><div className="h-4 bg-gray-200 rounded w-1/4"></div><div className="h-4 bg-gray-200 rounded w-1/3"></div></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             ) :
 

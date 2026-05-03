@@ -5,7 +5,7 @@ export default function ManagerLayout() {
   return (
     <div className="flex min-h-screen overflow-x-hidden">
       <Sidebar />
-      <main className="flex-1 p-8 overflow-x-hidden">
+      <main className="admin-root flex-1 p-8 overflow-x-hidden">
         <Outlet />
       </main>
     </div>
