@@ -140,7 +140,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen p-5">
+    <div className="min-h-screen px-5 pt-0 pb-0">
       {/* ===============================================
           MODALS - Hidden UI components for interactions
           =============================================== */}
@@ -185,7 +185,7 @@ export default function Dashboard() {
       <div className="">
 
         {/* HEADER SECTION - Gym name and hamburger menu */}
-        <div className="flex items-center justify-between mb-8 sm:mb-12">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
           {/* Gym name title and badge */}
           <div className="flex flex-col sm:flex-row sm:items-end gap-1 sm:gap-2">
             <h1 className="text-3xl sm:text-5xl text-gray-700 font-extrabold tracking-tight font-montserrat">{user?.gym_name || "GYM"}</h1>
@@ -205,10 +205,10 @@ export default function Dashboard() {
             TOP STATS CARDS SECTION
             Shows: Expired subscriptions, Expiring soon, Birthdays
             =============================================== */}
-        <div className="flex flex-wrap gap-6 mb-8">
+        <div className="flex flex-wrap gap-3 mb-5">
 
           {/* CARD 1: EXPIRED SUBSCRIPTIONS - Members with expired memberships */}
-          <div className="bg-[#e8d6e2] flex-1 min-w-[300px] p-6 rounded-[10px] flex flex-col justify-between max-h-[400px]">
+          <div className="bg-[#e8d6e2] flex-1 min-w-[300px] p-5 rounded-[10px] flex flex-col justify-between max-h-[400px]">
             <div className="rounded-lg flex flex-col flex-1">
               <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">SUBSCRIPTION EXPIRED</h2>
               {isExpiredLoading ? (
