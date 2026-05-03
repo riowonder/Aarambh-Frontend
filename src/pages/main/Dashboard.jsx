@@ -14,19 +14,19 @@ import SearchMembersModal from '../../components/SearchMembersModal';
 import Spinner, { CardSkeleton, TableSkeleton } from "../../components/Spinner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-const expiredSubscriptions = [
-  { name: "UNKNOWN", date: "19 Feb 2023" },
-  { name: "Beru", date: "19 Dec 2023" },
-  { name: "Demon", date: "19 Feb 2023" },
-  { name: "Kratos", date: "19 Mar 2023" },
-];
+// const expiredSubscriptions = [
+//   { name: "UNKNOWN", date: "19 Feb 2023" },
+//   { name: "Beru", date: "19 Dec 2023" },
+//   { name: "Demon", date: "19 Feb 2023" },
+//   { name: "Kratos", date: "19 Mar 2023" },
+// ];
 
-const expiringSoon = [
-  { name: "Naruto Uzumaki", days: 9 },
-  { name: "Madara Uchiha", days: 4 },
-  { name: "Obito Uchiha", days: 6 },
-  { name: "Sung Jinwoo", days: 0 },
-];
+// const expiringSoon = [
+//   { name: "Naruto Uzumaki", days: 9 },
+//   { name: "Madara Uchiha", days: 4 },
+//   { name: "Obito Uchiha", days: 6 },
+//   { name: "Sung Jinwoo", days: 0 },
+// ];
 
 // const birthdayList = [
 //   { name: "John Doe", days_left: 5 },

@@ -3,7 +3,7 @@
 // Displays a paginated list of gym members with search and filter
 // ============================================================
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import ShowMemberModal from '../../components/ShowMemberModal';
 import AddMemberModal from '../../components/AddMemberModal';
@@ -95,7 +95,7 @@ export default function AllMembers() {
   };
 
   // Refresh members list after changes
-  const handleSaveMember = (updatedMember) => {
+  const handleSaveMember = () => {
     queryClient.invalidateQueries({ queryKey: ['members-list'] });
   };
 
@@ -213,37 +213,62 @@ export default function AllMembers() {
 
           {/* ========== MEMBERS TABLE SECTION ========== */}
           {!loading && !isSearching && (
+             members.length === 0 ? (
+    <div className="text-center py-8 text-gray-500">
+      <p className="text-lg font-medium">No members found</p>
+      <p className="text-sm">
+        {searchQuery.trim()
+          ? "Try searching with different keywords or check your spelling."
+          : "Add your first member to get started"}
+      </p>
+    </div>
+  ) : (
+            
             <>
               {/* Desktop Table View - Hidden on mobile */}
-              <div className="hidden md:block bg-white rounded-2xl  overflow-hidden">
+              <div className="hidden md:block bg-white rounded-xl p-4 sm:p-6 overflow-hidden">
                 <div className="w-full overflow-x-auto">
-                  <table className="w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                  <table className="w-full">
+                    <thead>
                       <tr>
-                        <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                        <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan</th>
-                        <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days Left</th>
-                        <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                        <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        <th className="px-4 py-3 text-left font-bold text-gray-800 font-poppins">IMAGE</th>
+                        <th className="px-4 py-3 text-left font-bold text-gray-800 font-poppins">NAME</th>
+                        <th className="px-4 py-3 text-left font-bold text-gray-800 font-poppins">SUBSCRIPTION PLAN</th>
+                        <th className="px-4 py-3 text-left font-bold text-gray-800 font-poppins">Days Left</th>
+                        <th className="px-4 py-3 text-left font-bold text-gray-800 font-poppins">Phone Number</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    {/* Separator line under table headers */}
+                    <tbody>
+                      <tr>
+                        <td colSpan={5}>
+                          <div className="border-b border-gray-300 w-full"></div>
+                        </td>
+                      </tr>
                       {members.map((member) => (
-                        <tr key={member._id} className="hover:bg-gray-50">
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-gray-900 font-medium text-sm sm:text-base break-words">{member.name}</td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-gray-700 text-sm sm:text-base break-words">{member.subscriptions[0]?.plan || 'N/A'}</td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-gray-700 text-sm sm:text-base break-words">
+                        <tr
+                          key={member._id}
+                          className="border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+                          onClick={() => handleSelectMember(member)}
+                        >
+                          <td className="px-4 py-3 text-left text-gray-900">
+                            {member.image ? (
+                              <img src={member.image} alt={member.name} className="w-10 h-10 rounded-full object-cover" />
+                            ) : (
+                              <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 11a4 4 0 100-8 4 4 0 000 8z" />
+                                </svg>
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-4 py-3 text-left text-gray-900">{member.name}</td>
+                          <td className="px-4 py-3 text-left text-gray-900">{member.subscriptions?.[0]?.plan || 'N/A'}</td>
+                          <td className="px-4 py-3 text-left text-gray-900">
                             {formatDaysLeft(member.days_left)}
                           </td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-gray-700 text-sm sm:text-base break-words">{member.phone_number || 'N/A'}</td>
-                          <td className="px-2 sm:px-6 py-2 sm:py-4 text-sm font-medium">
-                            <button
-                              onClick={() => handleSelectMember(member)}
-                              className="text-blue-600 hover:text-blue-900 cursor-pointer text-xs sm:text-sm"
-                            >
-                              View
-                            </button>
-                          </td>
+                          <td className="px-4 py-3 text-left text-gray-900">{member.phone_number || 'N/A'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -254,20 +279,30 @@ export default function AllMembers() {
               {/* Mobile Card View - Hidden on desktop and tablets */}
               <div className="md:hidden space-y-4">
                 {members.map((member) => (
-                  <div key={member._id} className="bg-white rounded-lg shadow-md p-4 border border-gray-200">
-                    <div className="flex justify-between items-start mb-3">
+                  <div
+                    key={member._id}
+                    className="bg-gray-50 rounded-lg p-4 border border-gray-200 cursor-pointer hover:bg-gray-100"
+                    onClick={() => handleSelectMember(member)}
+                  >
+                    {/* Member card header with avatar and name */}
+                    <div className="flex items-center gap-3 mb-3">
+                      {member.image ? (
+                        <img src={member.image} alt={member.name} className="w-12 h-12 rounded-full object-cover" />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 11a4 4 0 100-8 4 4 0 000 8z" />
+                          </svg>
+                        </div>
+                      )}
                       <h3 className="font-semibold text-gray-900 text-lg">{member.name}</h3>
-                      <button
-                        onClick={() => handleSelectMember(member)}
-                        className="text-blue-600 hover:text-blue-900 cursor-pointer text-sm font-medium"
-                      >
-                        View
-                      </button>
                     </div>
-                    <div className="space-y-2 text-sm text-gray-600">
+                    {/* Member card details - Shows subscription, days left, phone, age, gender */}
+                    <div className="space-y-1 text-sm text-gray-600">
                       <div className="flex justify-between">
                         <span>Plan:</span>
-                        <span className="font-medium">{member.subscriptions[0]?.plan || 'N/A'}</span>
+                        <span className="font-medium">{member.subscriptions?.[0]?.plan || 'N/A'}</span>
                       </div>
                       <div className="flex justify-between">
                         <span>Days Left:</span>
@@ -276,6 +311,14 @@ export default function AllMembers() {
                       <div className="flex justify-between">
                         <span>Phone:</span>
                         <span className="font-medium">{member.phone_number || 'N/A'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Age:</span>
+                        <span className="font-medium">{member.age || 'N/A'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Gender:</span>
+                        <span className="font-medium">{member.gender || 'N/A'}</span>
                       </div>
                     </div>
                   </div>
@@ -291,13 +334,13 @@ export default function AllMembers() {
                 </div>
               )}
 
-              {/* No Results Message - Shows when search yields no results */}
+              {/* No Results Message - Shows when search yields no results
               {searchQuery.trim() && totalMembers === 0 && (
                 <div className="text-center py-8">
                   <p className="text-lg text-gray-600 mb-2">No members found for "{searchQuery}"</p>
                   <p className="text-sm text-gray-500">Try searching with different keywords or check your spelling.</p>
                 </div>
-              )}
+              )} */}
 
               {/* ========== PAGINATION ========== */}
               {/* Only show pagination for non-search results */}
@@ -328,7 +371,7 @@ export default function AllMembers() {
                 </div>
               )}
             </>
-          )}
+          ))}
 
           {/* ========== MODALS ========== */}
           {/* Member Details Modal */}
