@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { Menu, Search } from "lucide-react";
+import { Menu, Search, Bell } from "lucide-react";
 import Sidebar from "../../components/Sidebar";
 import NewFieldModal from "./NewField";
 import AddMemberModal from "../../components/AddMemberModal";
@@ -84,6 +84,15 @@ export default function Dashboard() {
     }
   });
 
+  const { data: pendingApprovals = [] } = useQuery({
+    queryKey: ['dashboard', 'pendingApprovals'],
+    queryFn: async () => {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/pending-user-approvals`, { withCredentials: true });
+      return response.data.data || [];
+    },
+    refetchInterval: 60000, // refresh every 60s
+  });
+
 
   const handleAddMemberSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ['dashboard'] });
@@ -146,13 +155,30 @@ export default function Dashboard() {
             <span className="bg-black text-white leading-tight px-1 sm:px-3 py-1 rounded font-semibold text-xs sm:text-md lg:text-base sm:mb-1 font-poppins">MEMBERSHIP MANAGER</span>
           </div>
 
-          {/* Hamburger Menu Button - Opens sidebar on mobile */}
-          <button
-            onClick={toggleSidebar}
-            className="bg-white font-bold text-2xl text-black p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
+          {/* Notification bell + Hamburger */}
+          <div className="flex items-center gap-2">
+            {/* Approval requests bell */}
+            <button
+              onClick={() => navigate('/admin/approval-requests')}
+              className="relative bg-white p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              title="Pending approval requests"
+            >
+              <Bell className="w-6 h-6 text-gray-700" />
+              {pendingApprovals.length > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-black rounded-full flex items-center justify-center px-1 leading-none">
+                  {pendingApprovals.length > 99 ? "99+" : pendingApprovals.length}
+                </span>
+              )}
+            </button>
+
+            {/* Hamburger Menu Button */}
+            <button
+              onClick={toggleSidebar}
+              className="bg-white font-bold text-2xl text-black p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
         </div>
 
         {/* ===============================================
