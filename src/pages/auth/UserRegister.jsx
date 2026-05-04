@@ -14,7 +14,13 @@ export default function UserRegister() {
         aadhar: "",
         blood_group: "",
         age: "",
-        image: null
+    image: null,
+    // Subscription fields
+    subscription_plan: 'Custom',
+    extra_days: '',
+    amount: '',
+    start_date: '',
+    subscription_status: ''
     });
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -23,6 +29,11 @@ export default function UserRegister() {
     // Handle input changes
     function handleInputChange(e) {
         const { name, value, type, files } = e.target;
+        if (name === 'phone') {
+            const cleaned = value.replace(/\D/g, '').slice(0, 10);
+            setFormData((prev) => ({ ...prev, [name]: cleaned }));
+            return;
+        }
         setFormData((prev) => ({
             ...prev,
             [name]: type === "file" ? files[0] : value,
@@ -38,7 +49,9 @@ export default function UserRegister() {
             // Use FormData for file upload
             const data = new FormData();
             Object.keys(formData).forEach((key) => {
-                if (formData[key]) {
+                // Don't append subscription fields to registration FormData (they will be sent to subscription endpoint)
+                if (['subscription_plan','extra_days','amount','start_date','subscription_status'].includes(key)) return;
+                if (formData[key] || formData[key] === 0) {
                     data.append(key, formData[key]);
                 }
             });
@@ -51,11 +64,31 @@ export default function UserRegister() {
             });
             
             // Store user data in context
-            login(response.data.user || {
-                name: formData.name,
-                email: formData.email,
-            });
-            
+            const createdUser = response.data.user || { name: formData.name, email: formData.email };
+
+            // If subscription fields provided, add subscription for the newly created user
+            try {
+                if (formData.start_date && formData.subscription_plan) {
+                    const subPayload = {
+                        plan: formData.subscription_plan,
+                        amount: formData.amount ? Number(formData.amount) : 0,
+                        extra_days: formData.extra_days ? Number(formData.extra_days) : 0,
+                        start_date: formData.start_date,
+                    };
+                    if (formData.subscription_status) subPayload.status = formData.subscription_status;
+
+                    // Use createdUser.id (authController returns id)
+                    const userId = createdUser.id || createdUser._id;
+                    if (userId) {
+                        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/member/${userId}/subscription`, subPayload, { withCredentials: true });
+                    }
+                }
+            } catch (subErr) {
+                console.error('Subscription creation failed:', subErr);
+                // non-fatal: proceed with registration success
+            }
+
+            login(createdUser);
             toast.success("User account created successfully!");
             navigate("/user/dashboard");
         } catch (error) {
@@ -89,7 +122,7 @@ export default function UserRegister() {
                         </div>
                         {/* Email (Mandatory) */}
                         <div className="flex flex-col gap-1">
-                            <label className="text-sm font-medium text-gray-700 text-start">Email *</label>
+                            <label className="text-sm font-medium text-gray-700 text-start">Email</label>
                             <input 
                                 type="email" 
                                 name="email"
@@ -97,7 +130,6 @@ export default function UserRegister() {
                                 onChange={handleInputChange}
                                 className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" 
                                 placeholder="you@example.com" 
-                                required 
                             />
                         </div>
                         {/* Phone Number (Mandatory) */}
@@ -109,6 +141,8 @@ export default function UserRegister() {
                                 pattern="[0-9]{10}"
                                 value={formData.phone}
                                 onChange={handleInputChange}
+                                maxLength={10}
+                                inputMode="numeric"
                                 className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" 
                                 placeholder="10-digit phone number"
                                 title="Please enter a valid 10 digit number"
@@ -210,6 +244,42 @@ export default function UserRegister() {
                             {formData.image && (
                                 <p className="text-sm text-gray-500">Selected: {formData.image.name}</p>
                             )}
+                        </div>
+                        {/* Subscription Details (Optional) */}
+                        <div className="border-t col-span-1 md:col-span-2 border-[#ddd] pt-4 mt-2">
+                            <h3 className="block mb-4 font-bold text-gray-900 text-[1.2rem] text-left">Subscription Details (optional)</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-sm font-medium text-gray-700 text-start">Subscription Plan</label>
+                                    <select name="subscription_plan" value={formData.subscription_plan} onChange={handleInputChange} className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary bg-white">
+                                        <option value="Custom">Custom</option>
+                                        <option value="1 Month">1 Month</option>
+                                        <option value="3 Months">3 Months</option>
+                                        <option value="6 Months">6 Months</option>
+                                        <option value="1 Year">1 Year</option>
+                                    </select>
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-sm font-medium text-gray-700 text-start">Extra Days</label>
+                                    <input type="number" name="extra_days" value={formData.extra_days} onChange={handleInputChange} className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" min="0" />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-sm font-medium text-gray-700 text-start">Amount</label>
+                                    <input type="number" name="amount" value={formData.amount} onChange={handleInputChange} className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" min="0" />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-sm font-medium text-gray-700 text-start">Start Date</label>
+                                    <input type="date" name="start_date" value={formData.start_date} onChange={handleInputChange} className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" />
+                                </div>
+                                <div className="flex flex-col gap-1 md:col-span-2">
+                                    <label className="text-sm font-medium text-gray-700 text-start">Subscription Status (optional)</label>
+                                    <select name="subscription_status" value={formData.subscription_status} onChange={handleInputChange} className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary bg-white">
+                                        <option value="">Auto</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Upcoming">Upcoming</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         
                     </div>

@@ -5,13 +5,19 @@ import { toast } from "react-hot-toast";
 import { useUser } from "../../context/UserContext";
 
 export default function UserLogin() {
-  const [formData, setFormData] = useState({ email: "", dobDay: "", dobMonth: "", dobYear: "" });
+  const [formData, setFormData] = useState({ phone: "", dobDay: "", dobMonth: "", dobYear: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useUser();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'phone') {
+      // Allow only digits and limit to 10
+      const cleaned = value.replace(/\D/g, '').slice(0, 10);
+      setFormData((prev) => ({ ...prev, [name]: cleaned }));
+      return;
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -23,7 +29,7 @@ export default function UserLogin() {
     setLoading(true);
     try {
       // Build dob as DD/MM/YYYY
-      const { dobDay, dobMonth, dobYear, email } = formData;
+      const { dobDay, dobMonth, dobYear, phone } = formData;
       if (!dobDay || !dobMonth || !dobYear) {
         throw new Error('Please enter a valid date of birth');
       }
@@ -31,7 +37,9 @@ export default function UserLogin() {
       const dd = String(dobDay).padStart(2, '0');
       const mm = String(dobMonth).padStart(2, '0');
       const yyyy = String(dobYear);
-      const payload = { email, dob: `${dd}/${mm}/${yyyy}` };
+      const payload = { phone, dob: `${dd}/${mm}/${yyyy}` };
+
+      console.log("Submitting login with payload:", payload);
 
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/auth/user-login`,
@@ -53,18 +61,21 @@ export default function UserLogin() {
       <div className="w-full max-w-md bg-white border border-gray-200 rounded-xl shadow-lg p-8 flex flex-col gap-6">
         <div className="flex flex-col gap-2 text-center">
           <h2 className="text-3xl font-bold tracking-tight">User Login</h2>
-          <p className="text-sm text-muted-foreground">Enter your email and serial number to login</p>
+          <p className="text-sm text-muted-foreground">Enter your phone number and DOB to login</p>
         </div>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700 text-start">Email</label>
+            <label className="text-sm font-medium text-gray-700 text-start">Phone Number : </label>
             <input
-              type="email"
-              name="email"
-              value={formData.email}
+              type="tel"
+              name="phone"
+              value={formData.phone}
               onChange={handleInputChange}
+              pattern="[0-9]{10}"
+              maxLength={10}
+              inputMode="numeric"
               className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="xyz@example.com"
+              placeholder="987654210"
               required
             />
           </div>
