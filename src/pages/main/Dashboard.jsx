@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { Menu, Search } from "lucide-react";
@@ -14,19 +14,19 @@ import SearchMembersModal from '../../components/SearchMembersModal';
 import Spinner, { CardSkeleton, TableSkeleton } from "../../components/Spinner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-const expiredSubscriptions = [
-  { name: "UNKNOWN", date: "19 Feb 2023" },
-  { name: "Beru", date: "19 Dec 2023" },
-  { name: "Demon", date: "19 Feb 2023" },
-  { name: "Kratos", date: "19 Mar 2023" },
-];
+// const expiredSubscriptions = [
+//   { name: "UNKNOWN", date: "19 Feb 2023" },
+//   { name: "Beru", date: "19 Dec 2023" },
+//   { name: "Demon", date: "19 Feb 2023" },
+//   { name: "Kratos", date: "19 Mar 2023" },
+// ];
 
-const expiringSoon = [
-  { name: "Naruto Uzumaki", days: 9 },
-  { name: "Madara Uchiha", days: 4 },
-  { name: "Obito Uchiha", days: 6 },
-  { name: "Sung Jinwoo", days: 0 },
-];
+// const expiringSoon = [
+//   { name: "Naruto Uzumaki", days: 9 },
+//   { name: "Madara Uchiha", days: 4 },
+//   { name: "Obito Uchiha", days: 6 },
+//   { name: "Sung Jinwoo", days: 0 },
+// ];
 
 // const birthdayList = [
 //   { name: "John Doe", days_left: 5 },
@@ -53,47 +53,8 @@ export default function Dashboard() {
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [showAllMembersModal, setShowAllMembersModal] = useState(false);
 
-  // Normalize today's date to midnight for birthday calculations
-  const today = React.useMemo(() => {
-    const d = new Date();
-    d.setHours(0, 0, 0, 0);
-    return d;
-  }, []);
 
-  const getNextBirthdayDate = (dobStr) => {
-    if (!dobStr) return null;
-    const dob = new Date(dobStr);
-    const thisYear = new Date(
-      today.getFullYear(),
-      dob.getMonth(),
-      dob.getDate()
-    );
-    thisYear.setHours(0, 0, 0, 0);
 
-    if (thisYear >= today) return thisYear;
-
-    const nextYear = new Date(
-      today.getFullYear() + 1,
-      dob.getMonth(),
-      dob.getDate()
-    );
-    nextYear.setHours(0, 0, 0, 0);
-    return nextYear;
-  };
-
-  const getDaysUntilBirthday = (dobStr) => {
-    const target = getNextBirthdayDate(dobStr);
-    if (!target) return null;
-    const diffMs = target - today;
-    return Math.round(diffMs / (1000 * 60 * 60 * 24));
-  };
-
-  const getDayStatus = (dobStr) => {
-    const diffDays = getDaysUntilBirthday(dobStr);
-    if (diffDays === 0) return "Today";
-    if (diffDays === 1) return "Tomorrow";
-    return `${diffDays} days left`;
-  };
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
@@ -123,13 +84,6 @@ export default function Dashboard() {
     }
   });
 
-  const { data: birthdayList = [], isLoading: isBirthdayLoading } = useQuery({
-    queryKey: ['dashboard', 'birthdays'],
-    queryFn: async () => {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/member/get-birthdays`, { withCredentials: true });
-      return response.data.birthdayMembers || [];
-    }
-  });
 
   const handleAddMemberSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ['dashboard'] });
@@ -140,7 +94,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen p-5">
+    <div className="min-h-screen px-5 pt-0 pb-0">
       {/* ===============================================
           MODALS - Hidden UI components for interactions
           =============================================== */}
@@ -185,7 +139,7 @@ export default function Dashboard() {
       <div className="">
 
         {/* HEADER SECTION - Gym name and hamburger menu */}
-        <div className="flex items-center justify-between mb-8 sm:mb-12">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
           {/* Gym name title and badge */}
           <div className="flex flex-col sm:flex-row sm:items-end gap-1 sm:gap-2">
             <h1 className="text-3xl sm:text-5xl text-gray-700 font-extrabold tracking-tight font-montserrat">{user?.gym_name || "GYM"}</h1>
@@ -203,12 +157,12 @@ export default function Dashboard() {
 
         {/* ===============================================
             TOP STATS CARDS SECTION
-            Shows: Expired subscriptions, Expiring soon, Birthdays
+            Shows: Expired subscriptions, Expiring soon
             =============================================== */}
-        <div className="flex flex-wrap gap-6 mb-8">
+        <div className="flex flex-wrap gap-3 mb-5">
 
           {/* CARD 1: EXPIRED SUBSCRIPTIONS - Members with expired memberships */}
-          <div className="bg-[#e8d6e2] flex-1 min-w-[300px] p-6 rounded-[10px] flex flex-col justify-between max-h-[400px]">
+          <div className="bg-[#e8d6e2] flex-1 min-w-[300px] p-5 rounded-[10px] flex flex-col justify-between max-h-[400px]">
             <div className="rounded-lg flex flex-col flex-1">
               <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">SUBSCRIPTION EXPIRED</h2>
               {isExpiredLoading ? (
@@ -228,11 +182,18 @@ export default function Dashboard() {
                   </div>
                 </div>
               ) : (
-                <ul className="mb-2">
+                <ul className="mb-2 px-2 sm:px-3">
                   {expiredSubscriptions.slice(0, 4).map((item, idx) => (
                     <li key={idx} className="flex justify-between text-sm sm:text-base font-medium text-gray-800 mb-1">
-                      <span className="truncate mr-2">{item.name}</span>
+
+                      <span className="truncate mr-2">
+                        {item.name}
+                        <span className="text-xs text-gray-600 font-medium">
+                          {" "}({item.subscriptions?.[0]?.plan || "N/A"})
+                        </span>
+                      </span>
                       <span className="text-xs sm:text-sm">{item.subscriptions[0]?.end_date ? new Date(item.subscriptions[0].end_date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : 'N/A'}</span>
+
                     </li>
                   ))}
                 </ul>
@@ -266,10 +227,16 @@ export default function Dashboard() {
                   <p className="text-xs sm:text-sm">No expiring soon subscriptions in the next 10 days</p>
                 </div>
               ) : (
-                <ul className="mb-2">
+                <ul className="mb-2 px-2 sm:px-3">
                   {expiringSoon.slice(0, 4).map((item, idx) => (
                     <li key={idx} className="flex justify-between text-sm sm:text-base font-medium text-gray-800 mb-1">
-                      <span className="truncate mr-2">{item.name}</span>
+                      <span className="truncate mr-2">
+                        {item.name}
+                        <span className="text-xs text-gray-600 font-medium">
+                          {" "}({item.subscriptions?.[0]?.plan || "N/A"})
+                        </span>
+                      </span>
+
                       <span className={`text-xs sm:text-sm ${item.days_left === 0
                         ? "text-red-600 font-bold"
                         : item.days_left <= 4
@@ -293,57 +260,7 @@ export default function Dashboard() {
             )}
           </div>
 
-          {/* CARD 3: MEMBERS BIRTHDAY - Upcoming member birthdays */}
-          <div className="bg-[#c1ebf1] flex-1 min-w-[300px] p-6 rounded-[10px] flex flex-col justify-between">
-            <div className="rounded-lg flex flex-col flex-1">
-              <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">MEMBERS BIRTHDAY 🎂</h2>
-              {isBirthdayLoading ? (
-                <div className="animate-pulse flex flex-col gap-3 mt-2">
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i} className="flex justify-between items-center">
-                      <div className="h-4 bg-black/10 rounded w-1/2"></div>
-                      <div className="h-4 bg-black/10 rounded w-1/4"></div>
-                    </div>
-                  ))}
-                </div>
-              ) : birthdayList.length === 0 ? (
-                <div className="flex flex-1 items-center justify-center text-center text-gray-500">
-                  <p className="text-xs sm:text-sm">No upcoming birthdays</p>
-                </div>
-              ) : (
-                <ul className="mb-2">
-                  {birthdayList.slice(0, 4).map((item, idx) => {
-                    const status = getDayStatus(item.dob);
-                    const days = getDaysUntilBirthday(item.dob);
-                    const isToday = status === "Today";
-                    const isTomorrow = status === "Tomorrow";
 
-                    return (
-                      <li key={idx} className="flex justify-between text-sm  sm:text-base font-medium text-gray-800">
-                        <span className="truncate mr-2">{item.name}</span>
-                        <span className={`text-xs sm:text-sm font-semibold px-2 py-1 rounded ${isToday
-                          ? "bg-emerald-500 text-white"
-                          : isTomorrow
-                            ? "bg-sky-500 text-white"
-                            : "text-yellow-700 font-bold"
-                          }`}>
-                          {status}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </div>
-            {birthdayList.length > 1 && (
-              <button
-                className="text-xs font-semibold text-gray-600 cursor-pointer hover:text-gray-800 hover:underline mt-auto ml-auto block"
-                onClick={() => navigate('/admin/birthdays')}
-              >
-                Show all →
-              </button>
-            )}
-          </div>
         </div>
 
         {/* ===============================================

@@ -8,14 +8,43 @@
     --font-poppins: "Poppins", "sans-serif"; 
 }
 
+/* Hide scrollbar on mobile */
 html {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 html::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
+
+/* Show styled scrollbar on desktop */
+@media (min-width: 1024px) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af #f3f4f6;
+  }
+
+  html::-webkit-scrollbar {
+    display: block;
+    width: 10px;
+  }
+
+  html::-webkit-scrollbar-track {
+    background: #f3f4f6;
+  }
+
+  html::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 999px;
+    border: 2px solid #f3f4f6;
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
+}
+
 
 /* globals.css */
 .hide-scrollbar {

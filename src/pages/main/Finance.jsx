@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import BirthdayCard from "../../components/cards/BirthdayCard";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { TrendingUp, DollarSign, UserCheck, Award } from 'lucide-react';
 
@@ -14,12 +15,15 @@ const Finance = () => {
   const navigate = useNavigate();
   const { user } = useUser();
 
+
   const periods = [
     { value: 'current_month', label: 'This Month' },
     { value: 'last_month', label: 'Last Month' },
     { value: 'last_6_months', label: 'Last 6 Months' },
     { value: 'last_year', label: 'Last Year' }
   ];
+
+
 
   useEffect(() => {
     if (user?.email) {
@@ -73,16 +77,16 @@ const Finance = () => {
     });
   };
 
-  const getPeriodLabel = (period) => {
-    return periods.find(p => p.value === period)?.label || period;
-  };
+  // const getPeriodLabel = (period) => {
+  //   return periods.find(p => p.value === period)?.label || period;
+  // };
 
   // Check if user has access to finance features
   const hasFinanceAccess = user?.role === 'admin';
 
   if (!hasFinanceAccess) {
     return (
-      <div className="w-full overflow-x-hidden relative z-10 p-4 sm:p-8">
+      <div className="w-full overflow-x-hidden relative z-10 px-5 py-4 sm:p-8">
         <div className="w-full max-w-5xl mx-auto h-[60vh] flex flex-col justify-center items-center text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h2>
           <p className="text-gray-500 mb-6">You don't have permission to access finance features.</p>
@@ -99,7 +103,7 @@ const Finance = () => {
 
   if (loading) {
     return (
-      <div className="w-full overflow-x-hidden relative z-10 p-4 sm:p-8">
+      <div className="w-full overflow-x-hidden relative z-10 px-5 py-4 sm:p-8">
         <div className="w-full max-w-5xl mx-auto h-[60vh] flex flex-col justify-center items-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
           <p className="text-gray-500 font-medium tracking-wide">Loading finance data...</p>
@@ -109,7 +113,7 @@ const Finance = () => {
   }
 
   return (
-    <div className="w-full overflow-x-hidden relative z-10 p-4 sm:p-8">
+    <div className="w-full overflow-x-hidden relative z-10 px-6 py-4 sm:p-8">
       <div className="w-full max-w-5xl mx-auto">
         {/* Header */}
         <div className="mb-6 sm:mb-8 relative">
@@ -180,10 +184,16 @@ const Finance = () => {
                 <Award className="w-6 h-6 text-orange-600" />
               </div>
             </div>
+
+            <div className="sm:col-span-2">
+              <BirthdayCard />
+            </div>
+
+
           </div>
         )}
 
-        {/* Chart Section */}
+        {/* Chart Section
         {financeData && financeData.chartData.length > 0 && (
           <div className="bg-white p-5 sm:p-6 rounded-2xl border border-gray-300 mb-6 sm:mb-8 overflow-hidden">
             <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-6">
@@ -228,7 +238,7 @@ const Finance = () => {
               </ResponsiveContainer>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Table Section */}
         {financeData && financeData.tableData.length > 0 && (
@@ -302,9 +312,9 @@ const Finance = () => {
               <DollarSign className="w-10 h-10" />
             </div>
             <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">No transactions found</h3>
-            <p className="text-sm sm:text-base text-gray-500 max-w-sm mx-auto">
+            {/* <p className="text-sm sm:text-base text-gray-500 max-w-sm mx-auto">
               No revenue data available for {getPeriodLabel(selectedPeriod)}.
-            </p>
+            </p> */}
           </div>
         )}
       </div>
