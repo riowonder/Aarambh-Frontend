@@ -82,7 +82,7 @@ function ReviewCard({ review }) {
         <div className="relative mb-4 flex-grow">
           <Quote className="absolute -top-2 -left-2 w-8 h-8 text-white/5 -z-10" />
           <p className={`text-zinc-400 text-sm leading-relaxed italic transition-all duration-300 ${isExpanded ? 'line-clamp-none' : 'line-clamp-6 group-hover:line-clamp-none'}`}>
-            "{review.text}"
+            {review.text}
           </p>
           {!isExpanded && (
             <span className="md:hidden text-zinc-600 text-[10px] font-bold uppercase tracking-widest mt-2 block group-hover:hidden">

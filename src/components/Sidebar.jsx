@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Users, Database, Trash2, Edit3, LogOut, DollarSign, Mail, UserPlus, Cake, ChartNoAxesCombined } from 'lucide-react';
+import { X, Users, Database, Trash2, Edit3, LogOut, DollarSign, Mail, Cake, ChartNoAxesCombined } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -79,15 +79,6 @@ const Sidebar = ({ isOpen, onClose }) => {
                             >
                                 <ChartNoAxesCombined className="w-5 h-5" />
                                 <span>Analytics</span>
-                            </button>
-                        )}
-                        {user?.role === 'admin' && (
-                            <button
-                                onClick={() => navigate('/admin/approval-requests')}
-                                className="flex items-center gap-3 w-full p-3 hover:bg-gray-100 rounded-lg transition-colors text-left mb-2 cursor-pointer"
-                            >
-                                <UserPlus className="w-5 h-5" />
-                                <span>Approval Request</span>
                             </button>
                         )}
                         {/* <button

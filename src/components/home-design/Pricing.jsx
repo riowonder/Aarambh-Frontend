@@ -106,30 +106,26 @@ export default function Pricing({ onOpenRegister }) {
                 </div>
               </div>
 
-              <button 
-                onClick={onOpenRegister}
-                className={`w-full py-4 rounded-full font-black uppercase tracking-widest transition-all ${
-                  plan.popular 
-                    ? 'bg-white text-black hover:scale-105' 
-                    : 'bg-zinc-100 text-black hover:bg-white'
-                }`}
-              >
-                Join Now
-              </button>
             </motion.div>
           ))}
         </div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="mt-16 text-center px-4"
+          className="mt-16 text-center px-4 flex flex-col items-center gap-5"
         >
           <p className="text-zinc-500 text-[10px] md:text-sm font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] leading-relaxed">
             Weekly and custom-day plans available. <br className="md:hidden" />
             <span className="text-zinc-100">Contact the gym for details</span>
           </p>
+          <button
+            onClick={onOpenRegister}
+            className="px-8 py-2.5 rounded-full bg-zinc-100 hover:bg-white text-black font-black uppercase tracking-widest text-xs transition-all hover:scale-105 shadow-lg"
+          >
+            Join Now
+          </button>
         </motion.div>
       </div>
     </section>

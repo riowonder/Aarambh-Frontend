@@ -127,8 +127,11 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gray-100 flex items-center justify-center text-5xl text-gray-400">
-                    <span role="img" aria-label="User">👤</span>
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-14 h-14 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 11a4 4 0 100-8 4 4 0 000 8z" />
+                    </svg>
                   </div>
                 )}
               </div>
@@ -137,7 +140,14 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
             {/* Basic Information */}
             <div className="mb-6 border-b pb-4">
               <h3 className="font-semibold text-sm sm:text-base mb-3 text-gray-700 border-b border-gray-200 pb-2">
-                <span className="bg-gray-100 px-3 py-1 rounded-lg">📋 Basic Information</span>
+                <span className="bg-gray-100 px-3 py-1 rounded-lg inline-flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                    <rect x="9" y="3" width="6" height="4" rx="1" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6M9 16h4" />
+                  </svg>
+                  Basic Information
+                </span>
               </h3>
                 <div className="flex flex-col gap-3 sm:gap-4">
                   {(() => {
@@ -183,7 +193,13 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
             {/* Personal Details */}
             <div className="mb-4 border-b pb-4">
               <h3 className="font-semibold text-sm sm:text-base mb-3 text-gray-700 border-b border-gray-200 pb-2">
-                <span className="bg-gray-100 px-3 py-1 rounded-lg">📋 Personal Details</span>
+                <span className="bg-gray-100 px-3 py-1 rounded-lg inline-flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Personal Details
+                </span>
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-baseline gap-2">

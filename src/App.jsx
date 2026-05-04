@@ -17,7 +17,6 @@ import ManagerRoute from './components/ManagerRoute';
 import AdminLayout from './layouts/AdminLayout';
 import ManagerLayout from './layouts/ManagerLayout';
 import ErrorPage from './components/ErrorPage';
-import UserLogin from './pages/auth/UserLogin';
 import UserRegister from './pages/auth/UserRegister';
 import UserForgotPassword from './pages/auth/UserForgotPassword';
 import UserForgotPswdOTP from './pages/auth/UserForgotPswdOTP';
@@ -50,9 +49,9 @@ export const App = () => {
         <Toaster />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/dashlogin" element={<Login />} />
-            <Route path="/dashsignup" element={<Signup />} />
-            <Route path="/user-login" element={<UserLogin />} />
+            <Route path="/Dashpanel" element={<Login />} />
+            <Route path="/dashpanelsignup" element={<Signup />} />
+            <Route path="/user-login" element={<Home openLoginOnLoad />} />
             <Route path="/user-register" element={<UserRegister />} />
             <Route path="/user-forgot-password" element={<UserForgotPassword />} />
             <Route path="/user-forgot-password/otp-verification" element={<UserForgotPswdOTP />} />

@@ -11,13 +11,19 @@ import Pricing from "../../components/home-design/Pricing";
 import Location from "../../components/home-design/Location";
 import LoginModal from "../../components/home-design/LoginModal";
 import RegisterModal from "../../components/home-design/RegisterModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Instagram, Facebook } from "lucide-react";
 import styles from "./landing_page.module.css";
 
-export default function Home() {
+export default function Home({ openLoginOnLoad = false }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+
+  useEffect(() => {
+    if (openLoginOnLoad) {
+      setIsLoginOpen(true);
+    }
+  }, [openLoginOnLoad]);
 
   return (
   <main className={`${styles.landingRoot} min-h-screen bg-zinc-950 text-zinc-100 selection:bg-zinc-800 selection:text-white`}>
@@ -58,10 +64,10 @@ export default function Home() {
 
           {/* Social Handles - Right on Desktop */}
           <div className="flex gap-6 justify-center md:justify-end w-full order-2 md:order-3">
-            <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
+            <a href="https://www.instagram.com/aarambhfitnesss?igsh=MXd3bzY1eXlxcTVmag==" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
               <Instagram className="w-5 h-5" />
             </a>
-            <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
+            <a href="https://www.facebook.com/share/18kBoRhZLJ/" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
               <Facebook className="w-5 h-5" />
             </a>
           </div>
