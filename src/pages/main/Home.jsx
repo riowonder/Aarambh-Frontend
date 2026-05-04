@@ -11,13 +11,19 @@ import Pricing from "../../components/home-design/Pricing";
 import Location from "../../components/home-design/Location";
 import LoginModal from "../../components/home-design/LoginModal";
 import RegisterModal from "../../components/home-design/RegisterModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Instagram, Facebook } from "lucide-react";
 import styles from "./landing_page.module.css";
 
-export default function Home() {
+export default function Home({ openLoginOnLoad = false }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+
+  useEffect(() => {
+    if (openLoginOnLoad) {
+      setIsLoginOpen(true);
+    }
+  }, [openLoginOnLoad]);
 
   return (
   <main className={`${styles.landingRoot} min-h-screen bg-zinc-950 text-zinc-100 selection:bg-zinc-800 selection:text-white`}>
