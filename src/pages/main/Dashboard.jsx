@@ -12,6 +12,7 @@ import ShowMemberModal from "../../components/ShowMemberModal";
 import { toast } from "react-hot-toast";
 import SearchMembersModal from '../../components/SearchMembersModal';
 import Spinner, { CardSkeleton, TableSkeleton } from "../../components/Spinner";
+import MemberCard from "../../components/MemberCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // const expiredSubscriptions = [
@@ -406,55 +407,17 @@ export default function Dashboard() {
                     </table>
                   </div>
 
-                  {/* MOBILE CARD VIEW - Individual cards for each member on small screens */}
-                  <div className="sm:hidden space-y-4">
+                  {/* MOBILE CARD VIEW */}
+                  <div className="sm:hidden space-y-2">
                     {members.slice(0, 6).map((member, idx) => (
-                      <div
+                      <MemberCard
                         key={idx}
-                        className="bg-gray-50 rounded-lg p-4 border border-gray-200 cursor-pointer hover:bg-gray-50"
+                        member={member}
                         onClick={() => {
                           setMember(member);
                           setShowMemberModal(true);
                         }}
-                      >
-                        {/* Member card header with avatar and name */}
-                        <div className="flex items-center gap-3 mb-3">
-                          {member.image ? (
-                            <img src={member.image} alt={member.name} className="w-12 h-12 rounded-full object-cover" />
-                          ) : (
-                            <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 11a4 4 0 100-8 4 4 0 000 8z" />
-                              </svg>
-                            </div>
-                          )}
-                          <h3 className="font-semibold text-gray-900 text-lg">{member.name}</h3>
-                        </div>
-                        {/* Member card details - Shows subscription, days left, phone, age, gender */}
-                        <div className="space-y-1 text-sm text-gray-600">
-                          <div className="flex justify-between">
-                            <span>Plan:</span>
-                            <span className="font-medium">{member.subscriptions[0]?.plan || 'N/A'}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Days Left:</span>
-                            <span className="font-medium">{member.days_left}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Phone:</span>
-                            <span className="font-medium">{member.phone_number || 'N/A'}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Age:</span>
-                            <span className="font-medium">{member.age || 'N/A'}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Gender:</span>
-                            <span className="font-medium">{member.gender || 'N/A'}</span>
-                          </div>
-                        </div>
-                      </div>
+                      />
                     ))}
                   </div>
                 </>
