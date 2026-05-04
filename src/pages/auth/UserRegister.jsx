@@ -128,7 +128,7 @@ export default function UserRegister() {
                             ></textarea>
                         </div>
                         {/* Secret KEY */}
-                        <div className="flex flex-col gap-1 md:col-span-2">
+                        {/* <div className="flex flex-col gap-1 md:col-span-2">
                             <label className="text-sm font-medium text-gray-700 text-start">Secret Key *</label>
                             <input 
                                 name="secret_key"
@@ -138,7 +138,7 @@ export default function UserRegister() {
                                 placeholder="Your Secret Key" 
                                 required 
                             />
-                        </div>
+                        </div> */}
                         {/* Date of Birth (Optional) */}
                         <div className="flex flex-col gap-1">
                             <label className="text-sm font-medium text-gray-700 text-start">Date of Birth</label>

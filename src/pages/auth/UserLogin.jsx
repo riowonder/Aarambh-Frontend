@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { useUser } from "../../context/UserContext";
 
 export default function UserLogin() {
-  const [formData, setFormData] = useState({ email: "", serial_no: "" });
+  const [formData, setFormData] = useState({ email: "", dobDay: "", dobMonth: "", dobYear: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useUser();
@@ -22,9 +22,20 @@ export default function UserLogin() {
     e.preventDefault();
     setLoading(true);
     try {
+      // Build dob as DD/MM/YYYY
+      const { dobDay, dobMonth, dobYear, email } = formData;
+      if (!dobDay || !dobMonth || !dobYear) {
+        throw new Error('Please enter a valid date of birth');
+      }
+
+      const dd = String(dobDay).padStart(2, '0');
+      const mm = String(dobMonth).padStart(2, '0');
+      const yyyy = String(dobYear);
+      const payload = { email, dob: `${dd}/${mm}/${yyyy}` };
+
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/auth/user-login`,
-        formData,
+        payload,
         { withCredentials: true }
       );
       login(response.data.user);
@@ -59,19 +70,46 @@ export default function UserLogin() {
           </div>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-gray-700 text-start">Serial No : </label>
-              {/* <NavLink to="/user-forgot-password" className="text-sm text-gray-600 hover:text-black">Forgot password?</NavLink> */}
+              <label className="text-sm font-medium text-gray-700 text-start">Date of Birth :</label>
             </div>
-            <input
-              type="number"
-              name="serial_no"
-              value={formData.serial_no}
-              autoComplete="off"
-              onChange={handleInputChange}
-              className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="Example-12"
-              required
-            />
+            <div className="flex gap-2">
+              <input
+                type="number"
+                name="dobDay"
+                value={formData.dobDay}
+                onChange={handleInputChange}
+                className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary w-20"
+                placeholder="DD"
+                min={1}
+                max={31}
+                inputMode="numeric"
+                required
+              />
+              <input
+                type="number"
+                name="dobMonth"
+                value={formData.dobMonth}
+                onChange={handleInputChange}
+                className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary w-20"
+                placeholder="MM"
+                min={1}
+                max={12}
+                inputMode="numeric"
+                required
+              />
+              <input
+                type="number"
+                name="dobYear"
+                value={formData.dobYear}
+                onChange={handleInputChange}
+                className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary w-28"
+                placeholder="YYYY"
+                min={1900}
+                max={new Date().getFullYear()}
+                inputMode="numeric"
+                required
+              />
+            </div>
           </div>
           <button
             type="submit"
