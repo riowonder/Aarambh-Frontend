@@ -68,12 +68,12 @@ export default function ImageViewer({ isOpen, onClose, images, currentIndex, onN
                   if (info.offset.x > 50) handlePrev();
                   else if (info.offset.x < -50) handleNext();
                 }}
-                className="absolute inset-0 flex items-center justify-center p-4 md:p-24 lg:p-32 touch-none z-[230] will-change-transform"
+                className="absolute inset-0 flex items-center justify-center p-4 md:p-10 lg:p-14 touch-none z-[230] will-change-transform"
               >
                 <img
                   src={images[currentIndex]}
                   alt={`Full view ${currentIndex}`}
-                  className="max-w-full max-h-full object-contain pointer-events-none select-none"
+                  className="max-w-full max-h-full w-full h-full object-contain pointer-events-none select-none"
                   referrerPolicy="no-referrer"
                   loading="eager"
                   decoding="async"

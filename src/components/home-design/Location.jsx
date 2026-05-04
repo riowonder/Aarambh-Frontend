@@ -2,42 +2,36 @@ import { motion, AnimatePresence } from "motion/react";
 import { MapPin, Phone, Clock, ArrowRight, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 
-import chiragImg from "../../assets/trainers/chirag.webp";
-import milanImg from "../../assets/trainers/milan.webp";
-import prisanshuImg from "../../assets/trainers/prisanshu.webp";
-import amirImg from "../../assets/trainers/amir.webp";
-import princyImg from "../../assets/trainers/princy.webp";
-
 const trainers = [
   {
     name: "Prisanshu",
     role: "POWERLIFTING SPECIALIST",
     bio: "Building humans into machines through absolute strength and mastery of the big three lifts.",
-    image: prisanshuImg
+    image: "https://res.cloudinary.com/dbvbnarn7/image/upload/q_auto/f_auto/v1777902013/prisanshu_vog7wi.webp"
   },
   {
     name: "Milan",
     role: "TRANSFORMATION COACH",
     bio: "Specialist in body recomposition, HIIT, and functional bodyweight training.",
-    image: milanImg
+    image: "https://res.cloudinary.com/dbvbnarn7/image/upload/q_auto/f_auto/v1777902015/milan_wnsdzk.webp"
   },
   {
     name: "Amir",
     role: "STRENGTH & TRANSFORMATION",
     bio: "Specialist in functional movement, raw strength, and total physical transformation.",
-    image: amirImg
+    image: "https://res.cloudinary.com/dbvbnarn7/image/upload/q_auto/f_auto/v1777902014/amir_jw8d1f.webp"
   },
   {
     name: "Princy",
     role: "COMBAT COACH",
     bio: "Specialist in fight-camp fitness and accelerated weight loss",
-    image: princyImg
+    image: "https://res.cloudinary.com/dbvbnarn7/image/upload/q_auto/f_auto/v1777902013/prisanshu_vog7wi.webp"
   },
-    {
+  {
     name: "Chirag",
     role: "PT & NUTRITIONIST",
     bio: "Specialist in mobility, rehab, and sports nutrition.",
-    image: chiragImg
+    image: "https://res.cloudinary.com/dbvbnarn7/image/upload/q_auto/f_auto/v1777902014/chirag_s2m0gn.webp"
   }
 ];
 

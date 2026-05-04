@@ -64,10 +64,10 @@ export default function Home({ openLoginOnLoad = false }) {
 
           {/* Social Handles - Right on Desktop */}
           <div className="flex gap-6 justify-center md:justify-end w-full order-2 md:order-3">
-            <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
+            <a href="https://www.instagram.com/aarambhfitnesss?igsh=MXd3bzY1eXlxcTVmag==" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
               <Instagram className="w-5 h-5" />
             </a>
-            <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
+            <a href="https://www.facebook.com/share/18kBoRhZLJ/" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
               <Facebook className="w-5 h-5" />
             </a>
           </div>

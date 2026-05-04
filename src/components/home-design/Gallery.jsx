@@ -4,18 +4,6 @@ import GalleryModal from "./GalleryModal";
 import ImageViewer from "./ImageViewer";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
-// Import local gallery images
-import img1 from "../../assets/Gallery-imgs/Aarambh Gallery (1).webp";
-import img2 from "../../assets/Gallery-imgs/Aarambh Gallery (2).webp";
-import img3 from "../../assets/Gallery-imgs/Aarambh Gallery (3).webp";
-import img4 from "../../assets/Gallery-imgs/Aarambh Gallery (4).webp";
-import img5 from "../../assets/Gallery-imgs/Aarambh Gallery (5).webp";
-import img6 from "../../assets/Gallery-imgs/Aarambh Gallery (6).webp";
-import img7 from "../../assets/Gallery-imgs/Aarambh Gallery (7).webp";
-import img8 from "../../assets/Gallery-imgs/Aarambh Gallery (8).webp";
-import img9 from "../../assets/Gallery-imgs/Aarambh Gallery (9).webp";
-import img10 from "../../assets/Gallery-imgs/Aarambh Gallery (10).webp";
-import img11 from "../../assets/Gallery-imgs/Aarambh Gallery (11).webp";
 
 export default function Gallery() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,17 +12,17 @@ export default function Gallery() {
   const [direction, setDirection] = useState(0);
 
   const images = [
-    { src: img1, ratio: "aspect-video" },
-    { src: img2, ratio: "aspect-video" },
-    { src: img3, ratio: "aspect-video" },
-    { src: img4, ratio: "aspect-video" },
-    { src: img5, ratio: "aspect-video" },
-    { src: img6, ratio: "aspect-video" },
-    { src: img7, ratio: "aspect-video" },
-    { src: img8, ratio: "aspect-video" },
-    { src: img9, ratio: "aspect-video" },
-    { src: img10, ratio: "aspect-video" },
-    { src: img11, ratio: "aspect-video" },
+    { src: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902283/Aarambh_Gallery_1_lsf21b.webp",  ratio: "aspect-video" },
+    { src: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902284/Aarambh_Gallery_2_jk3pqx.webp",  ratio: "aspect-video" },
+    { src: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902285/Aarambh_Gallery_3_ouahc6.webp",  ratio: "aspect-video" },
+    { src: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902286/Aarambh_Gallery_4_gmxjwr.webp",  ratio: "aspect-video" },
+    { src: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902287/Aarambh_Gallery_5_txzxbh.webp",  ratio: "aspect-video" },
+    { src: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902288/Aarambh_Gallery_6_rrqxjx.webp",  ratio: "aspect-video" },
+    { src: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902279/Aarambh_Gallery_7_gu1uw6.webp",  ratio: "aspect-video" },
+    { src: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902280/Aarambh_Gallery_8_pjb9qi.webp",  ratio: "aspect-video" },
+    { src: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902280/Aarambh_Gallery_9_oourur.webp",  ratio: "aspect-video" },
+    { src: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902281/Aarambh_Gallery_10_z76o6a.webp", ratio: "aspect-video" },
+    { src: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902282/Aarambh_Gallery_11_zlw0xi.webp", ratio: "aspect-video" },
   ];
 
   const allImageUrls = images.map(img => img.src);
@@ -58,6 +46,7 @@ export default function Gallery() {
   }, [currentSlide]);
 
   const openViewer = (index) => {
+    setIsModalOpen(false);
     setViewerState({ isOpen: true, index });
   };
 
@@ -98,7 +87,7 @@ export default function Gallery() {
                   if (info.offset.x > 50) handlePrev();
                   else if (info.offset.x < -50) handleNext();
                 }}
-                onClick={() => openViewer(currentSlide)}
+                onClick={() => setIsModalOpen(true)}
                 className="absolute inset-0 cursor-pointer"
               >
                 <img 

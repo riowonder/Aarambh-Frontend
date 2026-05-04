@@ -1,8 +1,9 @@
 import { motion } from "motion/react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import QuickNav from "./QuickNav";
-import logo from "../../assets/logo/logo.webp";
 import { useNavigate } from "react-router-dom";
+
+const LOGO_URL = "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902665/logo_jkq9mr.webp";
 
 // Tiny Tailwind spacing guide:
 // p = padding inside an element, m = margin outside an element.
@@ -38,7 +39,7 @@ export default function Hero({ onOpenRegister }) {
           className="mt-5 lg:mb-0 lg:w-[55%] lg:flex-shrink-0"
         >
           <img
-            src={logo}
+            src={LOGO_URL}
             alt="Aarambh Fitness"
             // Logo size:
             // max-w-[470px] = max logo width on mobile.

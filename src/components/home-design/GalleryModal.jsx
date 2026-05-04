@@ -34,7 +34,7 @@ export default function GalleryModal({ isOpen, onClose, images, onOpenViewer }) 
             </div>
 
             <div className="flex-1 p-4 md:p-8 overflow-y-auto no-scrollbar md:scrollbar-default overscroll-contain">
-              <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-4 space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {images.map((img, index) => (
                   <motion.div
                     key={index}
@@ -42,7 +42,7 @@ export default function GalleryModal({ isOpen, onClose, images, onOpenViewer }) 
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.02 }}
                     onClick={() => onOpenViewer(index)}
-                    className={`relative break-inside-avoid rounded-2xl overflow-hidden group border border-white/5 cursor-pointer ${img.ratio}`}
+                    className={`relative rounded-2xl overflow-hidden group border border-white/5 cursor-pointer ${img.ratio}`}
                   >
                     <img 
                       src={img.src} 
