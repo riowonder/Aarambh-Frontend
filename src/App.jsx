@@ -18,6 +18,7 @@ import AdminLayout from './layouts/AdminLayout';
 import ManagerLayout from './layouts/ManagerLayout';
 import ErrorPage from './components/ErrorPage';
 import UserRegister from './pages/auth/UserRegister';
+import Register from './pages/auth/Register';
 import UserForgotPassword from './pages/auth/UserForgotPassword';
 import UserForgotPswdOTP from './pages/auth/UserForgotPswdOTP';
 import UserResetPswd from './pages/auth/UserResetPswd';
@@ -52,7 +53,7 @@ export const App = () => {
             <Route path="/Dashpanel" element={<Login />} />
             <Route path="/dashpanelsignup" element={<Signup />} />
             <Route path="/user-login" element={<Home openLoginOnLoad />} />
-            <Route path="/user-register" element={<UserRegister />} />
+            <Route path="/user-register" element={<Register />} />
             <Route path="/user-forgot-password" element={<UserForgotPassword />} />
             <Route path="/user-forgot-password/otp-verification" element={<UserForgotPswdOTP />} />
             <Route path="/user-reset-password" element={<UserResetPswd />} />
