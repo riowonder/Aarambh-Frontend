@@ -13,11 +13,12 @@ import { Toaster } from 'react-hot-toast';
 import AllMembers from './pages/main/AllMembers';
 import Finance from './pages/main/Finance';
 import AdminRoute from './components/AdminRoute';
-import ManagerRoute from './components/ManagerRoute';
+// import ManagerRoute from './components/ManagerRoute';
 import AdminLayout from './layouts/AdminLayout';
-import ManagerLayout from './layouts/ManagerLayout';
+// import ManagerLayout from './layouts/ManagerLayout';
 import ErrorPage from './components/ErrorPage';
-import UserRegister from './pages/auth/UserRegister';
+// import UserRegister from './pages/auth/UserRegister';
+import UserLogin from './pages/auth/UserLogin';
 import Register from './pages/auth/Register';
 import UserForgotPassword from './pages/auth/UserForgotPassword';
 import UserForgotPswdOTP from './pages/auth/UserForgotPswdOTP';
@@ -52,7 +53,8 @@ export const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/Dashpanel" element={<Login />} />
             <Route path="/dashpanelsignup" element={<Signup />} />
-            <Route path="/user-login" element={<Home openLoginOnLoad />} />
+            {/* <Route path="/user-login" element={<Home openLoginOnLoad />} /> */}
+            <Route path="/user-login" element={<UserLogin />} />
             <Route path="/user-register" element={<Register />} />
             <Route path="/user-forgot-password" element={<UserForgotPassword />} />
             <Route path="/user-forgot-password/otp-verification" element={<UserForgotPswdOTP />} />

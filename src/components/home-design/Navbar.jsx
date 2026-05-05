@@ -1,11 +1,13 @@
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar({ onOpenLogin, onOpenRegister }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const timeoutRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,7 +88,7 @@ export default function Navbar({ onOpenLogin, onOpenRegister }) {
                   <button 
                     onClick={() => {
                       setIsDropdownOpen(false);
-                      onOpenLogin();
+                      navigate('/user-login');
                     }}
                     className="w-full text-left px-6 py-3 text-sm font-black uppercase italic tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 transition-all"
                   >
