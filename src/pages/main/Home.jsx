@@ -41,14 +41,14 @@ export default function Home({ openLoginOnLoad = false }) {
 
       {/* Footer */}
       <footer className="py-12 md:py-20 border-t border-white/5 bg-zinc-950">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:grid md:grid-cols-3 items-center gap-8 md:gap-0">
-          <div className="flex items-center md:justify-start w-full">
+        <div className="max-w-7xl mx-auto px-6 flex flex-row flex-wrap md:grid md:grid-cols-3 items-center justify-between gap-y-6 md:gap-0">
+          <div className="flex items-center justify-start md:justify-start w-auto md:w-full">
             <span className="text-2xl font-black tracking-tighter uppercase italic">Aarambh <br/>fitness</span>
           </div>
-          <div className="text-zinc-500 text-[10px] uppercase tracking-[0.4em] font-bold text-center w-full order-3 md:order-3 mt-8 md:mt-1 flex items-center justify-center gap-0">
+          <div className="text-zinc-500 text-[10px] uppercase tracking-[0.4em] font-bold text-center w-full order-3 md:order-3 mt-2 md:mt-1 flex items-center justify-center gap-0">
             @2026 Aarambh Fitness. <br/>All rights reserved.
           </div>
-          <div className="flex gap-6 justify-center md:justify-end w-full order-2 md:order-3">
+          <div className="flex gap-4 justify-end md:justify-end w-auto md:w-full order-2 md:order-3">
             <a href="https://www.instagram.com/aarambhfitnesss?igsh=MXd3bzY1eXlxcTVmag==" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
               <Instagram className="w-5 h-5" />
             </a>

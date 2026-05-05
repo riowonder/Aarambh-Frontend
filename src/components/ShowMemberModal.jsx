@@ -33,7 +33,7 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
   if (loading)
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4">
-        <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden animate-pulse">
+        <div className="bg-white rounded-[10px] w-[96%] sm:w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden">
           {/* Header Skeleton */}
           <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
             <div className="h-8 bg-gray-200 rounded w-48"></div>
@@ -79,10 +79,10 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
           </div>
 
           {/* Action Buttons Skeleton */}
-          <div className="p-6 border-t border-[#ddd] flex flex-wrap justify-end gap-4 shrink-0 bg-white">
-            <div className="h-10 bg-gray-200 rounded-[5px] w-32"></div>
-            <div className="h-10 bg-gray-200 rounded-[5px] w-24"></div>
-            <div className="h-10 bg-gray-200 rounded-[5px] w-24"></div>
+          <div className="px-4 py-3 sm:px-6 sm:py-4 border-t border-[#ddd] flex justify-end gap-2 sm:gap-3 shrink-0 bg-white">
+            <div className="h-8 sm:h-10 bg-gray-200 rounded-md w-24 sm:w-32"></div>
+            <div className="h-8 sm:h-10 bg-gray-200 rounded-md w-16 sm:w-24"></div>
+            <div className="h-8 sm:h-10 bg-gray-200 rounded-md w-16 sm:w-24"></div>
           </div>
         </div>
       </div>
@@ -101,7 +101,7 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
   return (
     <>
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4">
-        <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="bg-white rounded-[10px] w-[96%] sm:w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden">
           {/* Header */}
           <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
             <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Member Details</h2>
@@ -231,24 +231,24 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
           </div>
 
           {/* Action Buttons - Sticky Bottom */}
-          <div className="p-6 border-t border-[#ddd] flex flex-wrap justify-end gap-4 shrink-0 bg-white">
+          <div className="px-4 py-3 sm:px-6 sm:py-4 border-t border-[#ddd] flex justify-end gap-2 sm:gap-3 shrink-0 bg-white">
             <button
               type="button"
-              className="py-2 px-6 bg-black text-white rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-800"
+              className="py-1.5 px-3 sm:py-2 sm:px-5 text-xs sm:text-sm bg-black text-white rounded-md font-semibold cursor-pointer transition hover:bg-gray-800"
               onClick={() => setShowSubscription(true)}
             >
               Subscriptions
             </button>
             <button
               type="button"
-              className="py-2 px-6 bg-[#eee] text-black rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-200"
+              className="py-1.5 px-3 sm:py-2 sm:px-5 text-xs sm:text-sm bg-[#eee] text-black rounded-md font-semibold cursor-pointer transition hover:bg-gray-200"
               onClick={handleEdit}
             >
               Edit
             </button>
             <button
               type="button"
-              className="py-2 px-6 border border-gray-300 text-gray-700 rounded-[5px] font-bold cursor-pointer transition hover:bg-gray-50"
+              className="py-1.5 px-3 sm:py-2 sm:px-5 text-xs sm:text-sm border border-gray-300 text-gray-700 rounded-md font-semibold cursor-pointer transition hover:bg-gray-50"
               onClick={onClose}
             >
               Close

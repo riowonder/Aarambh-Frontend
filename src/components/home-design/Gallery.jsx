@@ -51,8 +51,8 @@ export default function Gallery() {
   };
 
   return (
-    <section id="gallery" className="py-12 md:py-20 bg-zinc-950 px-4 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="gallery" className="py-12 md:py-20 bg-zinc-950 px-2 md:px-4 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-0 md:px-6">
         <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-8 px-4">
           <div className="text-center md:text-left">
             <h2 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter mb-4 text-transparent bg-clip-text bg-gradient-to-br from-zinc-100 via-zinc-400 to-zinc-600">
@@ -69,7 +69,7 @@ export default function Gallery() {
           </button>
         </div>
 
-        <div className="relative group/gallery aspect-video max-w-5xl mx-auto">
+        <div className="relative group/gallery aspect-video w-[95%] md:w-full md:max-w-6xl mx-auto">
           {/* Main Slideshow Container */}
           <div className="relative w-full h-full rounded-2xl md:rounded-[2.5rem] overflow-hidden bg-zinc-900 border border-white/5 shadow-2xl">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">

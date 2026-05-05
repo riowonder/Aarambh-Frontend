@@ -45,7 +45,7 @@ export default function SearchMembersModal({ isOpen, onClose, onSelectMember }) 
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4">
-      <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden">
+      <div className="bg-white rounded-[10px] w-[96%] sm:w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden">
         <div className="p-6 border-b border-[#ddd] flex justify-between items-center shrink-0">
           <h2 className="text-[1.5rem] font-bold text-gray-900 text-left">Search Members</h2>
           <button
