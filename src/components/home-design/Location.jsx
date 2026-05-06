@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 const trainers = [
   {
-    name: "Prisanshu",
+    name: "Priyanshu",
     role: "POWERLIFTING SPECIALIST",
     bio: "Building humans into machines through absolute strength and mastery of the big three lifts.",
     image: "https://res.cloudinary.com/dbvbnarn7/image/upload/q_auto/f_auto/v1777902013/prisanshu_vog7wi.webp"
@@ -25,7 +25,7 @@ const trainers = [
     name: "Princy",
     role: "COMBAT COACH",
     bio: "Specialist in fight-camp fitness and accelerated weight loss",
-    image: "https://res.cloudinary.com/dbvbnarn7/image/upload/q_auto/f_auto/v1777902013/prisanshu_vog7wi.webp"
+    image: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902013/princy_ndqt91.webp"
   },
   {
     name: "Chirag",

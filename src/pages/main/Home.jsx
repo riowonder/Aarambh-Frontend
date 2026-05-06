@@ -6,7 +6,7 @@ import Pricing from "../../components/home-design/Pricing";
 import Location from "../../components/home-design/Location";
 import LoginModal from "../../components/home-design/LoginModal";
 import { useEffect, useState } from "react";
-import { Instagram, Facebook } from "lucide-react";
+import { Instagram, Facebook, Youtube } from "lucide-react";
 import styles from "./landing_page.module.css";
 import { useNavigate } from "react-router-dom";
 
@@ -49,11 +49,14 @@ export default function Home({ openLoginOnLoad = false }) {
             @2026 Aarambh Fitness. <br/>All rights reserved.
           </div>
           <div className="flex gap-4 justify-end md:justify-end w-auto md:w-full order-2 md:order-3">
-            <a href="https://www.instagram.com/aarambhfitnesss?igsh=MXd3bzY1eXlxcTVmag==" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
+            <a href="https://www.instagram.com/aarambhfitnesss?igsh=MXd3bzY1eXlxcTVmag==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
               <Instagram className="w-5 h-5" />
             </a>
-            <a href="https://www.facebook.com/share/18kBoRhZLJ/" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
+            <a href="https://www.facebook.com/share/18kBoRhZLJ/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
               <Facebook className="w-5 h-5" />
+            </a>
+            <a href="https://www.youtube.com/@aarambhfitness" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 border border-white/10 flex items-center justify-center text-white hover:border-white/30 hover:scale-110 transition-all shadow-xl shadow-black/20">
+              <Youtube className="w-5 h-5" />
             </a>
           </div>
         </div>
