@@ -53,8 +53,8 @@ export const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/Dashpanel" element={<Login />} />
             <Route path="/dashpanelsignup" element={<Signup />} />
-            {/* <Route path="/user-login" element={<Home openLoginOnLoad />} /> */}
-            <Route path="/user-login" element={<UserLogin />} />
+            <Route path="/user-login" element={<Home openLoginOnLoad />} />
+            {/* <Route path="/user-login" element={<UserLogin />} />  */}
             <Route path="/user-register" element={<Register />} />
             <Route path="/user-forgot-password" element={<UserForgotPassword />} />
             <Route path="/user-forgot-password/otp-verification" element={<UserForgotPswdOTP />} />

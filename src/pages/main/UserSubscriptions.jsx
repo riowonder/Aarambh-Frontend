@@ -1,32 +1,100 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "../../context/UserContext";
-import { Menu } from "lucide-react";
-import Sidebar from "../../components/Sidebar";
+import { motion } from "motion/react";
+import { Calendar, LogOut, ArrowLeft, Flame } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+/* ─────────────────────────────────────────────
+   Plan tier → card theme
+───────────────────────────────────────────── */
+function getPlanTheme(planName = "") {
+  const p = planName.toLowerCase();
+  if (p.includes("1 year") || p.includes("12") || p.includes("annual") || p.includes("yearly")) {
+    return {
+      gradient: "from-[#1a1400] via-[#2a1f00] to-[#0d0d0d]",
+      border: "border-yellow-500/30",
+      accent: "text-yellow-400",
+      barColor: "bg-yellow-400",
+      barTrack: "bg-yellow-900/30",
+      badge: "bg-yellow-500/15 text-yellow-300 border border-yellow-500/25",
+      glow: "shadow-yellow-900/40",
+      daysColor: "text-yellow-300",
+    };
+  }
+  if (p.includes("6") || p.includes("half")) {
+    return {
+      gradient: "from-[#000d1a] via-[#001428] to-[#0d0d0d]",
+      border: "border-blue-500/30",
+      accent: "text-blue-400",
+      barColor: "bg-blue-400",
+      barTrack: "bg-blue-900/30",
+      badge: "bg-blue-500/15 text-blue-300 border border-blue-500/25",
+      glow: "shadow-blue-900/40",
+      daysColor: "text-blue-300",
+    };
+  }
+  if (p.includes("3")) {
+    return {
+      gradient: "from-[#001a0d] via-[#001f10] to-[#0d0d0d]",
+      border: "border-emerald-500/30",
+      accent: "text-emerald-400",
+      barColor: "bg-emerald-400",
+      barTrack: "bg-emerald-900/30",
+      badge: "bg-emerald-500/15 text-emerald-300 border border-emerald-500/25",
+      glow: "shadow-emerald-900/40",
+      daysColor: "text-emerald-300",
+    };
+  }
+  return {
+    gradient: "from-zinc-900 via-zinc-800/80 to-zinc-900",
+    border: "border-white/10",
+    accent: "text-zinc-300",
+    barColor: "bg-zinc-400",
+    barTrack: "bg-zinc-700/50",
+    badge: "bg-white/5 text-zinc-400 border border-white/10",
+    glow: "shadow-black/60",
+    daysColor: "text-white",
+  };
+}
+
+function urgencyLabel(days) {
+  if (days <= 0)  return { text: "Expired",       color: "text-red-400",     bg: "bg-red-500/10 border-red-500/20" };
+  if (days <= 5)  return { text: "Expiring Soon", color: "text-orange-400",  bg: "bg-orange-500/10 border-orange-500/20" };
+  if (days <= 15) return { text: "Active",        color: "text-yellow-400",  bg: "bg-yellow-500/10 border-yellow-500/20" };
+  return           { text: "Active",              color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" };
+}
+
+function fmtDate(d) {
+  if (!d) return "—";
+  return new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+}
 
 export default function UserSubscriptions() {
-  const { user } = useUser();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { user, logoutUser } = useUser();
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSubs = async () => {
-      const userMail = user?.email;
-      console.log(userMail);
-      if (!userMail) return;
+      // Use phone number instead of email
+      const userPhone = user?.phone_number || user?.phone;
+      console.log("Fetching subscriptions for phone:", userPhone);
+      if (!userPhone) return;
+      
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch('http://localhost:3000/user/subscriptions', {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/user/subscriptions`, {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: userMail })
+          body: JSON.stringify({ phone: userPhone })
         });
+        
         if (!res.ok) throw new Error(`Failed to load: ${res.status}`);
+        
         const data = await res.json();
         let subs = Array.isArray(data.subscriptions) ? data.subscriptions : [];
         // sort by start_date descending (recent first)
@@ -43,83 +111,164 @@ export default function UserSubscriptions() {
     fetchSubs();
   }, [user]);
 
+  const handleLogout = async () => {
+    await logoutUser();
+    navigate("/");
+  };
+
   return (
-    <div className="min-h-screen border-gray-200">
-      {/* Sidebar */}
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+    <div className="min-h-screen bg-zinc-950 text-zinc-100">
       
-      <div>
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8 sm:mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-end gap-1 sm:gap-2">
-            <h1 className="text-3xl sm:text-5xl text-gray-700 font-extrabold tracking-tight font-montserrat">Welcome, {user?.name || "User"}</h1>
-            <span className="bg-black text-white px-2 sm:px-3 py-1 rounded font-semibold text-xs sm:text-md sm:mb-1 font-poppins">SUBSCRIPTIONS</span>
-          </div>
-          
-          {/* Hamburger Menu */}
-          <button 
-            onClick={toggleSidebar}
-            className="bg-white font-bold text-2xl text-black p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+      {/* ── Header ── */}
+      <header className="sticky top-0 z-30 bg-zinc-950/80 backdrop-blur-xl border-b border-white/5 px-4 md:px-8 py-3.5 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate("/user/dashboard")}
+            className="w-9 h-9 rounded-full bg-zinc-800/80 hover:bg-zinc-700 border border-white/5 flex items-center justify-center text-zinc-400 hover:text-white transition-all"
           >
-            <Menu className="w-6 h-6" />
+            <ArrowLeft className="w-4 h-4" />
           </button>
-        </div>
-
-        {/* Members Table Like Structure */}
-        <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-extrabold tracking-tight bg-[#d6f6ff] px-3 py-1 rounded font-montserrat">MY SUBSCRIPTIONS</h2>
+          <div>
+            <p className="text-[9px] uppercase tracking-[0.35em] font-black text-zinc-600">Aarambh Fitness</p>
+            <h1 className="text-base md:text-lg font-black uppercase italic tracking-tight text-white leading-tight">
+              Subscription History
+            </h1>
           </div>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-zinc-800/80 hover:bg-zinc-700 border border-white/5 text-zinc-400 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all"
+        >
+          <LogOut className="w-3 h-3" />
+          <span className="hidden sm:inline">Logout</span>
+        </button>
+      </header>
 
-          <div className="w-full overflow-x-auto py-2">
-            {loading ? (
-              <div className="text-center py-8 text-gray-500">Loading subscriptions...</div>
-            ) : error ? (
-              <div className="text-center py-8 text-red-600">{error}</div>
-            ) : subscriptions.length === 0 ? (
-              <div className="w-full overflow-x-auto text-center py-8 text-gray-500">
-                <p className="text-lg font-medium">No Subscriptions Found</p>
-                <p className="text-sm">You do not have any active subscriptions.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {subscriptions.map((s) => {
-                  const start = s.start_date ? new Date(s.start_date) : null;
-                  const end = s.end_date ? new Date(s.end_date) : null;
-                  const daysLeft = typeof s.days_left === 'number' ? s.days_left : (end ? Math.max(0, Math.ceil((end - new Date()) / (1000*60*60*24))) : 0);
-                  const status = s.status || 'Unknown';
-                  return (
-                    <div key={s._id} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <h3 className="text-lg font-bold text-gray-800">{s.plan}</h3>
-                          <p className="text-sm text-gray-500 mt-1">Amount: ₹{s.amount}</p>
-                          <p className="text-sm text-gray-500">{start ? `Started: ${start.toLocaleDateString()}` : 'Start: N/A'}</p>
-                          <p className="text-sm text-gray-500">{end ? `Ends: ${end.toLocaleDateString()}` : 'End: N/A'}</p>
-                        </div>
+      {/* ── Body ── */}
+      <main className="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-10">
+        
+        {/* Welcome Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45 }}
+          className="mb-8"
+        >
+          <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tight text-white mb-2">
+            Hey, {user?.name?.split(" ")[0] || "Champ"} 👋
+          </h2>
+          <p className="text-zinc-500 text-xs md:text-sm uppercase tracking-[0.3em] font-bold">
+            Your complete subscription timeline
+          </p>
+        </motion.div>
 
-                        <div className="text-right">
-                          <div className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${status === 'Active' ? 'bg-green-100 text-green-700' : status === 'Expired' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                            {status}
-                          </div>
-                          <div className="text-sm font-bold text-gray-800 mt-3">{daysLeft} days</div>
-                        </div>
-                      </div>
-                      <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden mt-4">
-                        {start && end ? (
-                          <div className="bg-green-500 h-full" style={{ width: `${Math.min(100, Math.round(((new Date() - start) / (end - start)) * 100))}%` }}></div>
-                        ) : (
-                          <div className="bg-gray-300 h-full w-full"></div>
-                        )}
-                      </div>
+        {/* Subscriptions Grid */}
+        {loading ? (
+          <div className="rounded-[2rem] border border-white/10 bg-zinc-900 p-12 flex items-center justify-center min-h-[300px]">
+            <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+          </div>
+        ) : error ? (
+          <div className="rounded-[2rem] border border-red-500/20 bg-red-500/5 p-8 text-center text-red-400 font-bold text-sm">
+            {error}
+          </div>
+        ) : subscriptions.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="rounded-[2rem] border border-white/10 bg-zinc-900/60 p-12 text-center"
+          >
+            <Flame className="w-12 h-12 text-zinc-700 mx-auto mb-4" />
+            <p className="text-zinc-500 font-black uppercase tracking-widest text-base mb-2">No Subscriptions Found</p>
+            <p className="text-zinc-700 text-xs uppercase tracking-wider">Visit the gym to get started on your fitness journey</p>
+          </motion.div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {subscriptions.map((s, idx) => {
+              const start = s.start_date ? new Date(s.start_date) : null;
+              const end = s.end_date ? new Date(s.end_date) : null;
+              const now = new Date();
+              const totalDays = start && end ? Math.max(0, Math.ceil((end - start) / 86400000)) : 0;
+              const elapsed = start ? Math.max(0, Math.min(Math.ceil((now - start) / 86400000), totalDays)) : 0;
+              const percent = totalDays > 0 ? Math.round((elapsed / totalDays) * 100) : 100;
+              const daysLeft = typeof s.days_left === 'number'
+                ? Math.max(0, s.days_left)
+                : end ? Math.max(0, Math.ceil((end - now) / 86400000)) : 0;
+
+              const planName = s.plan || "Membership";
+              const theme = getPlanTheme(planName);
+              const urgency = urgencyLabel(daysLeft);
+
+              return (
+                <motion.div
+                  key={s._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: idx * 0.08 }}
+                  className={`relative rounded-[2rem] border bg-gradient-to-br ${theme.gradient} ${theme.border} px-6 py-5 overflow-hidden shadow-2xl ${theme.glow}`}
+                >
+                  {/* background glow blob */}
+                  <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-[60px] opacity-15 bg-white pointer-events-none" />
+
+                  {/* Row 1: plan badge + status */}
+                  <div className="flex items-center justify-between mb-4">
+                    <span className={`text-[9px] font-black uppercase tracking-[0.25em] px-2.5 py-1 rounded-full ${theme.badge}`}>
+                      {planName}
+                    </span>
+                    <span className={`text-[9px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-full border ${urgency.bg} ${urgency.color}`}>
+                      {urgency.text}
+                    </span>
+                  </div>
+
+                  {/* Amount + Days */}
+                  <div className="flex items-end justify-between mb-4">
+                    <div>
+                      <p className={`text-xs font-black uppercase tracking-[0.3em] ${theme.accent} opacity-70 mb-1`}>
+                        Amount Paid
+                      </p>
+                      <span className={`text-3xl md:text-4xl font-black leading-none tracking-tighter ${theme.daysColor}`}>
+                        ₹{s.amount || 0}
+                      </span>
                     </div>
-                  );
-                })}
-              </div>
-            )}
+                    <div className="text-right">
+                      <p className={`text-xs font-black uppercase tracking-[0.3em] ${theme.accent} opacity-70 mb-1`}>
+                        Days Left
+                      </p>
+                      <span className={`text-3xl md:text-4xl font-black leading-none tracking-tighter ${theme.daysColor}`}>
+                        {daysLeft}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className={`w-full h-1.5 rounded-full mb-3 ${theme.barTrack}`}>
+                    <div
+                      className={`h-full rounded-full transition-all duration-700 ${theme.barColor}`}
+                      style={{ width: `${percent}%` }}
+                    />
+                  </div>
+
+                  {/* Dates row */}
+                  <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-[0.2em] text-zinc-600 mb-4">
+                    <span>Started {fmtDate(s.start_date)}</span>
+                    <span>Expires {fmtDate(s.end_date)}</span>
+                  </div>
+
+                  {/* Bottom divider + icon */}
+                  <div className="border-t border-white/5 pt-4">
+                    <div className="flex items-center gap-2">
+                      <Calendar className={`w-3.5 h-3.5 ${theme.accent}`} />
+                      <span className={`text-[10px] font-black uppercase tracking-widest ${theme.accent}`}>
+                        Subscription #{idx + 1}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
-        </div>
-      </div>
+        )}
+      </main>
     </div>
   );
 }
