@@ -93,13 +93,17 @@ export default function AddMemberModal({ isOpen, onClose, onSuccess }) {
         'serial_no', 'name', 'email', 'phone_number',
         'dob', 'age', 'aadhar_number', 'blood_group', 'address',
       ];
-      memberFields.forEach((k) => { if (form[k]) fd.append(k, form[k]); });
+      memberFields.forEach((k) => {
+        if (!form[k] && form[k] !== 0) return;
+        // Send serial_no as-is (frontend uses serial_no)
+        fd.append(k, form[k]);
+      });
       if (image) fd.append('image', image);
 
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/member/add`,
         fd,
-        { withCredentials: true, headers: { 'Content-Type': 'multipart/form-data' } }
+        { withCredentials: true }
       );
 
       if (data.success) {
