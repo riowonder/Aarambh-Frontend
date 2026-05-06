@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import Sidebar from '../../components/Sidebar';
 import { useUser } from '../../context/UserContext';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 function ChevronIcon({ open }) {
@@ -38,6 +39,7 @@ export default function ApprovalRequests() {
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState(null);
   const { user } = useUser();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
@@ -69,7 +71,13 @@ export default function ApprovalRequests() {
       setLoading(true);
       await axios.post(`${API_BASE}/admin/approve-user/${userId}`, {}, { withCredentials: true });
       toast.success('User approved successfully!');
-      fetchRequests();
+  // Refresh local list and invalidate dashboard members so main dashboard refetches
+  fetchRequests();
+  // Invalidate dashboard members query
+  queryClient.invalidateQueries({ queryKey: ['dashboard', 'members'] });
+  // Also invalidate all members-list queries (all members page) — use both key and predicate for robustness
+  queryClient.invalidateQueries({ queryKey: ['members-list'] });
+  queryClient.invalidateQueries({ predicate: (q) => Array.isArray(q.queryKey) && q.queryKey[0] === 'members-list' });
     } catch (error) {
       console.error('Error approving user:', error);
       toast.error('Failed to approve user');
@@ -83,7 +91,10 @@ export default function ApprovalRequests() {
       setLoading(true);
       await axios.post(`${API_BASE}/admin/reject-user/${userId}`, {}, { withCredentials: true });
       toast.success('User rejected!');
-      fetchRequests();
+  fetchRequests();
+  queryClient.invalidateQueries({ queryKey: ['dashboard', 'members'] });
+  queryClient.invalidateQueries({ queryKey: ['members-list'] });
+  queryClient.invalidateQueries({ predicate: (q) => Array.isArray(q.queryKey) && q.queryKey[0] === 'members-list' });
     } catch (error) {
       console.error('Error rejecting user:', error);
       toast.error('Failed to reject user');
@@ -150,9 +161,17 @@ export default function ApprovalRequests() {
                     className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden transition-shadow duration-200 hover:shadow-md"
                   >
                     {/* Card header — always visible, clickable to expand */}
-                    <button
+                    <div
+                      role="button"
+                      tabIndex={0}
                       onClick={() => toggleExpand(req._id)}
-                      className="w-full flex items-center gap-3 px-4 py-4 sm:px-5 text-left focus:outline-none"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          toggleExpand(req._id);
+                        }
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-4 sm:px-5 text-left focus:outline-none cursor-pointer"
                     >
                       {/* Avatar */}
                       {req.image ? (
@@ -190,7 +209,7 @@ export default function ApprovalRequests() {
                         </button>
                         <ChevronIcon open={isOpen} />
                       </div>
-                    </button>
+                    </div>
 
                     {/* Expandable details */}
                     <div
