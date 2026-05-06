@@ -188,13 +188,14 @@ export default function UserDashboard() {
           </h1>
         </div>
         <div className="flex items-center gap-2">
-          <button
+          {/* TODO: Uncomment when subscriptions page is ready */}
+          {/* <button
             onClick={() => navigate("/user/subscriptions")}
             className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-full bg-zinc-800/80 hover:bg-zinc-700 border border-white/5 text-zinc-400 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all"
           >
             <Calendar className="w-3 h-3" />
             Subscriptions
-          </button>
+          </button> */}
           <button
             onClick={handleLogout}
             className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-zinc-800/80 hover:bg-zinc-700 border border-white/5 text-zinc-400 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all"

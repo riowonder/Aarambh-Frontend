@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
-import { X, LogIn, Mail, ArrowRight } from "lucide-react";
+import { X, LogIn, Phone, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,7 +8,7 @@ import { useUser } from "../../context/UserContext";
 
 export default function LoginModal({ isOpen, onClose, onOpenRegister }) {
   const [formData, setFormData] = useState({
-    email: "",
+    phone: "",
     dobDay: "",
     dobMonth: "",
     dobYear: "",
@@ -20,12 +20,18 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'phone') {
+      // Allow only digits and limit to 10
+      const cleaned = value.replace(/\D/g, '').slice(0, 10);
+      setFormData((prev) => ({ ...prev, [name]: cleaned }));
+      return;
+    }
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { email, dobDay, dobMonth, dobYear } = formData;
+    const { phone, dobDay, dobMonth, dobYear } = formData;
 
     if (!dobDay || !dobMonth || !dobYear) {
       toast.error("Please enter a valid date of birth");
@@ -38,9 +44,13 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }) {
       const mm = String(dobMonth).padStart(2, "0");
       const yyyy = String(dobYear);
 
+      const payload = { phone, dob: `${dd}/${mm}/${yyyy}` };
+
+      console.log("Submitting login with payload:", payload);
+
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/auth/user-login`,
-        { email, dob: `${dd}/${mm}/${yyyy}` },
+        payload,
         { withCredentials: true }
       );
 
@@ -102,20 +112,23 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }) {
             {/* Form */}
             <form onSubmit={handleSubmit} className="w-full space-y-5">
 
-              {/* Email */}
+              {/* Phone Number */}
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-[0.3em] font-black text-zinc-500 ml-4">
-                  Email
+                  Phone Number
                 </label>
                 <div className="relative group">
-                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-white transition-colors" />
+                  <Phone className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-white transition-colors" />
                   <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="xyz@example.com"
-                    autoComplete="email"
+                    placeholder="9876543210"
+                    pattern="[0-9]{10}"
+                    maxLength={10}
+                    inputMode="numeric"
+                    autoComplete="tel"
                     required
                     className="w-full bg-zinc-800/50 border border-white/5 rounded-2xl py-4 pl-14 pr-6 text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:bg-zinc-800 transition-all text-sm font-medium"
                   />
