@@ -298,7 +298,7 @@ export default function Dashboard() {
 
           {/* MOBILE VIEW - Header and search/add buttons for small screens */}
           <div className="sm:hidden mb-4">
-            <h2 className="text-xl font-extrabold tracking-tight bg-[#d6f6ff] px-3 py-1 rounded mb-3 font-montserrat">MEMBERS</h2>
+            <h2 className="text-xl font-extrabold tracking-tight bg-zinc-900/80 backdrop-blur-2xl border border-white/10 text-white px-4 py-2 rounded-[2rem] mb-3 font-montserrat italic uppercase">MEMBERS</h2>
             <div className="flex flex-col gap-2">
               <button className="bg-black text-white px-3 py-2 rounded text-sm font-semibold flex items-center justify-center gap-1 cursor-pointer" onClick={() => setShowSearchModal(true)}>
                 <Search className="w-4 h-4" />Search Members
@@ -309,7 +309,7 @@ export default function Dashboard() {
 
           {/* DESKTOP VIEW - Header with title and action buttons for larger screens */}
           <div className="hidden sm:flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-extrabold tracking-tight bg-[#d6f6ff] px-6 py-3 rounded-xl font-montserrat">MEMBERS</h2>
+            <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight bg-zinc-900/50 backdrop-blur-2xl border border-white/10 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-[2rem] font-montserrat italic uppercase">MEMBERS</h2>
             <div className="flex gap-2">
               <button className="bg-white border-2 border-black px-3 py-1 rounded text-sm font-semibold cursor-pointer" onClick={() => setShowAddMember(true)}>+ Add New Member</button>
               <button className="bg-black text-white px-3 py-1 rounded text-sm font-semibold flex items-center gap-1 cursor-pointer" onClick={() => setShowSearchModal(true)}>

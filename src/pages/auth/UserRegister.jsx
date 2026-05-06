@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useUser } from "../../context/UserContext";
 
+
 export default function UserRegister() {
     const [formData, setFormData] = useState({
         name: "",
@@ -33,6 +34,13 @@ export default function UserRegister() {
             const cleaned = value.replace(/\D/g, '').slice(0, 10);
             setFormData((prev) => ({ ...prev, [name]: cleaned }));
             return;
+        }
+        if (name === 'image' && files[0]) {
+            if (files[0].size > 1 * 1024 * 1024) {
+                toast.error("Photo must be under 1 MB. Try compressing it or choosing a smaller image.");
+                e.target.value = "";
+                return;
+            }
         }
         setFormData((prev) => ({
             ...prev,

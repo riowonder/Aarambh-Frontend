@@ -45,6 +45,13 @@ export default function Register() {
       setFormData((prev) => ({ ...prev, phone: value.replace(/\D/g, "").slice(0, 10) }));
       return;
     }
+    if (name === "image" && files[0]) {
+      if (files[0].size > 1 * 1024 * 1024) {
+        setErrors((prev) => ({ ...prev, image: "Photo must be under 1 MB. Try compressing it or choosing a smaller image." }));
+        e.target.value = "";
+        return;
+      }
+    }
     setFormData((prev) => ({ ...prev, [name]: type === "file" ? files[0] : value }));
   };
 
@@ -261,11 +268,12 @@ export default function Register() {
                       <div className="relative">
                         <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" />
                         <input name="image" type="file" accept="image/*" onChange={handleInputChange}
-                          className="w-full bg-zinc-800/50 border border-white/5 rounded-xl py-3 pl-12 pr-4 text-sm text-zinc-400 file:mr-3 file:py-0.5 file:px-2 file:rounded-md file:border-0 file:text-xs file:bg-zinc-700 file:text-zinc-300 focus:outline-none focus:border-white/20 transition-all cursor-pointer" />
+                          className={`w-full bg-zinc-800/50 border rounded-xl py-3 pl-12 pr-4 text-sm text-zinc-400 file:mr-3 file:py-0.5 file:px-2 file:rounded-md file:border-0 file:text-xs file:bg-zinc-700 file:text-zinc-300 focus:outline-none focus:border-white/20 transition-all cursor-pointer ${errors.image ? "border-red-500/60" : "border-white/5"}`} />
                       </div>
-                      {formData.image && (
-                        <p className="text-[10px] text-zinc-500 ml-2 truncate">{formData.image.name}</p>
-                      )}
+                      {errors.image
+                        ? <p className="text-[10px] text-red-400 ml-2">{errors.image}</p>
+                        : formData.image && <p className="text-[10px] text-zinc-500 ml-2 truncate">{formData.image.name}</p>
+                      }
                     </div>
                   </div>
 
