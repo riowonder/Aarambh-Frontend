@@ -385,7 +385,7 @@ export default function Register() {
                     Thanks for <br /> registration!
                   </h3>
                   <p className="text-zinc-400 text-sm max-w-xs leading-relaxed uppercase tracking-wide font-medium">
-                    Confirmation you will be notified through email.
+                    Confirmation you will be notified through email if provided.
                   </p>
                   <button
                     onClick={() => navigate("/")}
