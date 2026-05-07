@@ -52,29 +52,30 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-muted overflow-hidden fixed top-0 left-0">
-      <div className="w-full max-w-md bg-white border border-gray-200 rounded-xl shadow-lg p-8 flex flex-col gap-6">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-900 overflow-hidden fixed top-0 left-0">
+      <div className="w-full max-w-md bg-gray-900 border border-gray-700 rounded-xl shadow-lg p-8 flex flex-col gap-6">
         <div className="flex flex-col gap-2 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">Admin Login</h2>
-          <p className="text-sm text-muted-foreground">Enter your email and password below to login</p>
+          <h2 className="text-3xl font-bold tracking-tight text-white">Admin Login</h2>
+          <p className="text-sm text-gray-300">Enter your email and password below to login</p>
         </div>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700 text-start">Email or Username</label>
+            <label className="text-sm font-medium text-white text-start">Email or Username</label>
             <input
               type="text"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="input input-bordered px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="px-3 py-2 rounded-md border border-white/30 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              style={{ backgroundColor: '#111827' }}
               placeholder="you@example.com or username"
               required
             />
           </div>
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-gray-700 text-start">Password</label>
-              <NavLink to="/forgot-password" className="text-sm text-gray-600 hover:text-black">Forgot password?</NavLink>
+              <label className="text-sm font-medium text-white text-start">Password</label>
+              <NavLink to="/forgot-password" className="text-sm text-blue-400 hover:text-blue-300">Forgot password?</NavLink>
             </div>
             <div className="relative w-full">
               <input
@@ -85,14 +86,15 @@ export default function Login() {
                 onChange={handleInputChange}
                 placeholder="••••••••"
                 required
-                className="w-full input input-bordered px-3 py-2 pr-10 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 pr-10 rounded-md border border-white/30 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ backgroundColor: '#111827' }}
               />
 
               <button
                 type="button"
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 onClick={() => setShowPassword((s) => !s)}
-                className="absolute inset-y-0 right-2 flex items-center justify-center text-gray-500 hover:text-gray-900 focus:outline-none"
+                className="absolute inset-y-0 right-2 flex items-center justify-center text-gray-400 hover:text-white focus:outline-none"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -100,7 +102,7 @@ export default function Login() {
           </div>
           <button
             type="submit"
-            className="w-full bg-black text-white py-2 rounded-md font-semibold hover:bg-gray-900 transition flex items-center justify-center cursor-pointer"
+            className="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition flex items-center justify-center cursor-pointer"
             disabled={loading}
           >
             {loading ? (
@@ -110,11 +112,11 @@ export default function Login() {
             )}
           </button>
         </form>
-        <p className="text-sm text-center text-gray-500">
-          Don't have an account? <NavLink to="/dashsignup" className="underline hover:text-black">Sign Up</NavLink>
+        <p className="text-sm text-center text-gray-300">
+          Don't have an account? <NavLink to="/dashsignup" className="underline text-blue-400 hover:text-blue-300">Sign Up</NavLink>
         </p>
         <p className="text-sm text-center mt-2">
-          <NavLink to="/user-login" className="underline text-cyan-700 hover:text-cyan-900 font-medium">
+          <NavLink to="/user-login" className="underline text-blue-400 hover:text-blue-300 font-medium">
             Login as user
           </NavLink>
         </p>

@@ -19,6 +19,8 @@ import {
   MapPin,
   Cake,
   ChevronRight,
+  MessageCircle,
+  Star,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -157,7 +159,7 @@ export default function UserDashboard() {
   /* ── secondary fields: everything NOT in primary card ── */
   const PRIMARY_KEYS = new Set(["serial_no", "name", "email", "phone_number", "username"]);
   const SKIP_KEYS    = new Set([
-    "_id", "__v", "gym_id", "subscriptions", "image",
+    "_id", "__v", "gym_id", "subscriptions", "image", "role",
     "is_approved", "is_banned", "createdAt", "updatedAt", "password",
   ]);
 
@@ -282,6 +284,63 @@ export default function UserDashboard() {
             </div>
           )}
         </motion.div>
+
+        {/* ══════════════════════════════
+            SOCIAL SHARE CARDS
+        ══════════════════════════════ */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* WhatsApp Group */}
+          <motion.a
+            href="https://chat.whatsapp.com/FXLSrBUeHVrCh1ucnQkG9G"
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.05 }}
+            className="group rounded-2xl border border-white/5 bg-gradient-to-br from-emerald-900/20 via-zinc-900/50 to-zinc-900/30 backdrop-blur-xl p-5 hover:border-emerald-500/30 transition-all cursor-pointer"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-500/20 transition-all">
+                <MessageCircle className="w-6 h-6 text-emerald-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-black uppercase tracking-wider text-white mb-0.5">
+                  Join Community
+                </h3>
+                <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">
+                  WhatsApp Group
+                </p>
+              </div>
+              <ChevronRight className="w-5 h-5 text-zinc-600 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+            </div>
+          </motion.a>
+
+          {/* Google Review */}
+          <motion.a
+            href="https://maps.app.goo.gl/mXko6tsbzYk3FUCK6?g_st=ac"
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.1 }}
+            className="group rounded-2xl border border-white/5 bg-gradient-to-br from-yellow-900/20 via-zinc-900/50 to-zinc-900/30 backdrop-blur-xl p-5 hover:border-yellow-500/30 transition-all cursor-pointer"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-yellow-500/20 transition-all">
+                <Star className="w-6 h-6 text-yellow-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-black uppercase tracking-wider text-white mb-0.5">
+                  Rate Us
+                </h3>
+                <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">
+                  Google Review
+                </p>
+              </div>
+              <ChevronRight className="w-5 h-5 text-zinc-600 group-hover:text-yellow-400 group-hover:translate-x-1 transition-all" />
+            </div>
+          </motion.a>
+        </div>
 
         {/* ══════════════════════════════
             INFO CARDS GRID

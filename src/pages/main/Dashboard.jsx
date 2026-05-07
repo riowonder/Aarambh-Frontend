@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { Menu, Search, Bell } from "lucide-react";
+import { Menu, Search, Bell, Users, Plus } from "lucide-react";
 import Sidebar from "../../components/Sidebar";
 import NewFieldModal from "./NewField";
 import AddMemberModal from "../../components/AddMemberModal";
@@ -291,34 +291,82 @@ export default function Dashboard() {
         </div>
 
         {/* ===============================================
+            MEMBERS SECTION HEADER - Modern Design
+            =============================================== */}
+        <div className="bg-gradient-to-br from-zinc-900 via-zinc-900/95 to-zinc-800 rounded-[2rem] border border-white/10 p-5 sm:p-6 shadow-2xl">
+          
+          {/* MOBILE VIEW */}
+          <div className="sm:hidden space-y-4">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-black uppercase italic tracking-tight text-white">Members</h2>
+                  <p className="text-[9px] uppercase tracking-[0.3em] font-bold text-zinc-500">Manage your gym</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Action Buttons */}
+            <div className="grid grid-cols-2 gap-3">
+              <button 
+                onClick={() => setShowAddMember(true)}
+                className="group bg-white hover:bg-zinc-100 text-black px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg"
+              >
+                <Plus className="w-4 h-4" />
+                Add Member
+              </button>
+              <button 
+                onClick={() => setShowSearchModal(true)}
+                className="group bg-zinc-800 hover:bg-zinc-700 border border-white/10 text-white px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95"
+              >
+                <Search className="w-4 h-4" />
+                Search
+              </button>
+            </div>
+          </div>
+
+          {/* DESKTOP VIEW */}
+          <div className="hidden sm:flex items-center justify-between">
+            {/* Left: Title with icon */}
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                <Users className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-black uppercase italic tracking-tight text-white">Members</h2>
+                <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-zinc-500">Manage your gym community</p>
+              </div>
+            </div>
+
+            {/* Right: Action Buttons */}
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setShowSearchModal(true)}
+                className="group bg-zinc-800 hover:bg-zinc-700 border border-white/10 text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 transition-all active:scale-95"
+              >
+                <Search className="w-4 h-4" />
+                Search Members
+              </button>
+              <button 
+                onClick={() => setShowAddMember(true)}
+                className="group bg-white hover:bg-zinc-100 text-black px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 transition-all active:scale-95 shadow-lg"
+              >
+                <Plus className="w-4 h-4" />
+                Add New Member
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ===============================================
             MEMBERS TABLE SECTION
             Displays list of all members with their details
             =============================================== */}
-        <div className="bg-white rounded-xl p-4 sm:p-6">
-
-          {/* MOBILE VIEW - Header and search/add buttons for small screens */}
-          <div className="sm:hidden mb-4">
-            <h2 className="text-xl font-extrabold tracking-tight bg-zinc-900/80 backdrop-blur-2xl border border-white/10 text-white px-4 py-2 rounded-[2rem] mb-3 font-montserrat italic uppercase">MEMBERS</h2>
-            <div className="flex flex-col gap-2">
-              <button className="bg-black text-white px-3 py-2 rounded text-sm font-semibold flex items-center justify-center gap-1 cursor-pointer" onClick={() => setShowSearchModal(true)}>
-                <Search className="w-4 h-4" />Search Members
-              </button>
-              <button className="bg-white border-2 border-black px-3 py-2 rounded text-sm font-semibold cursor-pointer" onClick={() => setShowAddMember(true)}>+ Add New Member</button>
-            </div>
-          </div>
-
-          {/* DESKTOP VIEW - Header with title and action buttons for larger screens */}
-          <div className="hidden sm:flex items-center justify-between mb-4">
-            <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight bg-zinc-900/50 backdrop-blur-2xl border border-white/10 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-[2rem] font-montserrat italic uppercase">MEMBERS</h2>
-            <div className="flex gap-2">
-              <button className="bg-white border-2 border-black px-3 py-1 rounded text-sm font-semibold cursor-pointer" onClick={() => setShowAddMember(true)}>+ Add New Member</button>
-              <button className="bg-black text-white px-3 py-1 rounded text-sm font-semibold flex items-center gap-1 cursor-pointer" onClick={() => setShowSearchModal(true)}>
-                <Search className="w-4 h-4" />Search
-              </button>
-            </div>
-          </div>
-
-          {/* TABLE CONTENT - Shows member data in table or card format based on screen size */}
+        <div className="bg-white rounded-xl p-4 sm:p-6">          {/* TABLE CONTENT - Shows member data in table or card format based on screen size */}
           <div className="w-full overflow-x-auto">
             {/* LOADING STATE - Skeleton table while fetching member data */}
             {isMembersLoading ? (

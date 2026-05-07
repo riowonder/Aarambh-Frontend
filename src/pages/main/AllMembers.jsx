@@ -36,6 +36,8 @@ export default function AllMembers() {
       return {
         members: response.data.members || [],
         totalMembers: response.data.totalMembers || 0,
+        activeCount: response.data.activeCount || 0,
+        inactiveCount: response.data.inactiveCount || 0,
         totalPages: 1,
         currentPage: 1
       };
@@ -44,6 +46,8 @@ export default function AllMembers() {
       return {
         members: response.data.members || [],
         totalMembers: response.data.totalMembers || 0,
+        activeCount: response.data.activeCount || 0,
+        inactiveCount: response.data.inactiveCount || 0,
         totalPages: response.data.totalPages || 1,
         currentPage: response.data.currentPage || 1
       };
@@ -65,9 +69,34 @@ export default function AllMembers() {
   // ============================================================
   const members = data?.members || [];
   const totalMembers = data?.totalMembers || 0;
+  const activeCount = data?.activeCount || 0;
+  const inactiveCount = data?.inactiveCount || 0;
   const totalPages = data?.totalPages || 1;
   const loading = isLoading;
   const isSearching = isFetching && !!searchQuery.trim();
+
+  // Calculate displayed count based on filter
+  const getDisplayedCount = () => {
+    if (statusFilter === 'active') return activeCount;
+    if (statusFilter === 'inactive') return inactiveCount;
+    return totalMembers;
+  };
+
+  const getCountLabel = () => {
+    if (statusFilter === 'active') return 'Active Members';
+    if (statusFilter === 'inactive') return 'Inactive Members';
+    return 'Total Members';
+  };
+
+  const getCounterTheme = () => {
+    if (statusFilter === 'active') {
+      return 'bg-green-600 border-green-500/30';
+    }
+    if (statusFilter === 'inactive') {
+      return 'bg-red-600 border-red-500/30';
+    }
+    return 'bg-zinc-900 border-white/10';
+  };
 
   // ============================================================
   // EVENT HANDLERS
@@ -134,7 +163,7 @@ export default function AllMembers() {
           <AddMemberModal isOpen={showAddMember} onClose={() => setShowAddMember(false)} onSuccess={handleAddMemberSuccess} />
 
           {/* ========== HEADER SECTION ========== */}
-          {/* Back Button and Total Members */}
+          {/* Back Button and Member Counter */}
           <div className="flex sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <button
               className="flex items-center gap-2 text-gray-700 hover:text-black font-semibold px-2 sm:px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-100 transition cursor-pointer"
@@ -146,8 +175,14 @@ export default function AllMembers() {
               <span className="hidden sm:inline">Back to Dashboard</span>
             </button>
 
-            <div className="text-sm sm:text-lg font-semibold text-green-800 bg-green-100 px-2 sm:px-4 py-2 rounded-lg border-2 border-green-300 shadow-md">
-              Total Members: <span className="font-bold text-green-900">{totalMembers}</span>
+            {/* Modern Member Counter - Matches Dashboard Theme */}
+            <div className={`rounded-2xl border px-4 sm:px-6 py-3 shadow-xl ${getCounterTheme()}`}>
+              <div className="flex items-center gap-3">
+                <div>
+                  <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] font-bold text-white/70">{getCountLabel()}</p>
+                  <p className="text-xl sm:text-2xl font-black text-white drop-shadow-lg">{getDisplayedCount()}</p>
+                </div>
+              </div>
             </div>
           </div>
 
