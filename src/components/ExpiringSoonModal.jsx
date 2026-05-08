@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import ShowMemberModal from './ShowMemberModal';
+import { computeDaysLeft } from '../utils/dates';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -40,7 +41,7 @@ const Avatar = ({ image, name }) => {
 
 const MemberRow = ({ member, onClick }) => {
   const plan = member.subscriptions?.[0]?.plan || member.subscription_plan || 'N/A';
-  const days = member.days_left ?? 0;
+  const days = computeDaysLeft(member.subscriptions?.[0]?.start_date, member.subscriptions?.[0]?.end_date) ?? 0;
 
   return (
     <button

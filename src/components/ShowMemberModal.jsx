@@ -166,7 +166,7 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
                       <>
                         <div className="flex items-baseline gap-2 text-sm sm:text-base">
                           <span className="font-semibold capitalize text-gray-700 min-w-fit">Serial no:</span>
-                          <span className="text-gray-900 break-words">{format(details.serial_no, 'serial_no')}</span>
+                          <span className="text-gray-900 break-words">{format(details.serial_no || details.roll_no, 'serial_no')}</span>
                         </div>
                         <div className="flex items-baseline gap-2 text-sm sm:text-base">
                           <span className="font-semibold capitalize text-gray-700 min-w-fit">Name:</span>

@@ -23,6 +23,7 @@ import {
   Star,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { computeDaysLeft } from '../../utils/dates';
 
 /* ─────────────────────────────────────────────
    Plan tier → card theme
@@ -145,9 +146,7 @@ export default function UserDashboard() {
   const totalDays = start && end ? Math.max(0, Math.ceil((end - start) / 86400000)) : 0;
   const elapsed   = start ? Math.max(0, Math.min(Math.ceil((now - start) / 86400000), totalDays)) : 0;
   const percent   = totalDays > 0 ? Math.round((elapsed / totalDays) * 100) : 100;
-  const daysLeft  = typeof sub?.days_left === "number"
-    ? Math.max(0, sub.days_left)
-    : end ? Math.max(0, Math.ceil((end - now) / 86400000)) : 0;
+  const daysLeft  = computeDaysLeft(sub?.start_date, sub?.end_date) ?? 0;
 
   const planName = sub?.plan || "";
   const theme    = getPlanTheme(planName);
@@ -365,7 +364,7 @@ export default function UserDashboard() {
             </div>
 
             <div className="space-y-3">
-              <PrimaryRow icon={<Hash      className="w-3.5 h-3.5" />} label="Serial No"   value={fmtVal(u.serial_no)} />
+              <PrimaryRow icon={<Hash      className="w-3.5 h-3.5" />} label="Serial No"   value={fmtVal(u.serial_no || u.roll_no)} />
               <PrimaryRow icon={<UserIcon  className="w-3.5 h-3.5" />} label="Name"        value={fmtVal(u.name)} />
               {/* <PrimaryRow icon={<AtSign    className="w-3.5 h-3.5" />} label="Username"    value={fmtVal(u.username || u.email?.split("@")[0])} /> */}
               <PrimaryRow icon={<Phone     className="w-3.5 h-3.5" />} label="Phone"       value={fmtVal(u.phone_number)} />

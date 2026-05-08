@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import MemberCard from '../../components/MemberCard';
+import { computeDaysLeft } from '../../utils/dates';
 
 export default function AllMembers() {
   // ============================================================
@@ -302,7 +303,7 @@ export default function AllMembers() {
                           <td className="px-4 py-3 text-left text-gray-900">{member.name}</td>
                           <td className="px-4 py-3 text-left text-gray-900">{member.subscriptions?.[0]?.plan || 'N/A'}</td>
                           <td className="px-4 py-3 text-left text-gray-900">
-                            {formatDaysLeft(member.days_left)}
+                            {formatDaysLeft(computeDaysLeft(member.subscriptions?.[0]?.start_date, member.subscriptions?.[0]?.end_date))}
                           </td>
                           <td className="px-4 py-3 text-left text-gray-900">{member.phone_number || 'N/A'}</td>
                         </tr>

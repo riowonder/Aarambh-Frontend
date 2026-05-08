@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "../../context/UserContext";
 import { motion } from "motion/react";
+import { computeDaysLeft } from '../../utils/dates';
 import { Calendar, LogOut, ArrowLeft, Flame } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -191,9 +192,7 @@ export default function UserSubscriptions() {
               const totalDays = start && end ? Math.max(0, Math.ceil((end - start) / 86400000)) : 0;
               const elapsed = start ? Math.max(0, Math.min(Math.ceil((now - start) / 86400000), totalDays)) : 0;
               const percent = totalDays > 0 ? Math.round((elapsed / totalDays) * 100) : 100;
-              const daysLeft = typeof s.days_left === 'number'
-                ? Math.max(0, s.days_left)
-                : end ? Math.max(0, Math.ceil((end - now) / 86400000)) : 0;
+              const daysLeft = computeDaysLeft(s.start_date, s.end_date) ?? 0;
 
               const planName = s.plan || "Membership";
               const theme = getPlanTheme(planName);

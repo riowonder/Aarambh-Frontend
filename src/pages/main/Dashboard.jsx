@@ -12,6 +12,7 @@ import ShowMemberModal from "../../components/ShowMemberModal";
 import { toast } from "react-hot-toast";
 import SearchMembersModal from '../../components/SearchMembersModal';
 import Spinner, { CardSkeleton, TableSkeleton } from "../../components/Spinner";
+import { computeDaysLeft } from '../../utils/dates';
 import MemberCard from "../../components/MemberCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -264,14 +265,19 @@ export default function Dashboard() {
                         </span>
                       </span>
 
-                      <span className={`text-xs sm:text-sm ${item.days_left === 0
-                        ? "text-red-600 font-bold"
-                        : item.days_left <= 4
-                          ? "text-red-500 font-bold"
-                          : "text-yellow-700 font-bold"
-                        }`}>
-                        {item.days_left} {item.days_left === 1 ? "Day" : "Days"} left
-                      </span>
+                      {(() => {
+                        const days = computeDaysLeft(item.subscriptions?.[0]?.start_date, item.subscriptions?.[0]?.end_date) ?? 0;
+                        return (
+                          <span className={`text-xs sm:text-sm ${days === 0
+                            ? "text-red-600 font-bold"
+                            : days <= 4
+                              ? "text-red-500 font-bold"
+                              : "text-yellow-700 font-bold"
+                            }`}>
+                            {days} {days === 1 ? "Day" : "Days"} left
+                          </span>
+                        );
+                      })()}
                     </li>
                   ))}
                 </ul>
@@ -445,7 +451,7 @@ export default function Dashboard() {
                               <td className="px-4 py-3 text-left text-gray-900">{member.name}</td>
                               <td className="px-4 py-3 text-left text-gray-900">{member.subscriptions[0]?.plan || 'N/A'}</td>
                               <td className="px-4 py-3 text-left text-gray-900">
-                                {member.days_left}
+                                {computeDaysLeft(member.subscriptions?.[0]?.start_date, member.subscriptions?.[0]?.end_date) ?? 0}
                               </td>
                               <td className="px-4 py-3 text-left text-gray-900">{member.phone_number || 'N/A'}</td>
                             </tr>

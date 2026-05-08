@@ -6,6 +6,7 @@ import EditSubscriptionModal from '../../components/EditSubscriptionModal';
 import SubscriptionModal from '../../components/SubscriptionModal';
 import EditMemberModal from '../../components/EditMemberModal';
 import { useUser } from '../../context/UserContext';
+import { computeDaysLeft } from '../../utils/dates';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -285,7 +286,10 @@ export default function ApprovalRequests() {
                             <DetailRow label="Amount" value={req.subscription.amount != null ? req.subscription.amount : '0'} />
                             <DetailRow label="Start Date" value={formatDate(req.subscription.start_date)} />
                             <DetailRow label="End Date" value={formatDate(req.subscription.end_date)} />
-                            <DetailRow label="Total Days" value={req.subscription.days_left != null ? `${req.subscription.days_left} days` : null} />
+                            <DetailRow label="Total Days" value={(() => {
+                              const d = computeDaysLeft(req.subscription.start_date, req.subscription.end_date);
+                              return d == null ? null : `${d} days`;
+                            })()} />
                           </div>
                         ) : (
                           <div className="mt-3 border-t pt-3">

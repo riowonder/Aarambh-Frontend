@@ -28,6 +28,8 @@ const Avatar = ({ image, name }) => {
   );
 };
 
+import { computeDaysLeft } from '../utils/dates';
+
 const fmtDays = (d) => {
   if (typeof d === "string") return d;
   if (typeof d === "number") return `${d}d left`;
@@ -35,8 +37,10 @@ const fmtDays = (d) => {
 };
 
 export default function MemberCard({ member, onClick, label }) {
-  const plan      = member.subscriptions?.[0]?.plan;
-  const rightText = label ?? fmtDays(member.days_left);
+  const plan = member.subscriptions?.[0]?.plan;
+  const sub = member.subscriptions?.[0] || null;
+  const days = sub ? computeDaysLeft(sub.start_date, sub.end_date) : null;
+  const rightText = label ?? fmtDays(days);
 
   return (
     <div
