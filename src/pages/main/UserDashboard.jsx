@@ -105,8 +105,8 @@ export default function UserDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userMail = user?.email;
-    if (!userMail) return;
+    const userId = user?.userId;
+    if (!userId) return;
     const controller = new AbortController();
     (async () => {
       try {
@@ -117,7 +117,7 @@ export default function UserDashboard() {
           credentials: "include",
           signal: controller.signal,
           headers: { Accept: "application/json", "Content-Type": "application/json" },
-          body: JSON.stringify({ email: userMail }),
+          body: JSON.stringify({ userId }),
         });
         if (!res.ok) throw new Error(`${res.status}`);
         setProfile(await res.json());
