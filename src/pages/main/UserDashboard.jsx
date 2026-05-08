@@ -367,7 +367,7 @@ export default function UserDashboard() {
             <div className="space-y-3">
               <PrimaryRow icon={<Hash      className="w-3.5 h-3.5" />} label="Serial No"   value={fmtVal(u.serial_no)} />
               <PrimaryRow icon={<UserIcon  className="w-3.5 h-3.5" />} label="Name"        value={fmtVal(u.name)} />
-              <PrimaryRow icon={<AtSign    className="w-3.5 h-3.5" />} label="Username"    value={fmtVal(u.username || u.email?.split("@")[0])} />
+              {/* <PrimaryRow icon={<AtSign    className="w-3.5 h-3.5" />} label="Username"    value={fmtVal(u.username || u.email?.split("@")[0])} /> */}
               <PrimaryRow icon={<Phone     className="w-3.5 h-3.5" />} label="Phone"       value={fmtVal(u.phone_number)} />
               <PrimaryRow icon={<Mail      className="w-3.5 h-3.5" />} label="Email"       value={fmtVal(u.email)} isEmail />
             </div>

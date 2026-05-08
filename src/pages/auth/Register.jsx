@@ -18,7 +18,7 @@ const plans = [
 
 const INITIAL_FORM = {
   name: "", email: "", phone: "", address: "",
-  dob: "", age: "", aadhar: "", blood_group: "",
+  dob: "", age: "", gender: "", aadhar: "", blood_group: "",
   image: null, subscription_plan: "Custom", start_date: "",
 };
 
@@ -37,6 +37,22 @@ export default function Register() {
   const { login }               = useUser();
   const navigate                = useNavigate();
 
+  const calculateAge = (dob) => {
+    if (!dob) return "";
+
+    const birthDate = new Date(dob);
+    const today = new Date();
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const hasBirthdayPassed =
+      today.getMonth() > birthDate.getMonth() ||
+      (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
+
+    if (!hasBirthdayPassed) age -= 1;
+
+    return age > 0 ? age : "";
+  };
+
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
     // Clear error on change
@@ -51,6 +67,10 @@ export default function Register() {
         e.target.value = "";
         return;
       }
+    }
+    if (name === "dob") {
+      setFormData((prev) => ({ ...prev, dob: value, age: calculateAge(value) }));
+      return;
     }
     setFormData((prev) => ({ ...prev, [name]: type === "file" ? files[0] : value }));
   };
@@ -228,13 +248,18 @@ export default function Register() {
                       </div>
                       {errors.dob && <p className="text-[10px] text-red-400 ml-2">{errors.dob}</p>}
                     </div>
-                    {/* Age */}
+                    {/* Gender */}
                     <div className="space-y-1.5">
-                      <label className={LABEL_CLS}>Age</label>
+                      <label className={LABEL_CLS}>Gender</label>
                       <div className="relative">
                         <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" />
-                        <input name="age" type="number" min="1" value={formData.age} onChange={handleInputChange}
-                          placeholder="e.g. 25" className={INPUT_CLS} />
+                        <select name="gender" value={formData.gender} onChange={handleInputChange}
+                          className={`${INPUT_CLS} appearance-none bg-zinc-800/50`}>
+                          <option value="">Select Gender</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
+                        </select>
                       </div>
                     </div>
                     {/* Aadhar */}
