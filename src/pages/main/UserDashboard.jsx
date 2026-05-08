@@ -23,7 +23,7 @@ import {
   Star,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { computeDaysLeft } from '../../utils/dates';
+import { computeDaysLeft, isYetToStart } from '../../utils/dates';
 
 /* ─────────────────────────────────────────────
    Plan tier → card theme
@@ -147,10 +147,11 @@ export default function UserDashboard() {
   const elapsed   = start ? Math.max(0, Math.min(Math.ceil((now - start) / 86400000), totalDays)) : 0;
   const percent   = totalDays > 0 ? Math.round((elapsed / totalDays) * 100) : 100;
   const daysLeft  = computeDaysLeft(sub?.start_date, sub?.end_date) ?? 0;
+  const yetToStart = isYetToStart(sub?.start_date);
 
   const planName = sub?.plan || "";
   const theme    = getPlanTheme(planName);
-  const urgency  = urgencyLabel(daysLeft);
+  const urgency  = yetToStart ? { text: "Not started", color: "text-zinc-300", bg: "bg-zinc-700/10 border-zinc-700/20" } : urgencyLabel(daysLeft);
 
   /* ── user object ── */
   const u = profile?.user || user || {};
@@ -250,7 +251,7 @@ export default function UserDashboard() {
               {/* Days left — hero number */}
               <div className="mb-1">
                 <span className={`text-[72px] md:text-[88px] font-black leading-none tracking-tighter ${theme.daysColor}`}>
-                  {daysLeft}
+                  {yetToStart ? "Yet to start" : daysLeft}
                 </span>
               </div>
               <p className={`text-xs font-black uppercase tracking-[0.4em] mb-6 ${theme.accent} opacity-70`}>

@@ -218,8 +218,8 @@ export default function EditMemberModal({ isOpen, onClose, member, onSave }) {
                 </label>
                 <input
                   type="text"
-                  name="roll_no" // Added name attribute
-                  value={form.roll_no || ""}
+                  name="serial_no" // Changed name attribute
+                  value={form.serial_no || ""}
                   onChange={handleInputChange} // Changed to handleInputChange
                   className="border rounded px-3 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-black transition"
                   placeholder="Enter serial no"
@@ -278,7 +278,7 @@ export default function EditMemberModal({ isOpen, onClose, member, onSave }) {
             {/* Dynamic fields from member object */}
             {Object.keys(member).map((key) => {
               // Skip certain fields that shouldn't be edited or are handled explicitly
-              if (EXCLUDED_FIELDS.includes(key) || ['name', 'roll_no', 'age', 'phone_number', 'height', 'weight', 'gender', 'address', 'dob'].includes(key)) {
+              if (EXCLUDED_FIELDS.includes(key) || ['name', 'serial_no', 'age', 'phone_number', 'height', 'weight', 'gender', 'address', 'dob'].includes(key)) {
                 return null;
               }
 
