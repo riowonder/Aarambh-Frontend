@@ -10,10 +10,10 @@ import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 const plans = [
-  { name: "1 Month",  apiName: "1 Month",  price: "₹1,499" },
-  { name: "3 Month",  apiName: "3 Months", price: "₹2,999" },
-  { name: "6 Month",  apiName: "6 Months", price: "₹4,999" },
-  { name: "1 Year",   apiName: "1 Year",   price: "₹8,499" },
+  { name: "1 Month",  apiName: "1 Month",  amount: "₹1,499" },
+  { name: "3 Month",  apiName: "3 Months", amount: "₹2,999" },
+  { name: "6 Month",  apiName: "6 Months", amount: "₹4,999" },
+  { name: "1 Year",   apiName: "1 Year",   amount: "₹8,499" },
 ];
 
 const INITIAL_FORM = {
@@ -121,7 +121,7 @@ export default function Register() {
           if (userId) {
             await axios.post(
               `${import.meta.env.VITE_API_BASE_URL}/member/${userId}/subscription`,
-              { plan: data.subscription_plan, amount: 0, extra_days: 0, start_date: data.start_date },
+              { plan: data.subscription_plan, amount: data.amount, extra_days: 0, start_date: data.start_date },
               { withCredentials: true }
             );
           }
@@ -328,7 +328,7 @@ export default function Register() {
                               </div>
                               <div className="text-right">
                                 <p className={`text-[10px] font-black uppercase tracking-widest mb-1 ${isSelected ? "text-zinc-500" : "text-zinc-500"}`}>Starting at</p>
-                                <p className={`text-xl font-black ${isSelected ? "text-black" : "text-white"}`}>{p.price}</p>
+                                <p className={`text-xl font-black ${isSelected ? "text-black" : "text-white"}`}>{p.amount}</p>
                               </div>
                             </button>
                           );

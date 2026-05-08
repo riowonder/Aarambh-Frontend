@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import Sidebar from '../../components/Sidebar';
+import EditSubscriptionModal from '../../components/EditSubscriptionModal';
+import EditMemberModal from '../../components/EditMemberModal';
 import { useUser } from '../../context/UserContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -38,6 +40,10 @@ export default function ApprovalRequests() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState(null);
+  const [isSubEditOpen, setIsSubEditOpen] = useState(false);
+  const [editSubscription, setEditSubscription] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editMember, setEditMember] = useState(null);
   const { user } = useUser();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -218,7 +224,36 @@ export default function ApprovalRequests() {
                       }`}
                     >
                       <div className="px-4 sm:px-5 pb-4 border-t border-gray-100">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mt-3 mb-1">Registration Details</p>
+                        <div className="flex items-center justify-between mt-3 mb-1">
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Registration Details</p>
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditMember(req);
+                                setIsEditOpen(true);
+                              }}
+                              className="text-xs font-semibold text-gray-700 hover:text-gray-900 bg-gray-100 px-3 py-1 rounded-lg border border-gray-100"
+                            >
+                              Edit Member
+                            </button>
+
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (req.subscription) {
+                                  setEditSubscription(req.subscription);
+                                  setIsSubEditOpen(true);
+                                } else {
+                                  toast.error('No subscription to edit for this user');
+                                }
+                              }}
+                              className="text-xs font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1 rounded-lg border border-blue-100"
+                            >
+                              Edit Subscription
+                            </button>
+                          </div>
+                        </div>
                         <DetailRow label="Full Name"      value={req.name} />
                         <DetailRow label="Email"          value={req.email} />
                         <DetailRow label="Phone"          value={req.phone_number} />
@@ -236,6 +271,23 @@ export default function ApprovalRequests() {
                             : null
                         } />
 
+                        {/* Subscription details (new) */}
+                        {req.subscription ? (
+                          <div className="mt-3 border-t pt-3">
+                            <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2">Subscription</p>
+                            <DetailRow label="Plan" value={req.subscription.plan} />
+                            <DetailRow label="Status" value={req.subscription.status} />
+                            <DetailRow label="Amount" value={req.subscription.amount != null ? req.subscription.amount : '0'} />
+                            <DetailRow label="Start Date" value={formatDate(req.subscription.start_date)} />
+                            <DetailRow label="End Date" value={formatDate(req.subscription.end_date)} />
+                            <DetailRow label="Total Days" value={req.subscription.days_left != null ? `${req.subscription.days_left} days` : null} />
+                          </div>
+                        ) : (
+                          <div className="mt-3 border-t pt-3">
+                            <DetailRow label="Subscription" value={"No Subscription Choosen"} />
+                          </div>
+                        )}
+
                         {/* Reject button inside dropdown */}
                         <button
                           onClick={(e) => handleReject(e, req._id)}
@@ -252,6 +304,32 @@ export default function ApprovalRequests() {
           )}
         </div>
       </div>
+      {/* Edit Member Modal instance */}
+      <EditSubscriptionModal
+        isOpen={isSubEditOpen}
+        onClose={() => {
+          setIsSubEditOpen(false);
+          setEditSubscription(null);
+        }}
+        subscription={editSubscription}
+        onSuccess={() => {
+          // refresh full list from server to ensure derived fields (days_left, end_date) are accurate
+          fetchRequests();
+        }}
+      />
+      <EditMemberModal
+        isOpen={isEditOpen}
+        onClose={() => {
+          setIsEditOpen(false);
+          setEditMember(null);
+        }}
+        member={editMember}
+        onSave={(updatedMember) => {
+          setRequests((prev) => prev.map((r) => (r._id === updatedMember._id ? { ...r, ...updatedMember } : r)));
+          setIsEditOpen(false);
+          setEditMember(null);
+        }}
+      />
     </div>
   );
 }
