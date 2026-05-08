@@ -157,7 +157,7 @@ export default function UserDashboard() {
   const u = profile?.user || user || {};
 
   /* ── secondary fields: everything NOT in primary card ── */
-  const PRIMARY_KEYS = new Set(["serial_no", "name", "email", "phone_number", "username"]);
+  const PRIMARY_KEYS = new Set(["serial_no", "roll_no", "name", "email", "phone_number", "username"]);
   const SKIP_KEYS    = new Set([
     "_id", "__v", "gym_id", "subscriptions", "image", "role",
     "is_approved", "is_banned", "createdAt", "updatedAt", "password",
