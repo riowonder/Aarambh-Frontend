@@ -39,7 +39,8 @@ function AddSubscriptionForm({ memberId, onSuccess, onCancel }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  e.stopPropagation();
     setLoading(true);
     setError('');
     try {
@@ -67,7 +68,7 @@ function AddSubscriptionForm({ memberId, onSuccess, onCancel }) {
   const labelCls = 'block mb-1.5 text-xs font-semibold text-gray-600 uppercase tracking-wide';
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden flex-1">
+  <form onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()} className="flex flex-col overflow-hidden flex-1">
       <div className="px-5 py-4 overflow-y-auto flex-1 space-y-4">
         <div>
           <label className={labelCls}>Plan</label>
@@ -103,13 +104,14 @@ function AddSubscriptionForm({ memberId, onSuccess, onCancel }) {
         <button
           type="submit"
           disabled={loading}
+          onClick={(e) => e.stopPropagation()}
           className="flex-1 py-2.5 bg-black text-white text-sm font-semibold rounded-xl cursor-pointer hover:bg-gray-800 transition disabled:opacity-50"
         >
           {loading ? 'Saving…' : 'Save'}
         </button>
         <button
           type="button"
-          onClick={onCancel}
+          onClick={(e) => { e.stopPropagation(); onCancel(); }}
           className="flex-1 py-2.5 bg-gray-100 text-gray-700 text-sm font-semibold rounded-xl cursor-pointer hover:bg-gray-200 transition"
         >
           Cancel
@@ -159,7 +161,7 @@ function SubscriptionCard({ sub, onEdit, onDelete }) {
 
 // ─── SubscriptionModal ────────────────────────────────────────────────────────
 
-export default function SubscriptionModal({ isOpen, onClose, memberId, onSuccess }) {
+export default function SubscriptionModal({ isOpen, onClose, memberId, onSuccess, initialShowAdd = false }) {
   const [subscriptions, setSubscriptions]       = useState([]);
   const [filter, setFilter]                     = useState('all');
   const [showAdd, setShowAdd]                   = useState(false);
@@ -168,8 +170,12 @@ export default function SubscriptionModal({ isOpen, onClose, memberId, onSuccess
   const [loading, setLoading]                   = useState(false);
 
   useEffect(() => {
-    if (isOpen) fetchSubscriptions();
-  }, [isOpen, filter]);
+    if (isOpen) {
+      fetchSubscriptions();
+      // If parent requested opening the Add sheet directly, do it.
+      if (initialShowAdd) setShowAdd(true);
+    }
+  }, [isOpen, filter, initialShowAdd]);
 
   const fetchSubscriptions = async () => {
     try {

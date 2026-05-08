@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import Sidebar from '../../components/Sidebar';
 import EditSubscriptionModal from '../../components/EditSubscriptionModal';
+import SubscriptionModal from '../../components/SubscriptionModal';
 import EditMemberModal from '../../components/EditMemberModal';
 import { useUser } from '../../context/UserContext';
 import { useQueryClient } from '@tanstack/react-query';
@@ -42,6 +43,8 @@ export default function ApprovalRequests() {
   const [expandedId, setExpandedId] = useState(null);
   const [isSubEditOpen, setIsSubEditOpen] = useState(false);
   const [editSubscription, setEditSubscription] = useState(null);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const [subscriptionMemberId, setSubscriptionMemberId] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editMember, setEditMember] = useState(null);
   const { user } = useUser();
@@ -245,7 +248,9 @@ export default function ApprovalRequests() {
                                   setEditSubscription(req.subscription);
                                   setIsSubEditOpen(true);
                                 } else {
-                                  toast.error('No subscription to edit for this user');
+                                  // Open SubscriptionModal with Add sheet for this member
+                                  setSubscriptionMemberId(req._id);
+                                  setShowSubscriptionModal(true);
                                 }
                               }}
                               className="text-xs font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1 rounded-lg border border-blue-100"
@@ -329,6 +334,13 @@ export default function ApprovalRequests() {
           setIsEditOpen(false);
           setEditMember(null);
         }}
+      />
+      <SubscriptionModal
+        isOpen={showSubscriptionModal}
+        onClose={() => { setShowSubscriptionModal(false); setSubscriptionMemberId(null); fetchRequests(); }}
+        memberId={subscriptionMemberId}
+        initialShowAdd={true}
+        onSuccess={() => { setShowSubscriptionModal(false); setSubscriptionMemberId(null); fetchRequests(); }}
       />
     </div>
   );
