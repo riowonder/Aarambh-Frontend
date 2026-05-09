@@ -23,19 +23,20 @@ export function computeDaysLeft(startDateStr, endDateStr) {
       startMid.setHours(0,0,0,0);
       // If start is in future, return total days between end and start (full duration)
       if (nowMid < startMid) {
-        const totalDays = Math.ceil((endMid - startMid) / dayMs);
+        // inclusive: count both start and end days
+        const totalDays = Math.ceil((endMid - startMid) / dayMs) + 1;
         return Math.max(0, totalDays);
       }
       // Otherwise compute days left from now to end
       const diffMs = endMid - nowMid;
-      const days = Math.ceil(diffMs / dayMs);
+      const days = Math.ceil(diffMs / dayMs) + 1; // inclusive of today
       return Math.max(0, days);
     }
 
     // No startDate: compute days between now and endDate
-    const diffMs = endMid - nowMid;
-    const days = Math.ceil(diffMs / dayMs);
-    return Math.max(0, days);
+  const diffMs = endMid - nowMid;
+  const days = Math.ceil(diffMs / dayMs) + 1; // inclusive of today
+  return Math.max(0, days);
   }
 
   // If only startDate provided, compute days from now to startDate (negative means starts in future)

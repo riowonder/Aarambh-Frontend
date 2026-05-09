@@ -287,8 +287,17 @@ export default function ApprovalRequests() {
                             <DetailRow label="Start Date" value={formatDate(req.subscription.start_date)} />
                             <DetailRow label="End Date" value={formatDate(req.subscription.end_date)} />
                             <DetailRow label="Total Days" value={(() => {
-                              const d = computeDaysLeft(req.subscription.start_date, req.subscription.end_date);
-                              return d == null ? null : `${d} days`;
+                              const s = req.subscription?.start_date;
+                              const e = req.subscription?.end_date;
+                              if (!s || !e) return null;
+                              const start = new Date(s);
+                              const end = new Date(e);
+                              start.setHours(0,0,0,0);
+                              end.setHours(0,0,0,0);
+                              const dayMs = 1000 * 60 * 60 * 24;
+                              // inclusive count: difference in days + 1 (May 18..Jun 16 => 30)
+                              const diffDays = Math.floor((end - start) / dayMs) + 1;
+                              return `${Math.max(0, diffDays)} days`;
                             })()} />
                           </div>
                         ) : (

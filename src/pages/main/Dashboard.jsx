@@ -12,7 +12,7 @@ import ShowMemberModal from "../../components/ShowMemberModal";
 import { toast } from "react-hot-toast";
 import SearchMembersModal from '../../components/SearchMembersModal';
 import Spinner, { CardSkeleton, TableSkeleton } from "../../components/Spinner";
-import { computeDaysLeft } from '../../utils/dates';
+import { computeDaysLeft, isYetToStart } from '../../utils/dates';
 import MemberCard from "../../components/MemberCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -451,7 +451,9 @@ export default function Dashboard() {
                               <td className="px-4 py-3 text-left text-gray-900">{member.name}</td>
                               <td className="px-4 py-3 text-left text-gray-900">{member.subscriptions[0]?.plan || 'N/A'}</td>
                               <td className="px-4 py-3 text-left text-gray-900">
-                                {computeDaysLeft(member.subscriptions?.[0]?.start_date, member.subscriptions?.[0]?.end_date) ?? 0}
+                                {isYetToStart(member.subscriptions?.[0]?.start_date)
+                                  ? "Yet to start"
+                                  : (computeDaysLeft(member.subscriptions?.[0]?.start_date, member.subscriptions?.[0]?.end_date) ?? 0)}
                               </td>
                               <td className="px-4 py-3 text-left text-gray-900">{member.phone_number || 'N/A'}</td>
                             </tr>
