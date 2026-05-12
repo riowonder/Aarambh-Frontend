@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useUser } from "../../context/UserContext";
 import { Eye, EyeOff } from "lucide-react";
+import { Helmet } from 'react-helmet-async';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -52,6 +53,11 @@ export default function Login() {
   };
 
   return (
+    <>
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+  
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-900 overflow-hidden fixed top-0 left-0">
       <div className="w-full max-w-md bg-gray-900 border border-gray-700 rounded-xl shadow-lg p-8 flex flex-col gap-6">
         <div className="flex flex-col gap-2 text-center">
@@ -122,5 +128,8 @@ export default function Login() {
         </p>
       </div>
     </div>
+
+    </>
   );
 }
+

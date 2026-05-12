@@ -38,8 +38,8 @@ export default function UserRegister() {
             return;
         }
         if (name === 'image' && files[0]) {
-            if (files[0].size > 1 * 1024 * 1024) {
-                toast.error("Photo must be under 1 MB. Try compressing it or choosing a smaller image.");
+            if (files[0].size > 7 * 1024 * 1024) {
+                toast.error("Photo must be under 7 MB. Try compressing it or choosing a smaller image.");
                 e.target.value = "";
                 return;
             }
