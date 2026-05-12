@@ -2,6 +2,7 @@
 import Hero from "../../components/home-design/Hero";
 import Gallery from "../../components/home-design/Gallery";
 import Testimonials from "../../components/home-design/Testimonials";
+import AboutUs from "../../components/home-design/AboutUs";
 import Pricing from "../../components/home-design/Pricing";
 import Location from "../../components/home-design/Location";
 import LoginModal from "../../components/home-design/LoginModal";
@@ -30,6 +31,7 @@ export default function Home({ openLoginOnLoad = false }) {
       <Hero onOpenRegister={goToRegister} />
       <Gallery />
       <Testimonials />
+      <AboutUs />
       <Pricing onOpenRegister={goToRegister} />
       <Location />
 

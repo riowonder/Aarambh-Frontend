@@ -4,9 +4,6 @@
     <loc>https://aarambhfitness.in/</loc>
   </url>
   <url>
-    <loc>https://aarambhfitness.in/about</loc>
-  </url>
-  <url>
-    <loc>https://aarambhfitness.in/pricing</loc>
+    <loc>http://localhost:5173/user-register</loc>
   </url>
 </urlset>
