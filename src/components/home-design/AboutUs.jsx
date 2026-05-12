@@ -81,7 +81,7 @@ function MobileCardSlider() {
 
 export default function AboutUs() {
   return (
-    <section id="about" className="pt-1 pb-24 relative overflow-hidden bg-zinc-950">
+    <section id="about" className="pb-24 relative overflow-hidden bg-zinc-950" style={{ paddingTop: "10px" }}>
 
       {/* Decorative glow — matches Testimonials section */}
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-zinc-500/5 blur-[120px] rounded-full translate-y-1/2 pointer-events-none" />

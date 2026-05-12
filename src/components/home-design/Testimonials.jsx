@@ -103,7 +103,7 @@ function ReviewCard({ review }) {
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-24 relative overflow-hidden bg-zinc-950">
+    <section id="testimonials" className="pt-24 pb-4 relative overflow-hidden bg-zinc-950">
       {/* Decorative Glow */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-zinc-500/5 blur-[120px] rounded-full -translate-y-1/2" />
       
