@@ -31,16 +31,22 @@ export default function Navbar({ onOpenLogin, onOpenRegister }) {
   return (
     <nav className="fixed top-0 w-full z-50 px-6 py-8 flex items-center justify-center pointer-events-none">
         {/* Notch Navbar - Always Centered */}
-      <motion.div 
-        initial={{ y: -100, opacity: 0 }}
-         animate={{ y: 0, opacity: 1 }}
-        className="bg-zinc-900/80 md:backdrop-blur-2xl border border-white/10 px-7 md:px-12 py-4 md:py-5 rounded-[2.5rem] flex items-center justify-center shadow-2xl shadow-black/50 group cursor-pointer pointer-events-auto"
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      >
-        <span className="text-xs md:text-base font-black tracking-[0.3em] md:tracking-[0.5em] uppercase text-white font-display italic group-hover:text-zinc-400 transition-colors whitespace-nowrap">
-          Aarambh Fitness
-        </span>
-      </motion.div>
+      <AnimatePresence>
+        {!isScrolled && (
+          <motion.div
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -100, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="bg-zinc-900/80 md:backdrop-blur-2xl border border-white/10 px-7 md:px-12 py-4 md:py-5 rounded-[2.5rem] flex items-center justify-center shadow-2xl shadow-black/50 group cursor-pointer pointer-events-auto"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            <span className="text-xs md:text-base font-black tracking-[0.3em] md:tracking-[0.5em] uppercase text-white font-display italic group-hover:text-zinc-400 transition-colors whitespace-nowrap">
+              Aarambh Fitness
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hamburger / Dropdown Trigger - Positioned Absolute Right */}
       <div 
