@@ -299,6 +299,9 @@ export default function Register() {
                         ? <p className="text-[10px] text-red-400 ml-2">{errors.image}</p>
                         : formData.image && <p className="text-[10px] text-zinc-500 ml-2 truncate">{formData.image.name}</p>
                       }
+                      <p className="text-[10px] text-amber-500/50 ml-2 mt-1 font-bold uppercase tracking-wide">
+                        Clear face photo required. No edited or social media pictures.
+                      </p>
                     </div>
                   </div>
 
