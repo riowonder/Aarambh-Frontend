@@ -7,6 +7,7 @@ export default function SearchMembersModal({ isOpen, onClose, onSelectMember }) 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const debounceRef = useRef();
+  const abortRef = useRef();
 
   useEffect(() => {
     if (!isOpen) {
@@ -15,27 +16,45 @@ export default function SearchMembersModal({ isOpen, onClose, onSelectMember }) 
       setError('');
       return;
     }
+
     if (query.trim() === '') {
       setResults([]);
       setError('');
+      setLoading(false);
       return;
     }
+
     setLoading(true);
     setError('');
+
+    // Clear previous debounce
     if (debounceRef.current) clearTimeout(debounceRef.current);
+
     debounceRef.current = setTimeout(() => {
-      searchMembers(query); 
+      // Cancel any in-flight request before firing a new one
+      if (abortRef.current) abortRef.current.abort();
+      abortRef.current = new AbortController();
+
+      searchMembers(query, abortRef.current.signal);
     }, 400);
-    return () => clearTimeout(debounceRef.current);
+
+    return () => {
+      clearTimeout(debounceRef.current);
+    };
     // eslint-disable-next-line
   }, [query, isOpen]);
 
-  const searchMembers = async (q) => {
+  const searchMembers = async (q, signal) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/member/search?q=${encodeURIComponent(q)}`, { withCredentials: true });
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/member/search?q=${encodeURIComponent(q)}`,
+        { withCredentials: true, signal }
+      );
       setResults(res.data.members || []);
       setLoading(false);
     } catch (err) {
+      // Ignore cancellation errors — they're expected when a newer request fires
+      if (axios.isCancel(err) || err?.code === 'ERR_CANCELED') return;
       setError('Error searching members');
       setLoading(false);
     }
@@ -56,22 +75,23 @@ export default function SearchMembersModal({ isOpen, onClose, onSelectMember }) 
             &times;
           </button>
         </div>
-        
+
         <div className="p-6 border-b border-[#ddd] bg-gray-50 shrink-0">
           <input
             type="text"
             className="w-full p-[0.8rem] border border-[#ddd] rounded-[5px] focus:outline-none focus:border-gray-500"
-            placeholder="Search by name, roll no, or any field..."
+            placeholder="Search by name, serial no, phone, gender, or address..."
             value={query}
             onChange={e => setQuery(e.target.value)}
             autoFocus
           />
         </div>
+
         <div className="p-6 overflow-y-auto custom-scrollbar flex-1" style={{ minHeight: '30vh' }}>
           {query.trim() === '' ? (
             <div className="text-center text-gray-400 py-8 text-lg select-none">
               🔍 <span className="font-semibold">Enter something to search for members!</span>
-              <div className="text-sm text-gray-300 mt-1">Try typing a name, roll number, or phone number.</div>
+              <div className="text-sm text-gray-300 mt-1">Try typing a name, serial number, or phone number.</div>
             </div>
           ) : loading ? (
             <div className="text-center text-gray-500 py-4 animate-pulse">Searching...</div>
@@ -88,16 +108,17 @@ export default function SearchMembersModal({ isOpen, onClose, onSelectMember }) 
                   onClick={() => onSelectMember && onSelectMember(member)}
                 >
                   <span className="font-semibold text-gray-900">
-                    {member.name} <span className="text-gray-500">({member.roll_no})</span>
+                    {member.name}{member.serial_no ? <span className="text-gray-500"> ({member.serial_no})</span> : null}
                   </span>
                   <span className="text-sm text-gray-500">
-                    Plan: {member.subscriptions[0]?.plan || 'N/A'}
+                    Plan: {member.subscriptions?.[0]?.plan || 'N/A'}
                   </span>
                 </li>
               ))}
             </ul>
           )}
         </div>
+
         <div className="p-6 border-t border-[#ddd] flex justify-end gap-4 shrink-0">
           <button
             onClick={onClose}
@@ -106,22 +127,13 @@ export default function SearchMembersModal({ isOpen, onClose, onSelectMember }) 
             Close
           </button>
         </div>
-        <style>
-          {`
-            .custom-scrollbar::-webkit-scrollbar {
-              width: 8px;
-            }
-            .custom-scrollbar::-webkit-scrollbar-thumb {
-              background: #e5e7eb;
-              border-radius: 4px;
-            }
-            .custom-scrollbar {
-              scrollbar-width: thin;
-              scrollbar-color: #e5e7eb #fff;
-            }
-          `}
-        </style>
+
+        <style>{`
+          .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+          .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
+          .custom-scrollbar { scrollbar-width: thin; scrollbar-color: #e5e7eb #fff; }
+        `}</style>
       </div>
     </div>
   );
-} 
+}
