@@ -210,7 +210,7 @@ export default function Dashboard() {
                   </div>
                 </div>
               ) : (
-                <ul className="mb-2 px-2 sm:px-3">
+                <ul className="mb-2 px-0.5 sm:px-0">
                   {expiredSubscriptions.slice(0, 4).map((item, idx) => (
                     <li key={idx} className="flex justify-between text-sm sm:text-base font-medium text-gray-800 mb-1">
 
@@ -238,7 +238,7 @@ export default function Dashboard() {
           </div>
 
           {/* CARD 2: EXPIRING SOON - Members with memberships expiring in next 10 days */}
-          <div className="bg-[#f2e6c9] flex-1 min-w-[300px] p-6 rounded-[10px] flex flex-col justify-between">
+          <div className="bg-[#f2e6c9] flex-1 min-w-[300px] p-5 rounded-[10px] flex flex-col justify-between">
             <div className="rounded-lg flex flex-col flex-1">
               <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">EXPIRING SOON</h2>
               {isExpiringLoading ? (
@@ -255,7 +255,7 @@ export default function Dashboard() {
                   <p className="text-xs sm:text-sm">No expiring soon subscriptions in the next 10 days</p>
                 </div>
               ) : (
-                <ul className="mb-2 px-2 sm:px-3">
+                <ul className="mb-2 px-0.5 sm:px-0">
                   {expiringSoon.slice(0, 4).map((item, idx) => (
                     <li key={idx} className="flex justify-between text-sm sm:text-base font-medium text-gray-800 mb-1">
                       <span className="truncate mr-2">
