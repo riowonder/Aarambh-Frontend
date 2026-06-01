@@ -227,7 +227,7 @@ export default function Dashboard() {
                 </ul>
               )}
             </div>
-            {expiredSubscriptions.length > 1 && (
+            {expiredSubscriptions.length > 0 && (
               <button
                 className="text-xs font-semibold text-gray-600 cursor-pointer hover:text-gray-800 hover:underline mt-auto ml-auto block"
                 onClick={() => setShowExpiredModal(true)}
@@ -283,7 +283,7 @@ export default function Dashboard() {
                 </ul>
               )}
             </div>
-            {expiringSoon.length > 1 && (
+            {expiringSoon.length > 0 && (
               <button
                 className="text-xs font-semibold text-gray-600 cursor-pointer hover:text-gray-800 hover:underline mt-auto ml-auto block"
                 onClick={() => setShowExpiringSoonModal(true)}
