@@ -28,7 +28,7 @@ const testimonials = [
     rating: 5
   },
   {
-    name: "Aarambh Member",
+    name: "Soham Mishra",
     image: "https://picsum.photos/seed/member1/120/120",
     text: "Joining Aarambh was the best decision I made this year. The community here is unmatched. It's not just a gym, it's a family that pushes you to be your absolute best version.",
     rating: 5

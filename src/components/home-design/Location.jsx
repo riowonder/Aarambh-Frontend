@@ -96,7 +96,7 @@ export default function Location() {
                     </button>
                   </div>
                   <p className="text-zinc-500 leading-relaxed text-sm md:text-base">
-                    Jaishiv Trade Center, 5th Floor<br />
+                    Jaishiv Trade Center, 4th Floor<br />
                     Near Suman Hotel, Dimna Road<br />
                     Mango, Jamshedpur – 831012<br />
                     Jharkhand, India
