@@ -79,10 +79,10 @@ function getPlanTheme(planName = "") {
 }
 
 function urgencyLabel(days) {
-  if (days <= 0)  return { text: "Expired",       color: "text-red-400",     bg: "bg-red-500/10 border-red-500/20" };
-  if (days <= 5)  return { text: "Expiring Soon", color: "text-orange-400",  bg: "bg-orange-500/10 border-orange-500/20" };
-  if (days <= 15) return { text: "Active",        color: "text-yellow-400",  bg: "bg-yellow-500/10 border-yellow-500/20" };
-  return           { text: "Active",              color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" };
+  if (days <= 0) return { text: "Expired", color: "text-red-400", bg: "bg-red-500/10 border-red-500/20" };
+  if (days <= 5) return { text: "Expiring Soon", color: "text-orange-400", bg: "bg-orange-500/10 border-orange-500/20" };
+  if (days <= 15) return { text: "Active", color: "text-yellow-400", bg: "bg-yellow-500/10 border-yellow-500/20" };
+  return { text: "Active", color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" };
 }
 
 function fmtDate(d) {
@@ -100,9 +100,9 @@ function fmtVal(v) {
 ───────────────────────────────────────────── */
 export default function UserDashboard() {
   const { user, logoutUser } = useUser();
-  const [profile, setProfile]           = useState(null);
-  const [loadingProfile, setLoading]    = useState(false);
-  const [profileError, setError]        = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [loadingProfile, setLoading] = useState(false);
+  const [profileError, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -137,28 +137,28 @@ export default function UserDashboard() {
   };
 
   /* ── subscription ── */
-  const sub   = profile?.subscription ?? null;
+  const sub = profile?.subscription ?? null;
   const noSub = !sub || (Array.isArray(sub) && sub.length === 0);
 
-  const start     = sub?.start_date ? new Date(sub.start_date) : null;
-  const end       = sub?.end_date   ? new Date(sub.end_date)   : null;
-  const now       = new Date();
+  const start = sub?.start_date ? new Date(sub.start_date) : null;
+  const end = sub?.end_date ? new Date(sub.end_date) : null;
+  const now = new Date();
   const totalDays = start && end ? Math.max(0, Math.ceil((end - start) / 86400000)) : 0;
-  const elapsed   = start ? Math.max(0, Math.min(Math.ceil((now - start) / 86400000), totalDays)) : 0;
-  const percent   = totalDays > 0 ? Math.round((elapsed / totalDays) * 100) : 100;
-  const daysLeft  = computeDaysLeft(sub?.start_date, sub?.end_date) ?? 0;
+  const elapsed = start ? Math.max(0, Math.min(Math.ceil((now - start) / 86400000), totalDays)) : 0;
+  const percent = totalDays > 0 ? Math.round((elapsed / totalDays) * 100) : 100;
+  const daysLeft = computeDaysLeft(sub?.start_date, sub?.end_date) ?? 0;
   const yetToStart = isYetToStart(sub?.start_date);
 
   const planName = sub?.plan || "";
-  const theme    = getPlanTheme(planName);
-  const urgency  = yetToStart ? { text: "Not started", color: "text-zinc-300", bg: "bg-zinc-700/10 border-zinc-700/20" } : urgencyLabel(daysLeft);
+  const theme = getPlanTheme(planName);
+  const urgency = yetToStart ? { text: "Not started", color: "text-zinc-300", bg: "bg-zinc-700/10 border-zinc-700/20" } : urgencyLabel(daysLeft);
 
   /* ── user object ── */
   const u = profile?.user || user || {};
 
   /* ── secondary fields: everything NOT in primary card ── */
   const PRIMARY_KEYS = new Set(["serial_no", "roll_no", "name", "email", "phone_number", "username"]);
-  const SKIP_KEYS    = new Set([
+  const SKIP_KEYS = new Set([
     "_id", "__v", "gym_id", "subscriptions", "image", "role",
     "is_approved", "is_banned", "createdAt", "updatedAt", "password",
   ]);
@@ -168,14 +168,14 @@ export default function UserDashboard() {
   );
 
   const fieldMeta = {
-    dob:           { label: "Date of Birth", icon: <Cake      className="w-3 h-3" />, fmt: fmtDate },
-    age:           { label: "Age",           icon: <UserIcon  className="w-3 h-3" />, fmt: (v) => v ? `${v} yrs` : "—" },
-    gender:        { label: "Gender",        icon: <Users     className="w-3 h-3" /> },
-    height:        { label: "Height",        icon: <Ruler     className="w-3 h-3" />, fmt: (v) => v ? `${v} cm` : "—" },
-    weight:        { label: "Weight",        icon: <Weight    className="w-3 h-3" />, fmt: (v) => v ? `${v} kg` : "—" },
-    blood_group:   { label: "Blood Group",   icon: <Droplets  className="w-3 h-3" /> },
-    address:       { label: "Address",       icon: <MapPin    className="w-3 h-3" /> },
-    aadhar_number: { label: "Aadhar No.",    icon: <Fingerprint className="w-3 h-3" /> },
+    dob: { label: "Date of Birth", icon: <Cake className="w-3 h-3" />, fmt: fmtDate },
+    age: { label: "Age", icon: <UserIcon className="w-3 h-3" />, fmt: (v) => v ? `${v} yrs` : "—" },
+    gender: { label: "Gender", icon: <Users className="w-3 h-3" /> },
+    height: { label: "Height", icon: <Ruler className="w-3 h-3" />, fmt: (v) => v ? `${v} cm` : "—" },
+    weight: { label: "Weight", icon: <Weight className="w-3 h-3" />, fmt: (v) => v ? `${v} kg` : "—" },
+    blood_group: { label: "Blood Group", icon: <Droplets className="w-3 h-3" /> },
+    address: { label: "Address", icon: <MapPin className="w-3 h-3" /> },
+    aadhar_number: { label: "Aadhar No.", icon: <Fingerprint className="w-3 h-3" /> },
   };
 
   return (
@@ -267,9 +267,9 @@ export default function UserDashboard() {
               </div>
 
               {/* Dates row */}
-              <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 mb-6">
-                <span>Purchased {fmtDate(sub?.start_date)}</span>
-                <span>Expires {fmtDate(sub?.end_date)}</span>
+              <div className="flex items-start sm:items-center justify-between text-[10px] sm:text-[11px] font-black uppercase tracking-widest sm:tracking-[0.2em] text-zinc-600 mb-6 gap-2">
+                <span className="text-left">Purchased <br className="block sm:hidden" /> {fmtDate(sub?.start_date)}</span>
+                <span className="text-right">Expires <br className="block sm:hidden" /> {fmtDate(sub?.end_date)}</span>
               </div>
 
               {/* Bottom divider + plan name */}
@@ -365,11 +365,11 @@ export default function UserDashboard() {
             </div>
 
             <div className="space-y-3">
-              <PrimaryRow icon={<Hash      className="w-3.5 h-3.5" />} label="Serial No"   value={fmtVal(u.serial_no || u.roll_no)} />
-              <PrimaryRow icon={<UserIcon  className="w-3.5 h-3.5" />} label="Name"        value={fmtVal(u.name)} />
+              <PrimaryRow icon={<Hash className="w-3.5 h-3.5" />} label="Serial No" value={fmtVal(u.serial_no || u.roll_no)} />
+              <PrimaryRow icon={<UserIcon className="w-3.5 h-3.5" />} label="Name" value={fmtVal(u.name)} />
               {/* <PrimaryRow icon={<AtSign    className="w-3.5 h-3.5" />} label="Username"    value={fmtVal(u.username || u.email?.split("@")[0])} /> */}
-              <PrimaryRow icon={<Phone     className="w-3.5 h-3.5" />} label="Phone"       value={fmtVal(u.phone_number)} />
-              <PrimaryRow icon={<Mail      className="w-3.5 h-3.5" />} label="Email"       value={fmtVal(u.email)} isEmail />
+              <PrimaryRow icon={<Phone className="w-3.5 h-3.5" />} label="Phone" value={fmtVal(u.phone_number)} />
+              <PrimaryRow icon={<Mail className="w-3.5 h-3.5" />} label="Email" value={fmtVal(u.email)} isEmail />
             </div>
           </motion.div>
 
@@ -391,9 +391,9 @@ export default function UserDashboard() {
             ) : (
               <div className="grid grid-cols-2 gap-x-3 gap-y-2">
                 {secondaryFields.map(([key, val]) => {
-                  const meta  = fieldMeta[key];
+                  const meta = fieldMeta[key];
                   const label = meta?.label || key.replace(/_/g, " ");
-                  const icon  = meta?.icon  || <ChevronRight className="w-3 h-3" />;
+                  const icon = meta?.icon || <ChevronRight className="w-3 h-3" />;
                   const display = meta?.fmt ? meta.fmt(val) : fmtVal(val);
                   return (
                     <SecondaryRow key={key} icon={icon} label={label} value={display} />

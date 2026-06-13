@@ -7,13 +7,14 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useUser } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
 
 const plans = [
-  { name: "1 Month",  apiName: "1 Month",  amount: "₹1,499" },
-  { name: "3 Month",  apiName: "3 Months", amount: "₹2,999" },
-  { name: "6 Month",  apiName: "6 Months", amount: "₹4,999" },
-  { name: "1 Year",   apiName: "1 Year",   amount: "₹8,499" },
+  { name: "1 Month", apiName: "1 Month", amount: "₹1,499" },
+  { name: "3 Month", apiName: "3 Months", amount: "₹2,999" },
+  { name: "6 Month", apiName: "6 Months", amount: "₹4,999" },
+  { name: "1 Year", apiName: "1 Year", amount: "₹8,499" },
 ];
 
 const INITIAL_FORM = {
@@ -29,13 +30,15 @@ const LABEL_CLS =
   "text-[10px] uppercase tracking-widest font-black text-zinc-500 ml-2";
 
 export default function Register() {
-  const [step, setStep]           = useState(1);
-  const [formData, setFormData]   = useState(INITIAL_FORM);
-  const [loading, setLoading]     = useState(false);
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState(INITIAL_FORM);
+  const [loading, setLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [errors, setErrors]       = useState({});
-  const { login }               = useUser();
-  const navigate                = useNavigate();
+  const [errors, setErrors] = useState({});
+
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const { login } = useUser();
+  const navigate = useNavigate();
 
   const calculateAge = (dob) => {
     if (!dob) return "";
@@ -59,6 +62,10 @@ export default function Register() {
     if (errors[name]) setErrors((prev) => { const n = { ...prev }; delete n[name]; return n; });
     if (name === "phone") {
       setFormData((prev) => ({ ...prev, phone: value.replace(/\D/g, "").slice(0, 10) }));
+      return;
+    }
+    if (name === "aadhar") {
+      setFormData((prev) => ({ ...prev, aadhar: value.replace(/\D/g, "").slice(0, 4) }));
       return;
     }
     if (name === "image" && files[0]) {
@@ -87,8 +94,10 @@ export default function Register() {
       errs.address = "Address is required.";
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
       errs.email = "Enter a valid email address.";
-    if (formData.aadhar && !/^\d{12}$/.test(formData.aadhar))
-      errs.aadhar = "Aadhar must be exactly 12 digits.";
+    if (formData.aadhar && !/^\d{4}$/.test(formData.aadhar))
+      errs.aadhar = "Please enter last 4 digits.";
+    if (!acceptedTerms)
+      errs.terms = "You must agree to the Terms and Conditions.";
     return errs;
   };
 
@@ -161,16 +170,24 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-zinc-950 flex items-start justify-center px-4 py-10 sm:py-14 md:py-16">
+
       <div className="w-full max-w-xl">
 
         {/* Back link */}
         {step < 3 && (
           <button
-            onClick={() => navigate("/")}
+            onClick={() => {
+              if (step === 2) {
+                setStep(1);
+                setSelectedPlan(null);
+              } else {
+                navigate("/");
+              }
+            }}
             className="mb-6 flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest"
           >
             <ArrowLeft className="w-3 h-3" />
-            Back to Home
+            {step === 2 ? "Back to Details" : "Back to Home"}
           </button>
         )}
 
@@ -265,12 +282,18 @@ export default function Register() {
                     {/* Aadhar */}
                     <div className="space-y-1.5">
                       <label className={LABEL_CLS}>Aadhar Number</label>
-                      <div className="relative">
-                        <Hash className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" />
-                        <input name="aadhar" type="text" pattern="[0-9]{12}" value={formData.aadhar}
-                          onChange={handleInputChange} placeholder="12-digit Aadhar"
-                          className={`${INPUT_CLS} ${errors.aadhar ? "border-red-500/60 focus:border-red-500/80" : ""}`} />
+                      <div className="relative flex w-full items-center h-[46px]">
+                        <Hash className="absolute left-4 w-4 h-4 text-zinc-600 z-10" />
+                        <div className="flex w-full h-full items-center">
+                          <span className="flex items-center justify-center whitespace-nowrap bg-zinc-800/80 border border-white/5 border-r-0 rounded-l-xl pl-10 pr-2 text-sm text-zinc-500 font-medium h-full">
+                            XXXX-XXXX-
+                          </span>
+                          <input name="aadhar" type="text" pattern="[0-9]{4}" value={formData.aadhar}
+                            onChange={handleInputChange} placeholder="1234" inputMode="numeric" maxLength={4}
+                            className={`w-full bg-zinc-800/50 border border-white/5 border-l-0 rounded-r-xl py-3 px-3 text-sm text-white tracking-widest placeholder:text-zinc-600 focus:outline-none focus:border-white/20 focus:bg-zinc-800 transition-all h-full ${errors.aadhar ? "border-red-500/60 focus:border-red-500/80" : ""}`} />
+                        </div>
                       </div>
+                      <p className="text-[10px] text-zinc-500 ml-2 font-medium">Please enter only the last four digits</p>
                       {errors.aadhar && <p className="text-[10px] text-red-400 ml-2">{errors.aadhar}</p>}
                     </div>
                     {/* Blood Group */}
@@ -281,7 +304,7 @@ export default function Register() {
                         <select name="blood_group" value={formData.blood_group} onChange={handleInputChange}
                           className={`${INPUT_CLS} appearance-none bg-zinc-800/50`}>
                           <option value="">Select Blood Group</option>
-                          {["A+","A-","B+","B-","O+","O-","AB+","AB-"].map(bg => (
+                          {["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"].map(bg => (
                             <option key={bg} value={bg}>{bg}</option>
                           ))}
                         </select>
@@ -317,6 +340,41 @@ export default function Register() {
                     {errors.address && <p className="text-[10px] text-red-400 ml-2">{errors.address}</p>}
                   </div>
 
+                  {/* Terms and Conditions Checkbox */}
+                  <div className="mt-4 flex flex-col gap-1.5">
+                    <div className="flex items-center gap-3 bg-zinc-800/30 p-4 rounded-xl border border-white/5">
+                      <div className="flex items-center justify-center relative shrink-0">
+                        <input
+                          type="checkbox"
+                          id="terms"
+                          checked={acceptedTerms}
+                          onChange={(e) => {
+                            setAcceptedTerms(e.target.checked);
+                            if (e.target.checked && errors.terms) {
+                              setErrors(prev => { const n = { ...prev }; delete n.terms; return n; });
+                            }
+                          }}
+                          className="peer w-5 h-5 appearance-none rounded border border-zinc-600 bg-zinc-800/50 checked:bg-white checked:border-white transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/20"
+                        />
+                        <Check className="absolute w-3 h-3 text-black opacity-0 peer-checked:opacity-100 pointer-events-none" />
+                      </div>
+                      <label htmlFor="terms" className="text-xs text-zinc-400 cursor-pointer select-none leading-relaxed">
+                        I agree to the{" "}
+                        <Link
+                          to="/terms-and-conditions"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:underline"
+                        >
+                          <span className="text-white underline font-bold">Terms and Conditions</span>
+                          {" "}
+                          <span className="text-zinc-500 font-bold">(Load More)</span>
+                        </Link>
+                      </label>
+                    </div>
+                    {errors.terms && <p className="text-[10px] text-red-400 ml-2">{errors.terms}</p>}
+                  </div>
+
                   <button
                     onClick={goToStep2}
                     className="w-full bg-white text-black py-4 rounded-2xl font-black uppercase italic tracking-widest text-sm flex items-center justify-center gap-3 mt-6 hover:bg-zinc-200 transition-colors"
@@ -344,11 +402,10 @@ export default function Register() {
                           const isSelected = selectedPlan && selectedPlan !== "custom" && selectedPlan.name === p.name;
                           return (
                             <button key={p.name} onClick={() => selectPlan(p)}
-                              className={`group p-6 rounded-2xl text-left transition-all flex justify-between items-center border ${
-                                isSelected
-                                  ? "bg-white text-black border-white"
-                                  : "bg-zinc-800/50 border-white/5 hover:bg-zinc-800 hover:border-white/20"
-                              }`}
+                              className={`group p-6 rounded-2xl text-left transition-all flex justify-between items-center border ${isSelected
+                                ? "bg-white text-black border-white"
+                                : "bg-zinc-800/50 border-white/5 hover:bg-zinc-800 hover:border-white/20"
+                                }`}
                             >
                               <div>
                                 <p className={`text-[10px] font-black uppercase tracking-widest mb-1 ${isSelected ? "text-zinc-500" : "text-zinc-500"}`}>Plan</p>
@@ -366,11 +423,10 @@ export default function Register() {
                       {/* Skip plan option */}
                       <div
                         onClick={() => setSelectedPlan("custom")}
-                        className={`mt-4 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 cursor-pointer border transition-all ${
-                          selectedPlan === "custom"
-                            ? "bg-zinc-700 border-white/20"
-                            : "bg-zinc-800/30 border-white/5 hover:bg-zinc-800/50 hover:border-white/10"
-                        }`}
+                        className={`mt-4 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 cursor-pointer border transition-all ${selectedPlan === "custom"
+                          ? "bg-zinc-700 border-white/20"
+                          : "bg-zinc-800/30 border-white/5 hover:bg-zinc-800/50 hover:border-white/10"
+                          }`}
                       >
                         <div>
                           <p className="text-zinc-300 text-xs font-black uppercase italic tracking-widest">
@@ -380,9 +436,8 @@ export default function Register() {
                             Skip for now — the gym owner will assign your plan and pricing after reviewing your registration.
                           </p>
                         </div>
-                        <div className={`shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                          selectedPlan === "custom" ? "border-white bg-white" : "border-zinc-600"
-                        }`}>
+                        <div className={`shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${selectedPlan === "custom" ? "border-white bg-white" : "border-zinc-600"
+                          }`}>
                           {selectedPlan === "custom" && <div className="w-2 h-2 rounded-full bg-black" />}
                         </div>
                       </div>

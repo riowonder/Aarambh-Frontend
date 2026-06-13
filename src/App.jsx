@@ -32,6 +32,7 @@ import UserSubscriptions from './pages/main/UserSubscriptions';
 import ApprovalRequests from './pages/main/ApprovalRequests';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Home from "./pages/main/Home";
+import TermsAndConditions from "./pages/main/TermsAndConditions";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,6 +52,7 @@ export const App = () => {
         <Toaster />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             <Route path="/Dashpanel" element={<Login />} />
             <Route path="/dashpanelsignup" element={<Signup />} />
             <Route path="/user-login" element={<Home openLoginOnLoad />} />
