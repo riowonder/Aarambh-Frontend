@@ -22,12 +22,6 @@ const trainers = [
     image: "https://res.cloudinary.com/dbvbnarn7/image/upload/q_auto/f_auto/v1777902014/amir_jw8d1f.webp"
   },
   {
-    name: "Princy",
-    role: "COMBAT COACH",
-    bio: "Specialist in fight-camp fitness and accelerated weight loss",
-    image: "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902013/princy_ndqt91.webp"
-  },
-  {
     name: "Chirag",
     role: "PT & NUTRITIONIST",
     bio: "Specialist in mobility, rehab, and sports nutrition.",
