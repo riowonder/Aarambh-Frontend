@@ -24,7 +24,7 @@ const trainers = [
   {
     name: "Chirag",
     role: "PT & NUTRITIONIST",
-    bio: "Specialist in mobility, rehab, and sports nutrition.",
+    bio: "Specialist in mobility, rehab, and sports nutrition",
     image: "https://res.cloudinary.com/dbvbnarn7/image/upload/q_auto/f_auto/v1777902014/chirag_s2m0gn.webp"
   }
 ];
