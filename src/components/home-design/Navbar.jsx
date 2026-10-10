@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -61,9 +61,11 @@ export default function Navbar({ onOpenLogin, onOpenRegister }) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className={`w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl flex items-center justify-center transition-all border border-white/10 hover:bg-white/5 active:scale-90 ${isDropdownOpen ? 'bg-white/10' : 'bg-transparent'}`}
+              aria-label={isDropdownOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isDropdownOpen}
+              className="flex h-10 w-10 items-center justify-center bg-transparent p-0 text-white transition-opacity hover:opacity-70 active:scale-90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:h-12 md:w-12"
             >
-              {isDropdownOpen ? <X className="w-5 h-5 md:w-6 md:h-6 text-white" /> : <Menu className="w-5 h-5 md:w-6 md:h-6 text-white" />}
+              <Menu className="h-5 w-5 md:h-6 md:w-6" />
             </motion.button>
           )}
         </AnimatePresence>
