@@ -80,18 +80,23 @@ export default function Home({ openLoginOnLoad = false }) {
             <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-500">
               © 2026 Aarambh Fitness. All rights reserved.
             </p>
-            <div className="flex shrink-0 items-center gap-1.5" aria-label="Designed by Synapse">
+            <div className="flex shrink-0 items-center gap-1.5">
               <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-zinc-400">
                 Designed by
               </span>
-              <span className="relative block h-10 w-36 overflow-hidden" aria-hidden="true">
+              <a
+                href="https://synapselabs.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative block h-10 w-36 overflow-hidden transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
                 <img
                   src="https://res.cloudinary.com/dxpcwv30u/image/upload/v1791043666/noBgSynapse_u9e73w.png"
-                  alt=""
+                  alt="Synapse Labs"
                   className="absolute left-1/2 top-1/2 w-40 max-w-none -translate-x-1/2 -translate-y-1/2"
                   loading="lazy"
                 />
-              </span>
+              </a>
             </div>
           </div>
         </div>
