@@ -2,14 +2,12 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useUser } from "../../context/UserContext";
 
 export default function OTP() {
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { email } = useLocation().state || {};
-    const { login } = useUser();
 
     const handleChange = (element, index) => {
         if (isNaN(element.value)) return false;
@@ -37,22 +35,12 @@ export default function OTP() {
 
             if (response.data.success) { 
                 toast.success("Email verified successfully!");
-                navigate("/dashlogin");
+                navigate("/dashboardpanel");
             }
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to verify OTP");
         } finally {
             setLoading(false);
-        }
-    };
-
-    const handleResend = async () => {
-        try {
-            await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/is-authenticated`, {
-                // Add necessary parameters for resending OTP
-            });
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to resend OTP");
         }
     };
 

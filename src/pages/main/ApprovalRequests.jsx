@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import Sidebar from '../../components/Sidebar';
 import EditSubscriptionModal from '../../components/EditSubscriptionModal';
 import SubscriptionModal from '../../components/SubscriptionModal';
 import EditMemberModal from '../../components/EditMemberModal';
-import { useUser } from '../../context/UserContext';
-import { computeDaysLeft } from '../../utils/dates';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -41,6 +39,7 @@ function formatDate(dateStr) {
 export default function ApprovalRequests() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [expandedId, setExpandedId] = useState(null);
   const [isSubEditOpen, setIsSubEditOpen] = useState(false);
   const [editSubscription, setEditSubscription] = useState(null);
@@ -48,19 +47,15 @@ export default function ApprovalRequests() {
   const [subscriptionMemberId, setSubscriptionMemberId] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editMember, setEditMember] = useState(null);
-  const { user } = useUser();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
-  useEffect(() => {
-    fetchRequests();
-  }, []);
-
-  const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
     try {
       setLoading(true);
+      setLoadError(false);
       const res = await axios.get(`${API_BASE}/admin/pending-user-approvals`, { withCredentials: true });
       // Sort by latest request first
       const sorted = (res.data.data || []).sort(
@@ -69,11 +64,16 @@ export default function ApprovalRequests() {
       setRequests(sorted);
     } catch (error) {
       console.error('Error fetching approval requests:', error);
+      setLoadError(true);
       toast.error('Failed to load approval requests');
     } finally {
       setLoading(false);
     }
-  };
+  }, [API_BASE]);
+
+  useEffect(() => {
+    fetchRequests();
+  }, [fetchRequests]);
 
   const handleApprove = async (e, userId) => {
     e.stopPropagation();
@@ -149,6 +149,8 @@ export default function ApprovalRequests() {
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mb-4"></div>
               <p className="text-gray-500 font-medium tracking-wide">Loading requests...</p>
             </div>
+          ) : loadError ? (
+            <div role="alert" className="p-8 text-center bg-white rounded-2xl border border-red-200 text-red-700">Could not load approval requests. <button type="button" onClick={fetchRequests} className="underline">Retry</button></div>
           ) : !Array.isArray(requests) || requests.length === 0 ? (
             <div className="flex flex-col justify-center items-center h-64 text-center px-4 bg-white rounded-2xl border border-gray-200">
               <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4 text-gray-300">
@@ -283,7 +285,7 @@ export default function ApprovalRequests() {
                             <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2">Subscription</p>
                             <DetailRow label="Plan" value={req.subscription.plan} />
                             <DetailRow label="Status" value={req.subscription.status} />
-                            <DetailRow label="Amount" value={req.subscription.amount != null ? req.subscription.amount : '0'} />
+                            <DetailRow label={req.subscription.source === 'self_registration' ? 'Quoted Price (Payment Not Recorded)' : 'Amount'} value={req.subscription.amount != null ? req.subscription.amount : '0'} />
                             <DetailRow label="Start Date" value={formatDate(req.subscription.start_date)} />
                             <DetailRow label="End Date" value={formatDate(req.subscription.end_date)} />
                             <DetailRow label="Total Days" value={(() => {
@@ -302,7 +304,7 @@ export default function ApprovalRequests() {
                           </div>
                         ) : (
                           <div className="mt-3 border-t pt-3">
-                            <DetailRow label="Subscription" value={"No Subscription Choosen"} />
+                            <DetailRow label="Subscription" value="No subscription chosen" />
                           </div>
                         )}
 

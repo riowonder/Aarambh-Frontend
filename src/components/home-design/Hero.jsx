@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import QuickNav from "./QuickNav";
-import { useNavigate } from "react-router-dom";
 
 const LOGO_URL =
   "https://res.cloudinary.com/dbvbnarn7/image/upload/v1777902665/logo_jkq9mr.webp";
@@ -51,7 +50,6 @@ const SHOOTING_STARS = [
 ];
 
 export default function Hero({ onOpenRegister }) {
-  const navigate = useNavigate();
 
   return (
     <section

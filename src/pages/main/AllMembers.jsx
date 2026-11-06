@@ -22,6 +22,7 @@ export default function AllMembers() {
   const [showModal, setShowModal] = useState(false);
   const [showAddMember, setShowAddMember] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchInput, setSearchInput] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
@@ -33,14 +34,14 @@ export default function AllMembers() {
   // ============================================================
   const fetchMembersData = async () => {
     if (searchQuery.trim()) {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/member/search?q=${encodeURIComponent(searchQuery)}&filter=${statusFilter}`, { withCredentials: true });
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/member/search?q=${encodeURIComponent(searchQuery)}&page=${currentPage}&limit=10&filter=${statusFilter}`, { withCredentials: true });
       return {
         members: response.data.members || [],
         totalMembers: response.data.totalMembers || 0,
         activeCount: response.data.activeCount || 0,
         inactiveCount: response.data.inactiveCount || 0,
-        totalPages: 1,
-        currentPage: 1
+        totalPages: response.data.totalPages || 1,
+        currentPage: response.data.currentPage || currentPage
       };
     } else {
       const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/member/get-members?page=${currentPage}&limit=10&filter=${statusFilter}`, { withCredentials: true });
@@ -58,7 +59,7 @@ export default function AllMembers() {
   // ============================================================
   // REACT QUERY HOOK
   // ============================================================
-  const { data, isLoading, isFetching } = useQuery({
+  const { data, isLoading, isFetching, isError, refetch } = useQuery({
     queryKey: ['members-list', currentPage, statusFilter, searchQuery],
     queryFn: fetchMembersData,
     enabled: !!user?.email,
@@ -70,17 +71,13 @@ export default function AllMembers() {
   // ============================================================
   const members = data?.members || [];
   const totalMembers = data?.totalMembers || 0;
-  const activeCount = data?.activeCount || 0;
-  const inactiveCount = data?.inactiveCount || 0;
   const totalPages = data?.totalPages || 1;
   const loading = isLoading;
   const isSearching = isFetching && !!searchQuery.trim();
 
   // Calculate displayed count based on filter
   const getDisplayedCount = () => {
-    if (statusFilter === 'active') return activeCount;
-    if (statusFilter === 'inactive') return inactiveCount;
-    return totalMembers;
+    return isFetching ? '—' : totalMembers;
   };
 
   const getCountLabel = () => {
@@ -115,13 +112,24 @@ export default function AllMembers() {
 
   // Search input change handler
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+    setSearchInput(e.target.value);
+  };
+
+  const submitSearch = (e) => {
+    e.preventDefault();
+    const nextQuery = searchInput.trim();
+    if (nextQuery === searchQuery) {
+      refetch();
+    } else {
+      setSearchQuery(nextQuery);
+    }
     setCurrentPage(1);
   };
 
   // Clear search query
   const clearSearch = () => {
     setSearchQuery('');
+    setSearchInput('');
     setCurrentPage(1);
   };
 
@@ -212,34 +220,36 @@ export default function AllMembers() {
                 <span className="sm:hidden">+Add</span>
               </button>
             </div>
-            <div className="flex gap-2 w-full sm:w-auto">
+            <form onSubmit={submitSearch} className="flex gap-2 w-full sm:w-auto">
               <input
                 type="text"
                 placeholder="Search by name, roll no, phone, gender, or address..."
-                value={searchQuery}
+                value={searchInput}
                 onChange={handleSearchChange}
                 className="px-2 sm:px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base flex-1"
               />
               <button
-                // We keep disabled if there's no query, but it auto searches anyway through useQuery
-                disabled={!searchQuery.trim() || isSearching}
+                type="submit"
+                disabled={!searchInput.trim() || isSearching}
                 className="bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-md font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer text-sm sm:text-base"
               >
                 {isSearching ? 'Searching...' : 'Search'}
               </button>
-              {searchQuery.trim() && (
+              {(searchInput || searchQuery) && (
                 <button
+                  type="button"
                   onClick={clearSearch}
+                  aria-label="Clear search"
                   className="bg-gray-500 text-white px-3 sm:px-4 py-2 rounded-md font-semibold hover:bg-gray-600 transition cursor-pointer text-sm sm:text-base"
                 >
                   X
                 </button>
               )}
-            </div>
+            </form>
           </div>
 
           {/* ========== LOADING STATE ========== */}
-          {(loading || isSearching) && (
+          {isFetching && (
             <div className="text-center py-8">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
               <p className="mt-2 text-gray-600">
@@ -249,7 +259,10 @@ export default function AllMembers() {
           )}
 
           {/* ========== MEMBERS TABLE SECTION ========== */}
-          {!loading && !isSearching && (
+          {!loading && !isFetching && isError && (
+            <p role="alert" className="text-center py-8 text-red-700">Could not load members. <button type="button" onClick={() => refetch()} className="underline">Retry</button></p>
+          )}
+          {!loading && !isFetching && !isError && (
              members.length === 0 ? (
     <div className="text-center py-8 text-gray-500">
       <p className="text-lg font-medium">No members found</p>
@@ -285,8 +298,7 @@ export default function AllMembers() {
                       {members.map((member) => (
                         <tr
                           key={member._id}
-                          className="border-b border-gray-200 cursor-pointer hover:bg-gray-50"
-                          onClick={() => handleSelectMember(member)}
+                          className="border-b border-gray-200 hover:bg-gray-50"
                         >
                           <td className="px-4 py-3 text-left text-gray-900">
                             {member.image ? (
@@ -300,7 +312,7 @@ export default function AllMembers() {
                               </div>
                             )}
                           </td>
-                          <td className="px-4 py-3 text-left text-gray-900">{member.name}</td>
+                          <td className="px-4 py-3 text-left text-gray-900"><button type="button" className="text-left font-medium hover:underline focus-visible:underline" onClick={() => handleSelectMember(member)} aria-label={`View ${member.name}`}>{member.name}</button></td>
                           <td className="px-4 py-3 text-left text-gray-900">{member.subscriptions?.[0]?.plan || 'N/A'}</td>
                           <td className="px-4 py-3 text-left text-gray-900">
                             {formatDaysLeft(computeDaysLeft(member.subscriptions?.[0]?.start_date, member.subscriptions?.[0]?.end_date))}
@@ -342,11 +354,9 @@ export default function AllMembers() {
               )} */}
 
               {/* ========== PAGINATION ========== */}
-              {/* Only show pagination for non-search results */}
-              {!searchQuery.trim() && (
-                <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                   <div className="text-xs sm:text-sm text-gray-700 text-center sm:text-left">
-                    Showing {((currentPage - 1) * 10) + 1} to {Math.min(currentPage * 10, totalMembers)} of {totalMembers} members
+                    Showing {totalMembers === 0 ? 0 : ((currentPage - 1) * 10) + 1} to {Math.min(currentPage * 10, totalMembers)} of {totalMembers}{searchQuery.trim() ? ' matching' : ''} members
                   </div>
                   <div className="flex space-x-2">
                     <button
@@ -367,8 +377,7 @@ export default function AllMembers() {
                       Next
                     </button>
                   </div>
-                </div>
-              )}
+              </div>
             </>
           ))}
 

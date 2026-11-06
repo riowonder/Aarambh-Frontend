@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/auth/Login';
-import Signup from './pages/auth/Signup';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ForgotPswdOTP from './pages/auth/ForgotPswdOTP';
 import Dashboard from './pages/main/Dashboard';
@@ -60,8 +59,9 @@ export const App = () => {
             <Route path="/workout-guide" element={<Suspense fallback={null}><WorkoutGuideIndex /></Suspense>} />
             <Route path="/workout-guide/demo" element={<Navigate to="/workout-guide/bench-press" replace />} />
             <Route path="/workout-guide/:slug" element={<Suspense fallback={null}><WorkoutGuideDetail /></Suspense>} />
-            <Route path="/Dashpanel" element={<Login />} />
-            <Route path="/dashpanelsignup" element={<Signup />} />
+            <Route caseSensitive path="/dashboardpanel" element={<Login />} />
+            <Route caseSensitive path="/Dashpanel" element={<Navigate to="/dashboardpanel" replace />} />
+            <Route path="/dashlogin" element={<Navigate to="/dashboardpanel" replace />} />
             <Route path="/user-login" element={<Home openLoginOnLoad />} />
             {/* <Route path="/user-login" element={<UserLogin />} />  */}
             <Route path="/user-register" element={<Register />} />

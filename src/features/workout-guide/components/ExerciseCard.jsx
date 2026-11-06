@@ -14,7 +14,7 @@ export default function ExerciseCard({ exercise }) {
           loading="lazy"
           className="h-full w-full object-contain p-6 transition duration-500 group-hover:scale-105"
         />
-        <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-zinc-950/75 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-200">
+        <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-zinc-950/75 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.1em] text-zinc-200 sm:tracking-[0.16em]">
           {exercise.primaryMuscle}
         </span>
       </div>
@@ -25,8 +25,8 @@ export default function ExerciseCard({ exercise }) {
           </h2>
           <ArrowUpRight size={18} className="mt-1 shrink-0 text-zinc-500 transition group-hover:text-emerald-300" />
         </div>
-        <p className="mt-2 text-xs text-zinc-400">{exercise.equipment}</p>
-        <p className="mt-5 border-t border-white/10 pt-4 text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-500">
+        <p className="mt-2 text-sm text-zinc-400 sm:text-xs">{exercise.equipment}</p>
+        <p className="mt-5 border-t border-white/10 pt-4 text-[11px] font-bold uppercase tracking-[0.1em] text-zinc-500 sm:tracking-[0.16em]">
           {exercise.steps.length > 0 ? "Visual + step-by-step guide" : "Visual guide"}
         </p>
       </div>

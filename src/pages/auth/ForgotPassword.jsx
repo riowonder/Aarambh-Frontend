@@ -59,9 +59,6 @@ export default function ForgotPassword() {
           <p className="text-gray-500">
             Remember your password? <NavLink to="/" className="underline hover:text-black">Sign In</NavLink>
           </p>
-          <p className="text-gray-500">
-            Don't have an account? <NavLink to="/dashsignup" className="underline hover:text-black">Sign Up</NavLink>
-          </p>
         </div>
       </div>
     </div>

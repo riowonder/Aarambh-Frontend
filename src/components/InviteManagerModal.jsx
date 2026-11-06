@@ -26,7 +26,7 @@ const InviteManagerModal = ({ isOpen, onClose }) => {
     setError('');
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/admin/invite-manager`, {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/admin/invite-manager`, {
         name: form.name,
         email: form.email,
         password: form.password,
@@ -64,7 +64,6 @@ const InviteManagerModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  return (
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1002] p-4" onClick={handleClose}>
       <div className="bg-white rounded-[10px] w-[90%] max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden" onClick={e => e.stopPropagation()}>
@@ -203,4 +202,4 @@ const InviteManagerModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default InviteManagerModal; 
+export default InviteManagerModal;

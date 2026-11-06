@@ -26,7 +26,7 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
     } else if (member) {
       setDetails(member);
     }
-  }, [isOpen, member && member._id]);
+  }, [isOpen, member]);
 
   if (!isOpen || !member) return null;
 
@@ -95,8 +95,6 @@ export default function ShowMemberModal({ isOpen, onClose, member, onSave }) {
     setShowEdit(false);
     if (onSave) onSave(updatedMember);
   };
-
-  const latestSub = details.latest_subscription || (details.subscriptions && details.subscriptions[0]);
 
   return (
     <>

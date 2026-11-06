@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { ArrowLeft, Dumbbell, Target } from "lucide-react";
+import { Dumbbell, Target } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import ExerciseFramePlayer from "../../features/workout-guide/components/ExerciseFramePlayer";
-import GuideCredits from "../../features/workout-guide/components/GuideCredits";
 import { exerciseBySlug } from "../../features/workout-guide/data/catalog";
 import { useGuidePageMeta } from "../../features/workout-guide/hooks/useGuidePageMeta";
 
@@ -30,47 +29,43 @@ export default function WorkoutGuideDetail() {
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-emerald-400/30">
-      <div className="mx-auto max-w-7xl px-5 pb-20 pt-7 sm:px-8 lg:px-10">
-        <header className="flex items-center justify-between border-b border-white/10 pb-6">
-          <Link to="/" className="text-lg font-black uppercase italic tracking-[0.15em] text-white sm:text-xl">
+      <div className="mx-auto max-w-7xl px-4 pb-16 pt-5 sm:px-8 sm:pb-20 sm:pt-7 lg:px-10">
+        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-5 sm:pb-6">
+          <Link to="/" className="text-base font-black uppercase italic tracking-[0.1em] text-white sm:text-xl sm:tracking-[0.15em]">
             Aarambh Fitness
           </Link>
-          <Link to="/workout-guide" className="rounded-full border border-white/10 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 transition hover:text-white sm:px-4">
+          <Link to="/workout-guide" className="rounded-full border border-white/10 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.1em] text-zinc-400 transition hover:text-white sm:px-4 sm:tracking-[0.2em]">
             Workout guide
           </Link>
         </header>
 
-        <Link to="/workout-guide" className="mt-9 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-zinc-400 transition hover:text-white">
-          <ArrowLeft size={15} /> All exercises
-        </Link>
-
-        <section className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-16">
+        <section className="mt-8 grid gap-8 sm:mt-10 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-16">
           <div className="lg:sticky lg:top-10 lg:self-start">
             <ExerciseFramePlayer key={exercise.slug} name={exercise.name} frames={exercise.frames} />
           </div>
 
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.3em] text-emerald-300">
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-300 sm:text-xs sm:tracking-[0.3em]">
               {exercise.primaryMuscle} / {exercise.equipment}
             </p>
-            <h1 className="mt-4 text-5xl font-black uppercase italic leading-none tracking-tight sm:text-7xl">
+            <h1 className="mt-3 break-words text-3xl font-black uppercase italic leading-tight tracking-tight sm:mt-4 sm:text-5xl lg:text-6xl">
               {exercise.name}
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-8 text-zinc-400">
-              A three-pose visual guide for this {exerciseType} movement.
+            <p className="mt-4 max-w-xl text-sm leading-6 text-zinc-400 sm:mt-6 sm:text-base sm:leading-8">
+              A three-frame visual guide for this {exerciseType} movement.
               {exercise.steps.length > 0 && " Follow the steps below as you practise the movement."}
             </p>
 
-            <div className="mt-9 grid gap-3 sm:grid-cols-2">
-              <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-5">
+            <div className="mt-7 grid grid-cols-2 gap-2 sm:mt-9 sm:gap-3">
+              <div className="min-w-0 rounded-2xl border border-white/10 bg-zinc-900/60 p-3 sm:p-5">
                 <Target size={19} className="text-emerald-300" />
-                <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.23em] text-zinc-500">Primary muscle</p>
-                <p className="mt-1 text-lg font-bold">{exercise.primaryMuscle}</p>
+                <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.08em] text-zinc-500 sm:mt-5 sm:tracking-[0.23em]">Primary muscle</p>
+                <p className="mt-1 break-words text-sm font-bold sm:text-lg">{exercise.primaryMuscle}</p>
               </div>
-              <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-5">
+              <div className="min-w-0 rounded-2xl border border-white/10 bg-zinc-900/60 p-3 sm:p-5">
                 <Dumbbell size={19} className="text-emerald-300" />
-                <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.23em] text-zinc-500">Equipment</p>
-                <p className="mt-1 text-lg font-bold">{exercise.equipment}</p>
+                <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.08em] text-zinc-500 sm:mt-5 sm:tracking-[0.23em]">Equipment</p>
+                <p className="mt-1 break-words text-sm font-bold sm:text-lg">{exercise.equipment}</p>
               </div>
             </div>
 
@@ -90,7 +85,7 @@ export default function WorkoutGuideDetail() {
               ))}
             </div>
 
-            <section className="mt-12 border-t border-white/10 pt-9">
+            <section className="mt-10 border-t border-white/10 pt-7 sm:mt-12 sm:pt-9">
               <div className="flex items-baseline justify-between gap-4">
                 <h2 className="text-2xl font-black uppercase tracking-tight sm:text-3xl">How to perform</h2>
                 {exercise.steps.length > 0 && (
@@ -100,7 +95,7 @@ export default function WorkoutGuideDetail() {
               {exercise.steps.length > 0 ? (
                 <ol className="mt-6 space-y-3">
                   {exercise.steps.map((step, index) => (
-                    <li key={index} className="flex gap-5 rounded-2xl border border-white/10 bg-zinc-900/40 p-5">
+                    <li key={index} className="flex gap-3 rounded-2xl border border-white/10 bg-zinc-900/40 p-4 sm:gap-5 sm:p-5">
                       <span className="font-mono text-sm font-bold text-emerald-300">
                         {String(index + 1).padStart(2, "0")}
                       </span>
@@ -128,7 +123,6 @@ export default function WorkoutGuideDetail() {
           </div>
         </section>
 
-        <GuideCredits instructionSource={exercise.instructionSource} />
       </div>
     </main>
   );

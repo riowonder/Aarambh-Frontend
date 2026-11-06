@@ -123,7 +123,7 @@ export default function AddMemberModal({ isOpen, onClose, onSuccess }) {
             );
             toast.success('Member and subscription added!');
           } catch {
-            toast.success('Member added (subscription failed)');
+            toast.error('Member added, but the subscription could not be created. Please add it from the member details.');
           }
         } else {
           toast.success('Member added successfully!');

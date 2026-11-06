@@ -4,7 +4,7 @@ const plans = [
   {
     name: "1 Month",
     price: "₹1,499",
-    period: "/month",
+    period: "total",
     points: [
       "Perfect for beginners",
       "Build your first routine",
@@ -15,7 +15,7 @@ const plans = [
   {
     name: "3 Month",
     price: "₹2,999",
-    period: "/month",
+    period: "total",
     points: [
       "Best for real results",
       "Stay consistent, see change",
@@ -27,7 +27,7 @@ const plans = [
   {
     name: "6 Month",
     price: "₹4,999",
-    period: "/month",
+    period: "total",
     points: [
       "Serious transformation",
       "Train. Recover. Grow.",
@@ -38,7 +38,7 @@ const plans = [
   {
     name: "1 year",
     price: "₹8,499",
-    period: "/month",
+    period: "total",
     points: [
       "Ultimate commitment",
       "Live the fitness lifestyle",

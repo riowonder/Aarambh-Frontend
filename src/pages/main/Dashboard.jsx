@@ -9,7 +9,6 @@ import ExpiredSubscriptionsModal from "../../components/ExpiredSubscriptionsModa
 import ExpiringSoonModal from "../../components/ExpiringSoonModal";
 import axios from "axios";
 import ShowMemberModal from "../../components/ShowMemberModal";
-import { toast } from "react-hot-toast";
 import SearchMembersModal from '../../components/SearchMembersModal';
 import Spinner, { CardSkeleton, TableSkeleton } from "../../components/Spinner";
 import { computeDaysLeft, isYetToStart } from '../../utils/dates';
@@ -44,7 +43,6 @@ export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isNewFieldModalOpen, setIsNewFieldModalOpen] = useState(false);
   const [showAddMember, setShowAddMember] = useState(false);
-  const [showAllMembers, setShowAllMembers] = useState(false);
   const [showExpiredModal, setShowExpiredModal] = useState(false);
   const [showExpiringSoonModal, setShowExpiringSoonModal] = useState(false);
 
@@ -53,7 +51,6 @@ export default function Dashboard() {
   const [showMemberModal, setShowMemberModal] = useState(false);
   const [member, setMember] = useState(null);
   const [showSearchModal, setShowSearchModal] = useState(false);
-  const [showAllMembersModal, setShowAllMembersModal] = useState(false);
 
 
 
@@ -61,16 +58,15 @@ export default function Dashboard() {
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   // Queries
-  const { data: members = [], isLoading: isMembersLoading } = useQuery({
+  const { data: members = [], isLoading: isMembersLoading, isError: membersError, refetch: retryMembers } = useQuery({
     queryKey: ['dashboard', 'members'],
     queryFn: async () => {
       const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/member/get-members`, { withCredentials: true });
-      console.log(response.data.members);
       return response.data.members || [];
     }
   });
 
-  const { data: expiredSubscriptions = [], isLoading: isExpiredLoading } = useQuery({
+  const { data: expiredSubscriptions = [], isLoading: isExpiredLoading, isError: expiredError, refetch: retryExpired } = useQuery({
     queryKey: ['dashboard', 'expiredSubscriptions'],
     queryFn: async () => {
       const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/member/expired`, { withCredentials: true });
@@ -78,7 +74,7 @@ export default function Dashboard() {
     }
   });
 
-  const { data: expiringSoon = [], isLoading: isExpiringLoading } = useQuery({
+  const { data: expiringSoon = [], isLoading: isExpiringLoading, isError: expiringError, refetch: retryExpiring } = useQuery({
     queryKey: ['dashboard', 'expiringSoon'],
     queryFn: async () => {
       const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/member/expiring-soon`, {}, { withCredentials: true });
@@ -86,7 +82,7 @@ export default function Dashboard() {
     }
   });
 
-  const { data: pendingApprovals = [] } = useQuery({
+  const { data: pendingApprovals = [], isError: approvalsError, refetch: retryApprovals } = useQuery({
     queryKey: ['dashboard', 'pendingApprovals'],
     queryFn: async () => {
       const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/pending-user-approvals`, { withCredentials: true });
@@ -105,13 +101,13 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen px-5 pt-0 pb-0">
+    <div className="min-h-screen px-3 sm:px-5 pt-0 pb-0 min-w-0">
       {/* ===============================================
           MODALS - Hidden UI components for interactions
           =============================================== */}
 
       {/* Sidebar Navigation Modal */}
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} onMembersClick={() => setShowAllMembersModal(true)} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} onMembersClick={() => navigate('/admin/members')} />
 
       {/* Add New Member Modal Form */}
       <AddMemberModal isOpen={showAddMember} onClose={() => setShowAddMember(false)} onSuccess={handleAddMemberSuccess} />
@@ -164,6 +160,7 @@ export default function Dashboard() {
               onClick={() => navigate('/admin/approval-requests')}
               className="relative bg-white p-2 rounded-lg hover:bg-gray-100 transition-colors"
               title="Pending approval requests"
+              aria-label="Pending approval requests"
             >
               <Bell className="w-6 h-6 text-gray-700" />
               {pendingApprovals.length > 0 && (
@@ -183,14 +180,18 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {approvalsError && (
+          <p role="alert" className="mb-4 text-sm text-red-700">Approval count could not be loaded. <button type="button" onClick={() => retryApprovals()} className="underline">Retry</button></p>
+        )}
+
         {/* ===============================================
             TOP STATS CARDS SECTION
             Shows: Expired subscriptions, Expiring soon
             =============================================== */}
-        <div className="flex flex-wrap gap-3 mb-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
 
           {/* CARD 1: EXPIRED SUBSCRIPTIONS - Members with expired memberships */}
-          <div className="bg-[#e8d6e2] flex-1 min-w-[300px] p-5 rounded-[10px] flex flex-col justify-between max-h-[400px]">
+          <div className="bg-[#e8d6e2] min-w-0 w-full p-5 rounded-[10px] flex flex-col justify-between">
             <div className="rounded-lg flex flex-col flex-1">
               <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">SUBSCRIPTION EXPIRED</h2>
               {isExpiredLoading ? (
@@ -202,6 +203,8 @@ export default function Dashboard() {
                     </div>
                   ))}
                 </div>
+              ) : expiredError ? (
+                <p role="alert" className="text-sm text-red-700">Could not load expired subscriptions. <button type="button" onClick={() => retryExpired()} className="underline">Retry</button></p>
               ) : expiredSubscriptions.length === 0 ? (
                 <div className="flex flex-1 items-center justify-center text-center text-gray-500">
                   <div>
@@ -212,15 +215,15 @@ export default function Dashboard() {
               ) : (
                 <ul className="mb-2 px-0.5 sm:px-0">
                   {expiredSubscriptions.slice(0, 4).map((item, idx) => (
-                    <li key={idx} className="flex justify-between text-sm sm:text-base font-medium text-gray-800 mb-1">
+                    <li key={idx} className="flex items-start justify-between gap-2 text-sm sm:text-base font-medium text-gray-800 mb-1">
 
-                      <span className="truncate mr-2">
+                      <span className="min-w-0 flex-1 truncate">
                         {item.name}
                         <span className="text-xs text-gray-600 font-medium">
                           {" "}({item.subscriptions?.[0]?.plan || "N/A"})
                         </span>
                       </span>
-                      <span className="text-xs sm:text-sm">{item.subscriptions[0]?.end_date ? new Date(item.subscriptions[0].end_date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : 'N/A'}</span>
+                      <span className="shrink-0 whitespace-nowrap text-xs sm:text-sm">{item.subscriptions[0]?.end_date ? new Date(item.subscriptions[0].end_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A'}</span>
 
                     </li>
                   ))}
@@ -238,7 +241,7 @@ export default function Dashboard() {
           </div>
 
           {/* CARD 2: EXPIRING SOON - Members with memberships expiring in next 10 days */}
-          <div className="bg-[#f2e6c9] flex-1 min-w-[300px] p-5 rounded-[10px] flex flex-col justify-between">
+          <div className="bg-[#f2e6c9] min-w-0 w-full p-5 rounded-[10px] flex flex-col justify-between">
             <div className="rounded-lg flex flex-col flex-1">
               <h2 className="font-bold text-[1.3rem] mb-4 text-start font-montserrat text-gray-800">EXPIRING SOON</h2>
               {isExpiringLoading ? (
@@ -250,6 +253,8 @@ export default function Dashboard() {
                     </div>
                   ))}
                 </div>
+              ) : expiringError ? (
+                <p role="alert" className="text-sm text-red-700">Could not load expiring subscriptions. <button type="button" onClick={() => retryExpiring()} className="underline">Retry</button></p>
               ) : expiringSoon.length === 0 ? (
                 <div className="flex flex-1 items-center justify-center text-center text-gray-500">
                   <p className="text-xs sm:text-sm">No expiring soon subscriptions in the next 10 days</p>
@@ -257,8 +262,8 @@ export default function Dashboard() {
               ) : (
                 <ul className="mb-2 px-0.5 sm:px-0">
                   {expiringSoon.slice(0, 4).map((item, idx) => (
-                    <li key={idx} className="flex justify-between text-sm sm:text-base font-medium text-gray-800 mb-1">
-                      <span className="truncate mr-2">
+                    <li key={idx} className="flex items-start justify-between gap-2 text-sm sm:text-base font-medium text-gray-800 mb-1">
+                      <span className="min-w-0 flex-1 truncate">
                         {item.name}
                         <span className="text-xs text-gray-600 font-medium">
                           {" "}({item.subscriptions?.[0]?.plan || "N/A"})
@@ -268,7 +273,7 @@ export default function Dashboard() {
                       {(() => {
                         const days = computeDaysLeft(item.subscriptions?.[0]?.start_date, item.subscriptions?.[0]?.end_date) ?? 0;
                         return (
-                          <span className={`text-xs sm:text-sm ${days === 0
+                          <span className={`shrink-0 whitespace-nowrap text-xs sm:text-sm ${days === 0
                             ? "text-red-600 font-bold"
                             : days <= 4
                               ? "text-red-500 font-bold"
@@ -396,9 +401,9 @@ export default function Dashboard() {
                   ))}
                 </div>
               </div>
-            ) :
-
-              members.length === 0 ? (
+            ) : membersError ? (
+                <p role="alert" className="py-8 text-center text-sm text-red-700">Could not load members. <button type="button" onClick={() => retryMembers()} className="underline">Retry</button></p>
+              ) : members.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   {/* EMPTY STATE - Message shown when no members exist */}
                   <p className="text-lg font-medium">No members found</p>
@@ -430,11 +435,7 @@ export default function Dashboard() {
                           return (
                             <tr
                               key={idx}
-                              className="border-b border-gray-200 cursor-pointer hover:bg-gray-50"
-                              onClick={() => {
-                                setMember(member);
-                                setShowMemberModal(true);
-                              }}
+                              className="border-b border-gray-200 hover:bg-gray-50"
                             >
                               <td className="px-4 py-3 text-left text-gray-900">
                                 {member.image ? (
@@ -448,7 +449,7 @@ export default function Dashboard() {
                                   </div>
                                 )}
                               </td>
-                              <td className="px-4 py-3 text-left text-gray-900">{member.name}</td>
+                              <td className="px-4 py-3 text-left text-gray-900"><button type="button" className="text-left font-medium hover:underline focus-visible:underline" onClick={() => { setMember(member); setShowMemberModal(true); }} aria-label={`View ${member.name}`}>{member.name}</button></td>
                               <td className="px-4 py-3 text-left text-gray-900">{member.subscriptions[0]?.plan || 'N/A'}</td>
                               <td className="px-4 py-3 text-left text-gray-900">
                                 {isYetToStart(member.subscriptions?.[0]?.start_date)

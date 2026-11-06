@@ -43,9 +43,11 @@ export default function MemberCard({ member, onClick, label }) {
   const rightText = label ?? fmtDays(days);
 
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
-      className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-4 py-3 cursor-pointer active:bg-gray-50 hover:border-gray-300 transition-colors"
+      aria-label={`View ${member.name}`}
+      className="w-full text-left flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-4 py-3 cursor-pointer active:bg-gray-50 hover:border-gray-300 transition-colors"
     >
       <Avatar image={member.image} name={member.name} />
 
@@ -74,6 +76,6 @@ export default function MemberCard({ member, onClick, label }) {
           {rightText}
         </span>
       </div>
-    </div>
+    </button>
   );
 }

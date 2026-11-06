@@ -22,7 +22,7 @@ const NewFieldModal = ({ isOpen, onClose, onSuccess }) => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/dashboard/add-field`,
         {
           fieldName: formData.fieldName,

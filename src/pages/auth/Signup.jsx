@@ -1,4 +1,4 @@
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -8,7 +8,6 @@ export default function Signup() {
     const [formData, setFormData] = useState({ name: "", email: "", gym_name: "", password: "" });
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { email } = useLocation().state || {};
     const { login } = useUser();
 
     // Handle input changes and update formData
@@ -25,7 +24,7 @@ export default function Signup() {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/signup`, {
+            await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/signup`, {
                 name: formData.name,
                 email: formData.email,
                 gym_name: formData.gym_name,
@@ -117,7 +116,7 @@ export default function Signup() {
                     </button>
                 </form>
                 <p className="text-sm text-center text-gray-500">
-                    Already have an account? <NavLink to="/dashlogin" className="underline hover:text-black">Sign In</NavLink>
+                    Already have an account? <NavLink to="/dashboardpanel" className="underline hover:text-black">Sign In</NavLink>
                 </p>
             </div>
         </div>

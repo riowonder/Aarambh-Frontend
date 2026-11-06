@@ -46,8 +46,6 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }) {
 
       const payload = { phone, dob: `${dd}/${mm}/${yyyy}` };
 
-      console.log("Submitting login with payload:", payload);
-
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/auth/user-login`,
         payload,
@@ -89,6 +87,7 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }) {
             {/* Close */}
             <button
               onClick={onClose}
+              aria-label="Close member login"
               className="absolute top-6 right-6 w-10 h-10 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full flex items-center justify-center transition-all border border-white/5"
             >
               <X className="w-5 h-5" />
@@ -114,12 +113,13 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }) {
 
               {/* Phone Number */}
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-[0.3em] font-black text-zinc-500 ml-4">
+                <label htmlFor="member-phone" className="text-[10px] uppercase tracking-[0.3em] font-black text-zinc-500 ml-4">
                   Phone Number
                 </label>
                 <div className="relative group">
                   <Phone className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-white transition-colors" />
                   <input
+                    id="member-phone"
                     type="tel"
                     name="phone"
                     value={formData.phone}
@@ -137,12 +137,13 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }) {
 
               {/* Date of Birth */}
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-[0.3em] font-black text-zinc-500 ml-4">
+                <p className="text-[10px] uppercase tracking-[0.3em] font-black text-zinc-500 ml-4">
                   Date of Birth
-                </label>
+                </p>
                 <div className="flex gap-3">
                   {/* Day */}
                   <input
+                    aria-label="Birth day"
                     type="number"
                     name="dobDay"
                     value={formData.dobDay}
@@ -156,6 +157,7 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }) {
                   />
                   {/* Month */}
                   <input
+                    aria-label="Birth month"
                     type="number"
                     name="dobMonth"
                     value={formData.dobMonth}
@@ -169,6 +171,7 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }) {
                   />
                   {/* Year */}
                   <input
+                    aria-label="Birth year"
                     type="number"
                     name="dobYear"
                     value={formData.dobYear}

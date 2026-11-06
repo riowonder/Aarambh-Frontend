@@ -53,7 +53,7 @@ export default function BirthdayCard() {
 
 
     //API  QUERY   
-    const { data: birthdayList = [], isLoading: isBirthdayLoading } = useQuery({
+    const { data: birthdayList = [], isLoading: isBirthdayLoading, isError: birthdayError, refetch: retryBirthdays } = useQuery({
         queryKey: ['dashboard', 'birthdays'],
         queryFn: async () => {
             const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/member/get-birthdays`, { withCredentials: true 
@@ -78,6 +78,8 @@ export default function BirthdayCard() {
                             </div>
                         ))}
                     </div>
+                ) : birthdayError ? (
+                    <p role="alert" className="text-sm text-red-700">Could not load birthdays. <button type="button" onClick={() => retryBirthdays()} className="underline">Retry</button></p>
                 ) : birthdayList.length === 0 ? (
                     <div className="flex flex-1 items-center justify-center text-center text-gray-500">
                         <p className="text-xs sm:text-sm">No upcoming birthdays</p>

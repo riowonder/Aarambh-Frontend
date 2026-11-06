@@ -71,6 +71,7 @@ export default function Register() {
     if (name === "image" && files[0]) {
       if (files[0].size > 7 * 1024 * 1024) {
         setErrors((prev) => ({ ...prev, image: "Photo must be under 7 MB. Try compressing it or choosing a smaller image." }));
+        setFormData((prev) => ({ ...prev, image: null }));
         e.target.value = "";
         return;
       }
@@ -130,7 +131,7 @@ export default function Register() {
   const submitRegistration = async (data) => {
     setLoading(true);
     try {
-      const SKIP = new Set(["subscription_plan", "start_date"]);
+      const SKIP = new Set(["start_date"]);
       const fd = new FormData();
       Object.entries(data).forEach(([k, v]) => {
         if (SKIP.has(k)) return;
@@ -143,21 +144,6 @@ export default function Register() {
       );
 
       const createdUser = response.data.user || { name: data.name, email: data.email };
-
-      try {
-        if (data.start_date && data.subscription_plan && data.subscription_plan !== "Custom") {
-          const userId = createdUser.id || createdUser._id;
-          if (userId) {
-            await axios.post(
-              `${import.meta.env.VITE_API_BASE_URL}/member/${userId}/subscription`,
-              { plan: data.subscription_plan, amount: data.amount, extra_days: 0, start_date: data.start_date },
-              { withCredentials: true }
-            );
-          }
-        }
-      } catch (subErr) {
-        console.error("Subscription creation failed:", subErr);
-      }
 
       login(createdUser);
       setStep(3);
@@ -312,7 +298,7 @@ export default function Register() {
                     </div>
                     {/* Profile Image */}
                     <div className="space-y-1.5">
-                      <label className={LABEL_CLS}>Profile Image</label>
+                      <label className={LABEL_CLS}>Profile Image (Optional)</label>
                       <div className="relative">
                         <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" />
                         <input name="image" type="file" accept="image/*" onChange={handleInputChange}
@@ -323,7 +309,7 @@ export default function Register() {
                         : formData.image && <p className="text-[10px] text-zinc-500 ml-2 truncate">{formData.image.name}</p>
                       }
                       <p className="text-[10px] text-amber-500/50 ml-2 mt-1 font-bold uppercase tracking-wide">
-                        Clear face photo required. No edited or social media pictures.
+                        Optional. Add a profile photo if you’d like (maximum 7 MB).
                       </p>
                     </div>
                   </div>

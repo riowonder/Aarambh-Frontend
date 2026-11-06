@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { X } from 'lucide-react';
@@ -169,15 +169,7 @@ export default function SubscriptionModal({ isOpen, onClose, memberId, onSuccess
   const [selectedSubscription, setSelectedSub] = useState(null);
   const [loading, setLoading]                   = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      fetchSubscriptions();
-      // If parent requested opening the Add sheet directly, do it.
-      if (initialShowAdd) setShowAdd(true);
-    }
-  }, [isOpen, filter, initialShowAdd]);
-
-  const fetchSubscriptions = async () => {
+  const fetchSubscriptions = useCallback(async () => {
     try {
       setLoading(true);
       const res = await axios.get(
@@ -191,7 +183,14 @@ export default function SubscriptionModal({ isOpen, onClose, memberId, onSuccess
     } finally {
       setLoading(false);
     }
-  };
+  }, [memberId, filter]);
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchSubscriptions();
+      if (initialShowAdd) setShowAdd(true);
+    }
+  }, [isOpen, initialShowAdd, fetchSubscriptions]);
 
   const handleEdit = (sub) => {
     setSelectedSub(sub);
@@ -206,13 +205,14 @@ export default function SubscriptionModal({ isOpen, onClose, memberId, onSuccess
       overlay.innerHTML = `
         <div class="bg-white rounded-2xl shadow-xl p-5 w-full max-w-sm">
           <h3 class="text-base font-bold text-gray-900 mb-2">Delete Subscription</h3>
-          <p class="text-sm text-gray-500 mb-5">Delete the <strong>${sub.plan}</strong> subscription? This cannot be undone.</p>
+          <p class="text-sm text-gray-500 mb-5">Delete the <strong id="plan-name"></strong> subscription? This cannot be undone.</p>
           <div class="flex gap-2">
             <button id="c" class="flex-1 py-2 text-sm font-semibold bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200">Cancel</button>
             <button id="d" class="flex-1 py-2 text-sm font-semibold bg-red-600 text-white rounded-xl hover:bg-red-700">Delete</button>
           </div>
         </div>`;
       document.body.appendChild(overlay);
+      overlay.querySelector('#plan-name').textContent = sub.plan || 'selected';
       const cleanup = () => document.body.removeChild(overlay);
       overlay.querySelector('#c').onclick = () => { cleanup(); resolve(false); };
       overlay.querySelector('#d').onclick = () => { cleanup(); resolve(true); };

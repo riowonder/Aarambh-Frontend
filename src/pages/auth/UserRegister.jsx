@@ -1,6 +1,6 @@
 // **not in use currently**
 
-import { NavLink, useNavigate, useLocation, data } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -311,7 +311,7 @@ export default function UserRegister() {
                         Already have an account? <NavLink to="/user-login" className="underline hover:text-black">Login in user</NavLink>
                     </p>
                     {/* <p className="text-sm text-center text-gray-500">
-                        <NavLink to="/dashlogin" className="underline text-cyan-700 hover:text-cyan-900 font-medium">Login as admin</NavLink>
+                        <NavLink to="/dashboardpanel" className="underline text-cyan-700 hover:text-cyan-900 font-medium">Login as admin</NavLink>
                     </p> */}
                 </div>
             </div>

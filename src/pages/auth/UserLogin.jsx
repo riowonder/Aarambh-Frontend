@@ -140,7 +140,7 @@ export default function UserLogin() {
           Don't have an account? <NavLink to="/user-register" className="underline hover:text-black">Sign Up</NavLink>
         </p>
         {/* <p className="text-sm text-center mt-2">
-          <NavLink to="/dashlogin" className="underline text-cyan-700 hover:text-cyan-900 font-medium">
+          <NavLink to="/dashboardpanel" className="underline text-cyan-700 hover:text-cyan-900 font-medium">
             Login as admin
           </NavLink>
         </p> */}

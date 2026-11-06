@@ -9,9 +9,10 @@ import { TrendingUp, DollarSign, UserCheck, Award } from 'lucide-react';
 
 const Finance = () => {
   const [financeData, setFinanceData] = useState(null);
-  const [summary, setSummary] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState('current_month');
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
   const navigate = useNavigate();
   const { user } = useUser();
 
@@ -26,39 +27,23 @@ const Finance = () => {
 
 
   useEffect(() => {
-    if (user?.email) {
-      fetchFinanceData();
-      fetchSummary();
-    }
-  }, [user, selectedPeriod]);
-
-  const fetchFinanceData = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/finance/data?period=${selectedPeriod}`,
-        { withCredentials: true }
-      );
-      setFinanceData(response.data.data);
-    } catch (error) {
-      console.error('Error fetching finance data:', error);
-      toast.error('Failed to load finance data');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchSummary = async () => {
-    try {
-      const summaryResponse = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/finance/summary`,
-        { withCredentials: true }
-      );
-      setSummary(summaryResponse.data.summary);
-    } catch (error) {
-      console.error('Error fetching summary:', error);
-    }
-  };
+    if (!user?.email) return;
+    let cancelled = false;
+    setLoading(true);
+    setLoadError(false);
+    setFinanceData(null);
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/finance/data?period=${selectedPeriod}`, { withCredentials: true })
+      .then((response) => { if (!cancelled) setFinanceData(response.data.data); })
+      .catch((error) => {
+        if (!cancelled) {
+          console.error('Error fetching finance data:', error);
+          setLoadError(true);
+          toast.error('Failed to load finance data');
+        }
+      })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [user?.email, selectedPeriod, retryKey]);
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-IN', {
@@ -154,6 +139,12 @@ const Finance = () => {
             </div>
           </div>
         </div>
+
+        {loadError && (
+          <div role="alert" className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
+            Could not load figures for this period. <button type="button" onClick={() => setRetryKey((key) => key + 1)} className="underline">Retry</button>
+          </div>
+        )}
 
         {/* Summary Cards */}
         {financeData && (

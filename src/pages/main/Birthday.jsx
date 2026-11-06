@@ -22,6 +22,7 @@ export default function Birthday() {
     const [showMemberModal, setShowMemberModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
     const [isBirthdayLoading, setIsBirthdayLoading] = useState(false);
+    const [birthdayError, setBirthdayError] = useState(false);
 
     const getNextBirthdayDate = (dobStr) => {
         const dob = new Date(dobStr);
@@ -47,26 +48,19 @@ export default function Birthday() {
     };
 
     const isMemberActive = (member) => {
-        return member.subscriptions?.[0]?.status === 'Active' || member.subscription_status === 'Active';
+        return member.subscriptions?.some((subscription) =>
+            subscription.start_date && subscription.end_date &&
+            new Date(subscription.start_date) <= today && new Date(subscription.end_date) >= today
+        ) || member.subscription_status === 'Active';
     };
 
-    const filteredMembers = useMemo(() => {
-        let list = [...membersData];
-        if (filterType === "active") {
-            list = list.filter((m) => isMemberActive(m));
-        }
-        list.sort((a, b) => getDaysUntilBirthday(a.dob) - getDaysUntilBirthday(b.dob));
-        return list;
-    }, [membersData, filterType, today]);
-
-    const todayBirthdays = useMemo(() => {
-        // STRICT CONSTRAINT: Inactive members NEVER in Top Section
-        return filteredMembers.filter(m => getDaysUntilBirthday(m.dob) === 0 && isMemberActive(m));
-    }, [filteredMembers, today]);
-
-    const upcomingBirthdays = useMemo(() => {
-        return filteredMembers.filter(m => !todayBirthdays.includes(m));
-    }, [filteredMembers, todayBirthdays]);
+    const filteredMembers = membersData
+        .filter((member) => filterType !== "active" || isMemberActive(member))
+        .sort((a, b) => getDaysUntilBirthday(a.dob) - getDaysUntilBirthday(b.dob));
+    const todayBirthdays = filteredMembers.filter(
+        (member) => getDaysUntilBirthday(member.dob) === 0 && isMemberActive(member)
+    );
+    const upcomingBirthdays = filteredMembers.filter((member) => !todayBirthdays.includes(member));
 
     const totalPages = Math.max(1, Math.ceil(upcomingBirthdays.length / pageSize) || 1);
     const currentPage = Math.min(page, totalPages);
@@ -78,6 +72,7 @@ export default function Birthday() {
 
     const getBirthdayList = async () => {
         setIsBirthdayLoading(true);
+        setBirthdayError(false);
         try {
             const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/member/get-birthdays`, { withCredentials: true });
             const data = response?.data;
@@ -87,7 +82,7 @@ export default function Birthday() {
             setPage(1);
         } catch (error) {
             console.error("Error fetching birthday list:", error);
-            setMembersData([]);
+            setBirthdayError(true);
         } finally {
             setIsBirthdayLoading(false);
         }
@@ -95,7 +90,6 @@ export default function Birthday() {
 
     useEffect(() => {
         getBirthdayList();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     // --- LOGIC END ---
 
@@ -152,6 +146,8 @@ export default function Birthday() {
                         <Spinner size="lg" />
                         <p className="text-gray-500 mt-4 animate-pulse font-medium">Loading celebrations...</p>
                     </div>
+                ) : birthdayError ? (
+                    <div role="alert" className="bg-white border border-red-200 rounded-2xl p-8 text-center text-red-700">Could not load birthdays. <button type="button" onClick={getBirthdayList} className="underline">Retry</button></div>
                 ) : (
                     <>
                         {/* Top Section (Today's Birthdays) */}
@@ -160,10 +156,10 @@ export default function Birthday() {
                                 {todayBirthdays.map((member, index) => {
                                     const bgColor = heroColors[index % heroColors.length];
                                     return (
-                                        <div
+                                        <button type="button"
                                             key={member._id || index}
                                             onClick={() => { setSelectedMember(member); setShowMemberModal(true); }}
-                                            className={`${bgColor} border-2 border-black rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between cursor-pointer hover:opacity-90 transition-opacity gap-4`}
+                                            className={`${bgColor} w-full text-left border-2 border-black rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between cursor-pointer hover:opacity-90 transition-opacity gap-4`}
                                         >
                                             <div className="flex items-center gap-4">
                                                 <div className="w-14 h-14 rounded-full border-2 border-black overflow-hidden bg-white shrink-0">
@@ -183,7 +179,7 @@ export default function Birthday() {
                                             <div className="bg-black text-white px-5 py-2 font-black rounded-xl uppercase tracking-widest text-sm border-2 border-transparent shrink-0">
                                                 TODAY!
                                             </div>
-                                        </div>
+                                        </button>
                                     );
                                 })}
                             </div>
@@ -206,10 +202,10 @@ export default function Birthday() {
                                             {paginatedMembers.map((member, index) => {
                                                 const isActive = isMemberActive(member);
                                                 return (
-                                                    <div
+                                                    <button type="button"
                                                         key={member._id || index}
                                                         onClick={() => { setSelectedMember(member); setShowMemberModal(true); }}
-                                                        className={`${isActive ? 'bg-white border-gray-500/50 hover:bg-gray-50' : 'bg-gray-200 border-gray-400 hover:bg-gray-300'} border rounded-xl p-4 flex items-center justify-between transition-colors cursor-pointer gap-3`}
+                                                        className={`${isActive ? 'bg-white border-gray-500/50 hover:bg-gray-50' : 'bg-gray-200 border-gray-400 hover:bg-gray-300'} w-full text-left border rounded-xl p-4 flex items-center justify-between transition-colors cursor-pointer gap-3`}
                                                     >
                                                         <div className="flex items-center gap-3 min-w-0">
                                                             <div className="w-10 h-10 rounded-full border border-gray-500/50 overflow-hidden bg-gray-100 shrink-0">
@@ -229,7 +225,7 @@ export default function Birthday() {
                                                         <div className="text-xs font-bold border border-gray-500/30 bg-gray-50 px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0">
                                                             {getDayStatus(member.dob)}
                                                         </div>
-                                                    </div>
+                                                    </button>
                                                 );
                                             })}
                                         </div>

@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Spinner from "../components/Spinner";
 
-const isAuthenticated = () => {
+const useAuthentication = () => {
   const [auth, setAuth] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +12,7 @@ const isAuthenticated = () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/is-authenticated`, { withCredentials: true });
         setAuth(response.data.success);
-      } catch (err) {
+      } catch {
         setAuth(false);
       } finally {
         setLoading(false);
@@ -22,17 +22,19 @@ const isAuthenticated = () => {
   }, []);
 
   if (loading) {
-    return <Spinner />;
+    return { auth: false, loading: true };
   }
 
-  return auth;
+  return { auth, loading: false };
 };
 
 const ProtectedRoute = ({ children }) => {
-  if (!isAuthenticated()) {
-    return <Navigate to="/" replace />;
+  const { auth, loading } = useAuthentication();
+  if (loading) return <Spinner />;
+  if (!auth) {
+    return <Navigate to="/dashboardpanel" replace />;
   }
   return children;
 };
 
-export default ProtectedRoute; 
+export default ProtectedRoute;
