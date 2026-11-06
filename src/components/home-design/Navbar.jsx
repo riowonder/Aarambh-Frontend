@@ -82,6 +82,17 @@ export default function Navbar({ onOpenLogin, onOpenRegister }) {
             >
               <ul className="py-2">
                 <li>
+                  <button
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      navigate("/workout-guide");
+                    }}
+                    className="w-full text-left px-6 py-3 text-sm font-black uppercase italic tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 transition-all"
+                  >
+                    Workout Guide
+                  </button>
+                </li>
+                <li>
                   <button 
                     onClick={() => {
                       setIsDropdownOpen(false);

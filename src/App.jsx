@@ -33,6 +33,10 @@ import ApprovalRequests from './pages/main/ApprovalRequests';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Home from "./pages/main/Home";
 import TermsAndConditions from "./pages/main/TermsAndConditions";
+import { lazy, Suspense } from "react";
+
+const WorkoutGuideIndex = lazy(() => import("./pages/main/WorkoutGuideIndex"));
+const WorkoutGuideDetail = lazy(() => import("./pages/main/WorkoutGuideDetail"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,6 +57,9 @@ export const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="/workout-guide" element={<Suspense fallback={null}><WorkoutGuideIndex /></Suspense>} />
+            <Route path="/workout-guide/demo" element={<Navigate to="/workout-guide/bench-press" replace />} />
+            <Route path="/workout-guide/:slug" element={<Suspense fallback={null}><WorkoutGuideDetail /></Suspense>} />
             <Route path="/Dashpanel" element={<Login />} />
             <Route path="/dashpanelsignup" element={<Signup />} />
             <Route path="/user-login" element={<Home openLoginOnLoad />} />

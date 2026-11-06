@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Workout Guide artwork is loaded from the pinned source revision.
+/public/workout-guide/assets/
