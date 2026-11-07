@@ -50,44 +50,44 @@ export const App = () => {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <BrowserRouter>
-        <Toaster />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-            <Route path="/workout-guide" element={<Suspense fallback={null}><WorkoutGuideIndex /></Suspense>} />
-            <Route path="/workout-guide/demo" element={<Navigate to="/workout-guide/bench-press" replace />} />
-            <Route path="/workout-guide/:slug" element={<Suspense fallback={null}><WorkoutGuideDetail /></Suspense>} />
-            <Route caseSensitive path="/dashboardpanel" element={<Login />} />
-            <Route caseSensitive path="/Dashpanel" element={<Navigate to="/dashboardpanel" replace />} />
-            <Route path="/dashlogin" element={<Navigate to="/dashboardpanel" replace />} />
-            <Route path="/user-login" element={<Home openLoginOnLoad />} />
-            {/* <Route path="/user-login" element={<UserLogin />} />  */}
-            <Route path="/user-register" element={<Register />} />
-            <Route path="/user-forgot-password" element={<UserForgotPassword />} />
-            <Route path="/user-forgot-password/otp-verification" element={<UserForgotPswdOTP />} />
-            <Route path="/user-reset-password" element={<UserResetPswd />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/otp-verification" element={<OTP />} />
-            <Route path="/forgot-password/otp-verification" element={<ForgotPswdOTP />} />
-            <Route path="/reset-password" element={<ResetPswd />} />
-            <Route
-              path="/admin"
-              element={
-                <AdminRoute>
-                  <AdminLayout />
-                </AdminRoute>
-              }
-              errorElement={<ErrorPage />}
-            >
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="members" element={<AllMembers />} />
-              <Route path="finance" element={<Finance />} />
-              <Route path="birthdays" element={<Birthday />} />
-              <Route path="approval-requests" element={<ApprovalRequests />} />
-            </Route>
-            {/* <Route
+        <UserProvider>
+          <BrowserRouter>
+            <Toaster />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+              <Route path="/workout-guide" element={<Suspense fallback={null}><WorkoutGuideIndex /></Suspense>} />
+              <Route path="/workout-guide/demo" element={<Navigate to="/workout-guide/bench-press" replace />} />
+              <Route path="/workout-guide/:slug" element={<Suspense fallback={null}><WorkoutGuideDetail /></Suspense>} />
+              <Route caseSensitive path="/dashboardpanel" element={<Login />} />
+              <Route caseSensitive path="/Dashpanel" element={<Navigate to="/dashboardpanel" replace />} />
+              <Route path="/dashpanel" element={<Navigate to="/dashboardpanel" replace />} />
+              <Route path="/user-login" element={<Home openLoginOnLoad />} />
+              {/* <Route path="/user-login" element={<UserLogin />} />  */}
+              <Route path="/user-register" element={<Register />} />
+              <Route path="/user-forgot-password" element={<UserForgotPassword />} />
+              <Route path="/user-forgot-password/otp-verification" element={<UserForgotPswdOTP />} />
+              <Route path="/user-reset-password" element={<UserResetPswd />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/otp-verification" element={<OTP />} />
+              <Route path="/forgot-password/otp-verification" element={<ForgotPswdOTP />} />
+              <Route path="/reset-password" element={<ResetPswd />} />
+              <Route
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <AdminLayout />
+                  </AdminRoute>
+                }
+                errorElement={<ErrorPage />}
+              >
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="members" element={<AllMembers />} />
+                <Route path="finance" element={<Finance />} />
+                <Route path="birthdays" element={<Birthday />} />
+                <Route path="approval-requests" element={<ApprovalRequests />} />
+              </Route>
+              {/* <Route
               path="/manager"
               element={
                 <ManagerRoute>
@@ -99,22 +99,22 @@ export const App = () => {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="members" element={<AllMembers />} />
             </Route> */}
-            <Route
-              path="/user"
-              element={
-                <UserRoute>
-                  <UserLayout />
-                </UserRoute>
-              }
-              errorElement={<ErrorPage />}
-            >
-              <Route path="dashboard" element={<UserDashboard />} />
-              <Route path="subscriptions" element={<UserSubscriptions />} />
-            </Route>
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </BrowserRouter>
-      </UserProvider>
+              <Route
+                path="/user"
+                element={
+                  <UserRoute>
+                    <UserLayout />
+                  </UserRoute>
+                }
+                errorElement={<ErrorPage />}
+              >
+                <Route path="dashboard" element={<UserDashboard />} />
+                <Route path="subscriptions" element={<UserSubscriptions />} />
+              </Route>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </BrowserRouter>
+        </UserProvider>
       </QueryClientProvider>
     </ErrorBoundary>
   );
